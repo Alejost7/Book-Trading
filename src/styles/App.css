@@ -1,0 +1,61 @@
+#root {
+  text-align: center;
+}
+
+/* Estilos de los enlaces */
+.section-route {
+  font-size: 18px;
+  font-weight: 600;
+  color: white;
+  text-decoration: none;
+  padding: 8px 15px;
+  border-radius: 8px;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Efecto hover en los enlaces */
+.section-route:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffdd57;
+  transform: translateY(-2px);
+}
+
+.features {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  text-align: center;  
+  gap: 30%;
+  background-color: #050355;
+  padding: 5%;
+}
+
+footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5%;
+  gap: 5%;
+  background-color: hsla(229, 92%, 20%, 0.76);
+  color: white;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 20%;
+  margin: auto;
+  margin-top: 10%;
+  gap: 25px;
+  background-color: rgb(255, 255, 255);
+  color: black;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  padding: 5%;
+  font-size: 130%;
+}
+
+
+

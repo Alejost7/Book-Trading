@@ -1,0 +1,13 @@
+.hero {
+    text-align: center;
+    padding: 1%;
+    background-image: url('../assets/images/fondoHero.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.img-hero {
+    margin-top: 5%;
+    width: 800px;
+    height: auto;
+}

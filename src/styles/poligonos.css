@@ -1,0 +1,29 @@
+.poligonos {
+    display: flex;
+    justify-content: space-evenly;
+    margin: 2rem 0;
+}
+
+.poligono {
+    width: 100px;
+    height: 100px;
+    background-color: lightblue;
+    clip-path: circle(50% at 50% 50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.poligono1 {
+    background-color: #ff9999;
+}
+
+.poligono2 {
+    background-color: #99ccff;
+}
+
+.poligono3 {
+    background-color: #ffff99;
+}
