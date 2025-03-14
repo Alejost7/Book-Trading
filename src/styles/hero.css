@@ -12,6 +12,10 @@
     height: auto;
 }
 
+.video-hero {
+    width: 90%;
+}
+
 .text-hero {
     background-color: rgba(7, 2, 77, 0.108);
     padding: 2%;
