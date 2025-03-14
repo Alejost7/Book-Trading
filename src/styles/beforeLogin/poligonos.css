@@ -8,7 +8,7 @@
 .poligono {
     width: 100px;
     height: 100px;
-    background-color: #1D3557;
+    background-color: #1d355722;
     clip-path: circle(50% at 50% 50%);
     display: flex;
     justify-content: center;
@@ -39,14 +39,12 @@
     height: auto;
 }
 
-.poligono3 {
-    background-image: url('../../assets/icons/ajustes.png');
-    background-position: center;
-    background-size: cover;
+.poligono3 img{
+    width: 100%;
+    height: auto;
 }
 
-.poligono4 {
-    background-image: url('../../assets/icons/salir.png');
-    background-position: center;
-    background-size: cover;
+.poligono4 img{
+    width: 100%;
+    height: auto;
 }
