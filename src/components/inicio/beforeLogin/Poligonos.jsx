@@ -1,5 +1,5 @@
 import '../../../styles/beforeLogin/poligonos.css';
-import perfilIcon from '../../../assets/icons/myProfile.png';
+import perfilIcon from '../../../assets/icons/avatar-de-hombre.png';
 import ayuda from '../../../assets/icons/ayuda.png';
 const Poligonos = () => {
     return(
