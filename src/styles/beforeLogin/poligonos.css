@@ -1,0 +1,49 @@
+.poligonos {
+    display: flex;
+    justify-content: space-evenly;
+    margin: 5rem;
+    gap: 8rem;
+}
+
+.poligono {
+    width: 100px;
+    height: 100px;
+    background-color: #1D3557;
+    clip-path: circle(50% at 50% 50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.poligono:hover {
+    cursor: pointer;
+    background-color: rgba(85, 85, 87, 0.205);
+    color: rgb(0, 0, 0);
+    transition: all 0.5s;
+    transform: scale(1.1);
+}
+
+.poligono1 {
+    background-image: url("../../assets/icons/myProfile.png");
+    background-position: center;
+    background-size: cover;
+}
+.poligono2 {
+    background-image: url('../../assets//icons/ayuda.png');
+    background-position: center;
+    background-size: cover;
+}
+
+.poligono3 {
+    background-image: url('../../assets/icons/ajustes.png');
+    background-position: center;
+    background-size: cover;
+}
+
+.poligono4 {
+    background-image: url('../../assets/icons/salir.png');
+    background-position: center;
+    background-size: cover;
+}

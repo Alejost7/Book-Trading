@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom';
+import '../../../styles/beforeLogin/footer.css';
+
 const Footer = () => {
     return (
         <div>

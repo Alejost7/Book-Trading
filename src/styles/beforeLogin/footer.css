@@ -1,0 +1,9 @@
+footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5%;
+    gap: 5%;
+    background-color: hsla(229, 83%, 68%, 0.116);
+    color: white;
+}

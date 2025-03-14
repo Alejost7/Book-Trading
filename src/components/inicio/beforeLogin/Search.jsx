@@ -1,4 +1,4 @@
-import searchIcon from '../../assets/icons/searchIcon.png';
+import searchIcon from '../../../assets/icons/searchIcon.png';
 const Search = () => {
     return (
         <div class="search">

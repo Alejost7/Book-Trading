@@ -1,4 +1,4 @@
-import '../../styles/poligonos.css';
+import '../../../styles/beforeLogin/poligonos.css';
 const Poligonos = () => {
     return(
         <div className="poligonos">
