@@ -1,5 +1,5 @@
 import '../../../styles/beforeLogin/features.css';
-
+import imageRef from '../../../assets/images/imageLibraryRef.jpg';
 const Features = () => {
     return (
         <section className="features-container">
@@ -10,6 +10,9 @@ const Features = () => {
                 <li className="feature-item">Soporte 24/7</li>
                 <li className="feature-item">Personalizable</li>
             </ul>
+            <div className="features-img">
+                <img src={imageRef}></img>
+            </div>
         </section>
     );
 };

@@ -3,17 +3,18 @@ import Search from "./search";
 import logo from "../../../assets/images/libroLogo.png";
 import '../../../styles/beforeLogin/navBar.css';
 
+
 const Navbar = ({ isAuthenticated }) => {
 return (
 <nav className='navBar'>
     <Link to="/">
         <img className='logo' src={logo} alt="" /></Link>
     <Search />
-    <Link to="/" className='section-route'>Inicio</Link>
+    <Link to="/" className={`section-route ${location.pathname === "/" ? "active" : ""}`}>Inicio</Link>
     {isAuthenticated ? (
         <Link to="/afterLogin" className="section-route">BookZone</Link>
     ) : (
-        <Link to="/registro" className='section-route'>Ingreso</Link>
+        <Link to="/registro" className={`section-route ${location.pathname === "/registro" ? "active" : ""}`}>Ingreso</Link>
     )}
 </nav>
 );
