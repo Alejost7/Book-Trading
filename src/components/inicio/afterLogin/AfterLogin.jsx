@@ -3,6 +3,7 @@ import '../../../styles/afterLogin/afterLogin.css';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import MiPerfil from '../../miPerfil/MiPerfil';
+import Donaciones from '../../donaciones/donaciones';
 
 
 const books = [
@@ -45,11 +46,12 @@ const AfterLogin = () => {
                 <nav className="nav-links">
                     <a onClick= {() => setCurrentView("MyBooks")} className={`nav-item ${currentView === "MyBooks" ? "active" : ""}`}><FiBookOpen />Mis Libros</a>
                     <a onClick= {() => setCurrentView("Changes")} className={`nav-item ${currentView === "Changes" ? "active" : ""}`}><FiBookmark />Intercambios</a>
+                    <a onClick= {() => setCurrentView("Donation")} className={`nav-item ${currentView === "Donation" ? "active" : ""}`}><FiBookOpen/>Donaciones</a>
                     <a onClick= {() => setCurrentView("Profile")} className={`nav-item ${currentView === "Profile" ? "active" : ""}`}><FiUser />Perfil</a>
                 </nav>
                 <button 
                     className="add-button up" 
-                    onClick={() => currentView === "Profile" || currentView === "Changes" || currentView === "MyBooks" ? setCurrentView("Books") : navigate("/")}><FiArrowLeft /></button>
+                    onClick={() => currentView === "Profile" || currentView === "Changes" || currentView === "MyBooks" || currentView === "Donation" ? setCurrentView("Books") : navigate("/")}><FiArrowLeft /></button>
                 <button className="logout-button" onClick={handleLogout}><FiLogOut /></button>
             </aside>
             <main className="main-content">
@@ -69,6 +71,7 @@ const AfterLogin = () => {
                 </>
             )}
             {currentView === "Profile" && <MiPerfil/>}
+            {currentView === "Donation" && <Donaciones/>}
             </main>
             <button className="add-button"><FiPlus /></button>
         </div>
