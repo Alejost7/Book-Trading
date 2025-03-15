@@ -1,8 +1,8 @@
 import { FiPlus, FiBookOpen, FiUser, FiBookmark, FiArrowLeft, FiLogOut} from 'react-icons/fi';
 import '../../../styles/afterLogin/afterLogin.css';
 import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
-
+import { useState } from 'react';
+import MiPerfil from '../../miPerfil/MiPerfil';
 
 
 const books = [
@@ -30,6 +30,8 @@ const books = [
 const AfterLogin = () => {
     const navigate = useNavigate();
 
+    const [currentView, setCurrentView] = useState("Books");
+
     const handleLogout = () => {
         localStorage.removeItem("isAuthenticated");
         localStorage.removeItem("userEmail");
@@ -43,23 +45,28 @@ const AfterLogin = () => {
                 <nav className="nav-links">
                     <a href="#" className="nav-item"><FiBookOpen />Mis Libros</a>
                     <a href="#" className="nav-item"><FiBookmark />Intercambios</a>
-                    <Link to="/miPerfil" className="nav-item"><FiUser />Perfil</Link>
+                    <a href='#' className="nav-item" onClick= {() => setCurrentView("Profile")}><FiUser />Perfil</a>
                 </nav>
                 <button className="add-button up" onClick={() => navigate("/")}><FiArrowLeft /></button>
                 <button className="logout-button" onClick={handleLogout}><FiLogOut /></button>
             </aside>
             <main className="main-content">
-                <h2 className="section-title">Libros Disponibles</h2>
-                <div className="books-grid">
-                    {books.map((book) => (
-                        <div key={book.id} className="book-card">
-                            <img src={book.cover} alt={book.title} className="book-cover"/>
-                            <h3 className="book-title">{book.title}</h3>
-                            <p className="book-author">{book.author}</p>
-                            <button className="exchange-button">Solicitar Intercambio</button>
-                        </div>
-                    ))}
-                </div>
+                {currentView === "Books" &&(
+                <>
+                    <h2 className="section-title">Libros Disponibles</h2>
+                    <div className="books-grid">
+                        {books.map((book) => (
+                            <div key={book.id} className="book-card">
+                                <img src={book.cover} alt={book.title} className="book-cover"/>
+                                <h3 className="book-title">{book.title}</h3>
+                                <p className="book-author">{book.author}</p>
+                                <button className="exchange-button">Solicitar Intercambio</button>
+                            </div>
+                        ))}
+                    </div>
+                </>
+            )}
+            {currentView === "Profile" && <MiPerfil/>}
             </main>
             <button className="add-button"><FiPlus /></button>
         </div>
