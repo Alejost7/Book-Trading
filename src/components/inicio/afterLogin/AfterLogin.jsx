@@ -2,8 +2,11 @@ import { FiPlus, FiBookOpen, FiUser, FiBookmark, FiArrowLeft, FiLogOut} from 're
 import '../../../styles/afterLogin/afterLogin.css';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { openModal } from '../../../Redux/modalSlice';
 import MiPerfil from '../../miPerfil/MiPerfil';
 import Donaciones from '../../donaciones/donaciones';
+import LogOut from './logOut';
+import { useSelector, useDispatch } from 'react-redux';
 
 
 const books = [
@@ -28,15 +31,14 @@ const books = [
     { id: 19, title: "Frankenstein", author: "Mary Shelley", cover: "https://th.bing.com/th/id/R.97a3db160e61253b8d6e0bbe8e08b944?rik=g4eQsHxZE0vt%2bQ&pid=ImgRaw&r=0" },
     { id: 20, title: "Ulises", author: "James Joyce", cover: "https://images.cdn3.buscalibre.com/fit-in/360x360/4c/4f/4c4fc4695ca447acd3450f0e52b0a7b5.jpg" }
 ];
+
 const AfterLogin = () => {
     const navigate = useNavigate();
-
+    const dispatch = useDispatch();
     const [currentView, setCurrentView] = useState("Books");
 
     const handleLogout = () => {
-        localStorage.removeItem("isAuthenticated");
-        localStorage.removeItem("userEmail");
-        navigate("/");
+        dispatch(openModal());  {/* Abrir la ventana Modal */}
     };
 
     return (
@@ -52,7 +54,7 @@ const AfterLogin = () => {
                 <button 
                     className="add-button up" 
                     onClick={() => currentView === "Profile" || currentView === "Changes" || currentView === "MyBooks" || currentView === "Donation" ? setCurrentView("Books") : navigate("/")}><FiArrowLeft /></button>
-                <button className="logout-button" onClick={handleLogout}><FiLogOut /></button>
+                <button className="logout-button" onClick={handleLogout}><FiLogOut />Cerrar Sesión</button>
             </aside>
             <main className="main-content">
                 {currentView === "Books" &&(
@@ -74,6 +76,7 @@ const AfterLogin = () => {
             {currentView === "Donation" && <Donaciones/>}
             </main>
             <button className="add-button"><FiPlus /></button>
+            <LogOut/>
         </div>
     );
 };

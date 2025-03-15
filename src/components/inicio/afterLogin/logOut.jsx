@@ -1,25 +1,38 @@
 import { useSelector, useDispatch } from "react-redux";
 import { closeModal } from "../../../Redux/modalSlice";
+import { FiLogOut } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 import "../../../styles/afterLogin/logOut.css"; // Importamos el CSS
 
 const Modal = () => {
     const isOpen = useSelector((state) => state.modal.isOpen);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     if (!isOpen) return null;
 
-    return (
-    <div className="modal-overlay modal-open">
-        <div className="modal-container">
-        <h2 className="text-xl font-bold text-center">¡Hola, soy un modal!</h2>
-        <p className="text-gray-600 text-center mt-2">Este es un modal con fondo borroso.</p>
+    const handleConfirmLogout = () => {
+        localStorage.removeItem("isAuthenticated");
+        localStorage.removeItem("userEmail");
 
-        <button onClick={() => dispatch(closeModal())} className="modal-close">
-            Cerrar Modal
-        </button>
+        dispatch(closeModal());
+        navigate("/");
+
+    }
+    return (
+        <div className="modal-overlay modal-open">
+            <div className="modal-container">
+            <h2 className="close-sesion">¿Cerrar Sesión?</h2>
+            <p className="question">¿Estás seguro que deseas cerrar sesión?.</p>
+            <button onClick={handleConfirmLogout} className="modal confirm">
+                <FiLogOut/>¿Cerrar Sesión?
+            </button>
+            <button onClick={() => dispatch(closeModal())} className="modal cancel">
+                Cancelar
+            </button>
+            </div>
         </div>
-    </div>
-    );
+        );
     };
 
 export default Modal;

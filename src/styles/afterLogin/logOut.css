@@ -13,7 +13,7 @@
 
 /* Contenedor del modal */
 .modal-container {
-    background: white;
+    background: #1b2a4d;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
@@ -27,7 +27,7 @@
 }
 
 /* Botón de cierre */
-.modal-close {
+.modal {
     margin-top: 10px;
     background-color: red;
     color: white;
@@ -38,6 +38,7 @@
     width: 100%;
 }
 
-.modal-close:hover {
+.modal:hover {
     background-color: darkred;
 }
+
