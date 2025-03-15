@@ -41,13 +41,15 @@ const AfterLogin = () => {
     return (
         <div className="afterLogin-container">
             <aside className="slidebar">
-                <h1 className="logo-title">BookSwap</h1>
+                <h1 className="logo-title" onClick={() => navigate("/")}>BookSwap</h1>
                 <nav className="nav-links">
-                    <a href="#" className="nav-item"><FiBookOpen />Mis Libros</a>
-                    <a href="#" className="nav-item"><FiBookmark />Intercambios</a>
-                    <a href='#' className="nav-item" onClick= {() => setCurrentView("Profile")}><FiUser />Perfil</a>
+                    <a onClick= {() => setCurrentView("MyBooks")} className={`nav-item ${currentView === "MyBooks" ? "active" : ""}`}><FiBookOpen />Mis Libros</a>
+                    <a onClick= {() => setCurrentView("Changes")} className={`nav-item ${currentView === "Changes" ? "active" : ""}`}><FiBookmark />Intercambios</a>
+                    <a onClick= {() => setCurrentView("Profile")} className={`nav-item ${currentView === "Profile" ? "active" : ""}`}><FiUser />Perfil</a>
                 </nav>
-                <button className="add-button up" onClick={() => navigate("/")}><FiArrowLeft /></button>
+                <button 
+                    className="add-button up" 
+                    onClick={() => currentView === "Profile" || currentView === "Changes" || currentView === "MyBooks" ? setCurrentView("Books") : navigate("/")}><FiArrowLeft /></button>
                 <button className="logout-button" onClick={handleLogout}><FiLogOut /></button>
             </aside>
             <main className="main-content">
