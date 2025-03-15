@@ -1,6 +1,7 @@
 import { FiPlus, FiBookOpen, FiUser, FiBookmark, FiArrowLeft, FiLogOut} from 'react-icons/fi';
 import '../../../styles/afterLogin/afterLogin.css';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const books = [
     {id: 1, title: "El Principito", author:"Antoine de Saint-Exupéry", cover: "https://m.media-amazon.com/images/I/81t2CVWEsUL.jpg" },
@@ -40,7 +41,7 @@ const AfterLogin = () => {
                 <nav className="nav-links">
                     <a href="#" className="nav-item"><FiBookOpen />Mis Libros</a>
                     <a href="#" className="nav-item"><FiBookmark />Intercambios</a>
-                    <a href="#" className="nav-item"><FiUser />Perfil</a>
+                    <Link to="/miPerfil" className="nav-item"><FiUser />Perfil</Link>
                 </nav>
                 <button className="add-button up" onClick={() => navigate("/")}><FiArrowLeft /></button>
                 <button className="logout-button" onClick={handleLogout}><FiLogOut /></button>

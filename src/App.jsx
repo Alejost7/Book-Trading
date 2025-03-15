@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { useState, useEffect } from 'react';
 import BeforeLogin from './components/inicio/beforeLogin/BeforeLogin';
 import AfterLogin from './components/inicio/afterLogin/AfterLogin';
+import MiPerfil from './components/miPerfil/MiPerfil';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(
@@ -21,6 +22,11 @@ function App() {
             path="/afterLogin" 
             element={isAuthenticated ? <AfterLogin /> : <Navigate to="/" />} 
           />
+          <Route
+            path="/miPerfil"
+            element={<MiPerfil/>}
+          >
+          </Route> 
         </Routes>
     </Router>
   );
