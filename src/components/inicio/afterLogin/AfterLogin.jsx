@@ -6,7 +6,7 @@ import { openModal } from '../../../Redux/modalSlice';
 import MiPerfil from '../../miPerfil/MiPerfil';
 import Donaciones from '../../donaciones/donaciones';
 import LogOut from './logOut';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 
 const books = [

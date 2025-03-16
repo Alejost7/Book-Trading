@@ -1,6 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
 import { closeModal } from "../../../Redux/modalSlice";
-import { FiLogOut } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import "../../../styles/afterLogin/logOut.css"; // Importamos el CSS
 
@@ -25,7 +24,7 @@ const Modal = () => {
             <h2 className="close-sesion">¿Cerrar Sesión?</h2>
             <p className="question">¿Estás seguro que deseas cerrar sesión?.</p>
             <button onClick={handleConfirmLogout} className="modal confirm">
-                <FiLogOut/>¿Cerrar Sesión?
+                Cerrar Sesión
             </button>
             <button onClick={() => dispatch(closeModal())} className="modal cancel">
                 Cancelar

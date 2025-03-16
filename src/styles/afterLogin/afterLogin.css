@@ -139,7 +139,7 @@
     cursor:pointer;
 }
 
-.up {
+.add-button.up {
     bottom: 6rem;
     z-index: 1;
 }

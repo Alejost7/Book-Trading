@@ -6,12 +6,10 @@
     align-items: center;
     justify-content: center;
     background-color: rgba(0, 0, 0, 0.5);
-    /* Oscurece el fondo */
     backdrop-filter: blur(5px);
-    /* Aplica el desenfoque */
+    z-index: 1000;
 }
 
-/* Contenedor del modal */
 .modal-container {
     background: #1b2a4d;
     padding: 20px;
