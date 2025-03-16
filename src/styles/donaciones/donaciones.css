@@ -1,0 +1,26 @@
+.pageTitle {
+    text-align: left;
+    margin-bottom: 0;
+    color: #60a5fa;
+    font-size: 3rem ;
+    
+}
+.bookTitle{
+    text-align: left;
+    margin-bottom: 0;
+    line-height: 2.2rem;
+    color: #60a5fa;
+    font-size: 2.5rem ;
+    font-weight: 8;
+    
+}
+.bookDescription{
+    text-align: left;
+    margin-top: 0;
+    color: #fff;
+    font-size: 1.8rem ;
+}
+.bookCover{
+    width: 100%;
+    height: auto;
+}
