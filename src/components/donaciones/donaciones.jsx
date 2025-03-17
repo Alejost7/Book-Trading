@@ -5,19 +5,26 @@ let libro = { id: 6, title: "Crónica de una Muerte Anunciada necesito ver que p
 
 const donaciones = () => {
     return(
-        <div>
-            <h2 className="pageTitle">
-                Crear Donacion
-            </h2>
-            <hr></hr>
-            <img className='bookCover' src= {libro.cover}></img>
-            <h2 className="bookTitle">
-                {libro.title.toUpperCase()}
-            </h2>
-            <hr></hr>
-            <p className="bookDescription">
-                {libro.descripcion}
-            </p>
+        <div className="donacionesmain">
+            <div className="donacionesLibro">
+                <h2 className="pageTitle">
+                    Crear Donacion
+                </h2>
+                <hr></hr>
+                <img className='bookCover' src= {libro.cover}></img>
+                <h2 className="bookTitle">
+                    {libro.title.toUpperCase()}
+                </h2>
+                <hr></hr>
+                <p className="bookDescription">
+                    {libro.descripcion}
+                </p>
+            </div>
+            <div className = "botones">
+                <button className="boton" id = 'b1'>Seleccionar libro</button>
+                <button className="boton" id='b2'>Nuevo Libro</button>
+                <button className="boton" id='b3'>DONAR</button>
+            </div>
         </div>
     )
 }
