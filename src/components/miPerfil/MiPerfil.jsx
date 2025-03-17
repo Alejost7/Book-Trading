@@ -1,10 +1,15 @@
+import "../../styles/miPerfil/MiPerfil.css"
+import ProfileCard from "./ProfileCard"
+import spideypfp from "../../assets/images/spideypfp.jpg"
+import Footer from "../inicio/beforeLogin/Footer"
+import Navbar from "../inicio/beforeLogin/NavBar"
 
 const MiPerfil = () => {
     return(
         <div>
-            <h1>
-                Hello World!
-            </h1>
+            <Navbar />
+            <ProfileCard imgSrc={spideypfp} imgAlt={"Imagen de perfil"} username={"jorluos"} role={"Usuario"}/>
+            <Footer />
         </div>
     )
 }

@@ -1,0 +1,30 @@
+.ProfileCard{
+    width: 200px;
+    border: 1px solid black;
+    border-radius: 10px;
+    box-shadow: 5px 5px 5px black;
+    padding: 20px;
+    margin: 10px;
+    text-align: center;
+    max-width: 250;
+    display: inline-block;
+    background-color: beige;
+}
+
+.ProfileCard .CardImage{
+    max-width: 60%;
+    height: auto;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.ProfileCard .Username{
+    font-family: Arial, sans-serif;
+    margin: 0;
+    color: black;
+}
+
+.ProfileCard .Role{
+    font-family: Arial, sans-serif;
+    color: black;
+}
