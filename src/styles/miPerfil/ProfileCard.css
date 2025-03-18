@@ -1,12 +1,14 @@
 .ProfileCard{
-    justify-content: flex-start;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 250px;
-    height: 250px;
+    height: 280px;
     border: 1px solid black;
     border-radius: 10px;
     box-shadow: 0px 4px 10px #D4B07A;
     padding: 20px;
-    margin: 10px;
+    margin: 50px;
     max-width: 250;
     background-color: white;
 }
@@ -15,24 +17,28 @@
     height: 100px;
     width: 100px;
     border-radius: 50%;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
 }
 
 .ProfileCard .Username{
     font-family: Arial, sans-serif;
-    margin: 0;
+    font-size: 18px;
+    margin: 5px 0;
+    font-weight: bold;
     color: black;
 }
 
 .ProfileCard .Name{
     font-family: Arial, sans-serif;
     font-size: 15px;
-    margin: 1;
+    margin: 5px 0;
     color: grey
 }
 
 .ProfileCard .Role{
     font-family: Arial, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
     color: black;
-    margin: 0
+    margin: 5px 0;
 }
