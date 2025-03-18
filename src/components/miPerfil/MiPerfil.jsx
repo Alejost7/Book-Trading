@@ -8,7 +8,7 @@ const MiPerfil = () => {
     return(
         <div>
             <Navbar />
-            <ProfileCard imgSrc={spideypfp} imgAlt={"Imagen de perfil"} username={"jorluos"} role={"Usuario"}/>
+            <ProfileCard imgSrc={spideypfp} imgAlt={"Imagen de perfil"} username={"jorluos"} role={"Usuario"} name={"Jorge Osorio"}/>
             <Footer />
         </div>
     )

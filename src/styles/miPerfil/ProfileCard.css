@@ -1,21 +1,21 @@
 .ProfileCard{
-    width: 200px;
+    justify-content: flex-start;
+    width: 250px;
+    height: 250px;
     border: 1px solid black;
     border-radius: 10px;
-    box-shadow: 5px 5px 5px black;
+    box-shadow: 0px 4px 10px #D4B07A;
     padding: 20px;
     margin: 10px;
-    text-align: center;
     max-width: 250;
-    display: inline-block;
-    background-color: beige;
+    background-color: white;
 }
 
 .ProfileCard .CardImage{
-    max-width: 60%;
-    height: auto;
+    height: 100px;
+    width: 100px;
     border-radius: 50%;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 
 .ProfileCard .Username{
@@ -24,7 +24,15 @@
     color: black;
 }
 
+.ProfileCard .Name{
+    font-family: Arial, sans-serif;
+    font-size: 15px;
+    margin: 1;
+    color: grey
+}
+
 .ProfileCard .Role{
     font-family: Arial, sans-serif;
     color: black;
+    margin: 0
 }
