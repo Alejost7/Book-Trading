@@ -5,7 +5,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-const users = [];  // Aquí se almacenarán los usuarios registrados
+const users = [];  // Aquí se almacenarán los usuarios registrados por ahora
 
 app.get("/", (req, res) => {
     res.send("¡Servidor funcionando!");
