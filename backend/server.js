@@ -47,4 +47,8 @@ app.post("/login", (req, res) => {
     res.status(200).json({ message: "Inicio de sesión exitoso "});
 })
 
+app.get("/users", (req, res) => {
+    res.json(users);
+});
+
 app.listen(5000, () => console.log("Servidor corriendo en http://localhost:5000"));
