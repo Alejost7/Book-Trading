@@ -3,23 +3,18 @@ import Hero from "./Hero";
 import Features from "./Features";
 import Footer from "./Footer";
 import Registro from "../../registroInicio/Registro";
-import { useState, useEffect } from 'react';
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const BeforeLogin = () => {
     const location = useLocation();
-    const [isAuthenticated, setIsAuthenticated] = useState(
-        localStorage.getItem("isAuthenticated") === "true"
-    );
-
-    useEffect(() => {
-        const auth = localStorage.getItem("isAuthenticated");
-        setIsAuthenticated(auth === "true");
-    }, []);
+    
+    const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+    console.log("Estado de autenticación: ", isAuthenticated);
 
     return (
         <div>
-            <NavBar isAuthenticated={isAuthenticated}/>
+            <NavBar/>
             <Routes location={location}>
                 <Route path = "/" element = {
                     <div>

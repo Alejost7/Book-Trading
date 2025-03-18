@@ -1,19 +1,13 @@
 import './styles/App.css'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import BeforeLogin from './components/inicio/beforeLogin/BeforeLogin';
 import AfterLogin from './components/inicio/afterLogin/AfterLogin';
 import MiPerfil from './components/miPerfil/MiPerfil';
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(
-    localStorage.getItem("isAuthenticated") === "true"
-  );
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
-  useEffect(() => {
-    const auth = localStorage.getItem("isAuthenticated");
-    setIsAuthenticated(auth === "true");
-  }, []);
   return (
       <Router>
         <Routes>

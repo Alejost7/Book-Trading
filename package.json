@@ -1,34 +1,21 @@
 {
   "name": "proyectoxd",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
+  "version": "1.0.0",
+  "description": "- Diego Alejandro Santander Toro\r - Jorge Luis Osorio Quiroga\r - Samuel Alberto Bonilla Franco",
+  "main": "index.js",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "install-all": "cd frontend && npm install && cd ../backend && npm install"
   },
-  "dependencies": {
-    "@reduxjs/toolkit": "^2.6.1",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "react-icons": "^5.5.0",
-    "react-redux": "^9.2.0",
-    "react-router-dom": "^7.3.0"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Alejost7/Book-Trading.git"
   },
-  "devDependencies": {
-    "@eslint/js": "^9.21.0",
-    "@types/react": "^19.0.10",
-    "@types/react-dom": "^19.0.4",
-    "@vitejs/plugin-react": "^4.3.4",
-    "autoprefixer": "^10.4.21",
-    "eslint": "^9.21.0",
-    "eslint-plugin-react-hooks": "^5.1.0",
-    "eslint-plugin-react-refresh": "^0.4.19",
-    "globals": "^15.15.0",
-    "postcss": "^8.5.3",
-    "tailwindcss": "^4.0.14",
-    "vite": "^6.2.0"
-  }
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Alejost7/Book-Trading/issues"
+  },
+  "homepage": "https://github.com/Alejost7/Book-Trading#readme"
 }

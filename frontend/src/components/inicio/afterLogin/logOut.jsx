@@ -1,6 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { closeModal } from "../../../Redux/modalSlice";
 import { useNavigate } from "react-router-dom";
+import {logout } from "../../../Redux/authSlice";
 import "../../../styles/afterLogin/logOut.css"; // Importamos el CSS
 
 const Modal = () => {
@@ -13,9 +14,9 @@ const Modal = () => {
     const handleConfirmLogout = () => {
         localStorage.removeItem("isAuthenticated");
         localStorage.removeItem("userEmail");
-
         dispatch(closeModal());
         navigate("/");
+        dispatch(logout());
 
     }
     return (
