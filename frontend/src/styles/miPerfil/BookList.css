@@ -1,0 +1,30 @@
+.BookList {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem
+;
+}
+
+.BookCard {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    padding: 10px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: black;
+}
+
+.BookImage {
+    width: 150px;
+    height: auto;
+    border-radius: 4px;
+}
+
+.BookTitle {
+    margin-top: 10px;
+    font-size: 1.1em;
+}
+
+
