@@ -8,12 +8,15 @@ const TestAPI = () => {
         fetch("http://localhost:5000/api/mensaje")
             .then((res) => res.json())
             .then((data) => setMensaje(data.mensaje))
-            .catch((error) => console.log("error al obtener datos :", error));
+            .catch((error) => 
+                {console.log("error al obtener datos :", error);
+                setMensaje("Error al obtener datos del servidor");
+                });
     }, []);
     return (
         <div>
             <h1 className="mensaje">Mensaje del Servidor:</h1>
-            <p>{mensaje}</p>
+            <p className={`pagraph ${mensaje === "Error al obtener datos del servidor" ? "error" : ""}`}>{mensaje}</p>
         </div>
     );
 }
