@@ -5,6 +5,7 @@ import Footer from "../inicio/beforeLogin/Footer"
 import Navbar from "../inicio/beforeLogin/NavBar"
 import MarkdownText from "./MarkdownText"
 import BookList from "./BookList"
+import ExchangeCard from "./ExchangeCard"
 
 const misLibros = [
     {image: "https://m.media-amazon.com/images/I/81t2CVWEsUL.jpg", name: "Harry Potter"},
@@ -32,10 +33,10 @@ Soy estudiante de **Ingeniería de Sistemas y Computación** en la *Universidad 
 *"El conocimiento no tiene límites, solo los que tú le pongas."*
                                     `}/>
                 </div>
-                <h1></h1>
                 <div className="container-books">
                     <BookList books={misLibros}/>
                 </div>
+                <ExchangeCard leftBook={"https://www.okchicas.com/wp-content/uploads/2018/04/libros-que-nos-hicieron-lectoras-1.jpg"} rightBook={"https://m.media-amazon.com/images/I/81t2CVWEsUL.jpg"} arrow={"https://cdn-icons-png.flaticon.com/512/4406/4406425.png" }></ExchangeCard>
             <Footer />
         </div>
     )
