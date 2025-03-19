@@ -10,17 +10,21 @@ const Poligonos = () => {
         <div className="poligonos">
             <div className="poligono poligono1">
                 <Link to="/miPerfil">
-                    <img src={perfilIcon}></img>
+                    <img src={perfilIcon} alt="Perfil" />
                 </Link>
+                <span className="tooltip">Ir a mi perfil</span> 
             </div>
             <div className="poligono poligono2">
-                <img src={ayuda}></img>
+                <img src={ayuda} alt="Ayuda" />
+                <span className="tooltip">Ayuda</span>
             </div>
             <div className="poligono poligono3">
-                <img src={sobreNosotros}></img>
+                <img src={sobreNosotros} alt="Sobre Nosotros" />
+                <span className="tooltip">Sobre Nosotros</span>
             </div>
             <div className="poligono poligono4">
-                <img src={libroIcon}></img>
+                <img src={libroIcon} alt="Lectura" />
+                <span className="tooltip">Donar Libros</span>
             </div>
         </div>
     );
