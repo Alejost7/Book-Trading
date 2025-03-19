@@ -1,3 +1,4 @@
+import '../../../styles/beforeLogin/search.css';
 import searchIcon from '../../../assets/icons/searchIcon.png';
 const Search = () => {
     return (

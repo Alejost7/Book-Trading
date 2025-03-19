@@ -48,7 +48,7 @@ const Registro = () => {
         localStorage.setItem("userEmail", form.email);
         dispatch(login());
 
-        setTimeout(() => navigate("/afterLogin"), 500);
+        setTimeout(() => navigate("/afterLogin"));
 
     } catch (error) {
         console.error("Error al conectar con el servidor: ", error);
