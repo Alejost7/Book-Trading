@@ -40,7 +40,13 @@
     height: 300%;
     border-radius: 10px;
     
+    
 
+}
+.boton:hover {
+    background-color: #60a5fa;
+    color: white;
+    cursor: pointer;
 }
 #b1{
     grid-column: 1 / 1;
