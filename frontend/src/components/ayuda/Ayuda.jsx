@@ -47,7 +47,7 @@ const Ayuda = () => {
                 <button 
                     className="add-button" 
                     onClick={() => selectedTopic === "perfil" || selectedTopic === "seguridad" || selectedTopic === "libros" || selectedTopic === "Donation" ? setSelectedTopic("general") : navigate("/")}><FiArrowLeft />
-            </button>
+                </button>
             </div>
 
             <div className="ayuda-content">

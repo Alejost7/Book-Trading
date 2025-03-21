@@ -1,5 +1,8 @@
 import "../../styles/miPerfil/MiPerfil.css"
+import { FiArrowLeft } from "react-icons/fi"
+import { useNavigate } from "react-router-dom"
 import ProfileCard from "./ProfileCard"
+import { useSelector } from "react-redux"
 import spideypfp from "../../assets/images/spideypfp.jpg"
 import Footer from "../inicio/beforeLogin/Footer"
 import Navbar from "../inicio/beforeLogin/NavBar"
@@ -18,9 +21,11 @@ const misLibros = [
 ]
 
 const MiPerfil = () => {
+    const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+    const navigate = useNavigate();
     return(
         <div>
-            <Navbar />
+            {isAuthenticated ? null : <Navbar />}
                 <div className="container">
                     <ProfileCard imgSrc={spideypfp} imgAlt={"Imagen de perfil"} username={"jorluos"} role={"Usuario"} name={"Jorge Osorio"}/>
                     <MarkdownText content={`
@@ -36,6 +41,10 @@ Soy estudiante de **Ingeniería de Sistemas y Computación** en la *Universidad 
                     <BookList books={misLibros}/>
                 </div>
                 <ExchangeCard leftBook={"https://www.okchicas.com/wp-content/uploads/2018/04/libros-que-nos-hicieron-lectoras-1.jpg"} rightBook={"https://m.media-amazon.com/images/I/81t2CVWEsUL.jpg"} arrow={"https://cdn-icons-png.flaticon.com/512/4406/4406425.png" }></ExchangeCard>
+                <button 
+                    className="add-button" 
+                    onClick={() => navigate("/")}><FiArrowLeft />
+                </button>
             <Footer />
         </div>
     )
