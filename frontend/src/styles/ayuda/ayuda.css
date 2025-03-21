@@ -1,0 +1,82 @@
+.ayuda-container {
+    display: flex;
+    height: 100vh;
+    background-color: #1b2a4d;
+    color: white;
+}
+
+.ayuda-sidebar {
+    width: 18rem;
+    padding: 1.5rem;
+    background-color: #2d3748;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+.ayuda-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #60a5fa;
+}
+
+.ayuda-nav {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.ayuda-item {
+    cursor: pointer;
+    padding: 0.75rem;
+    border-radius: 5px;
+    color: #cbd5e1;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.ayuda-item.active,
+.ayuda-item:hover {
+    background-color: #3182ce;
+    color: white;
+}
+
+.ayuda-content {
+    flex: 1;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.ayuda-section-title {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.ayuda-text {
+    font-size: 1.2rem;
+    max-width: 600px;
+    line-height: 1.5;
+}
+
+.ayuda-button {
+    margin-top: 1.5rem;
+    padding: 0.8rem 1.5rem;
+    background-color: #3182ce;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.add-button.up {
+    bottom: 6rem;
+    z-index: 1;
+}

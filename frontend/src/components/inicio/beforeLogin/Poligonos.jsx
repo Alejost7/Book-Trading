@@ -11,12 +11,14 @@ const Poligonos = () => {
             <div className="poligono poligono1">
                 <Link to="/miPerfil">
                     <img src={perfilIcon} alt="Perfil" />
-                <span className="tooltip">Ir a mi perfil</span> 
+                    <span className="tooltip">Ir a mi perfil</span> 
                 </Link>
             </div>
             <div className="poligono poligono2">
-                <img src={ayuda} alt="Ayuda" />
-                <span className="tooltip">Ayuda</span>
+                <Link to="/ayuda">
+                    <img src={ayuda} alt="Ayuda" />
+                    <span className="tooltip">Ayuda</span>
+                </Link>
             </div>
             <div className="poligono poligono3">
                 <img src={sobreNosotros} alt="Sobre Nosotros" />

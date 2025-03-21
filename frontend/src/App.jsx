@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import BeforeLogin from './components/inicio/beforeLogin/BeforeLogin';
 import AfterLogin from './components/inicio/afterLogin/AfterLogin';
 import MiPerfil from './components/miPerfil/MiPerfil';
+import Ayuda from './components/ayuda/Ayuda';
 
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
@@ -19,8 +20,11 @@ function App() {
           <Route
             path="/miPerfil"
             element={<MiPerfil/>}
-          >
-          </Route> 
+          />
+          <Route
+            path="/ayuda"
+            element={<Ayuda/>}
+          />
         </Routes>
     </Router>
   );
