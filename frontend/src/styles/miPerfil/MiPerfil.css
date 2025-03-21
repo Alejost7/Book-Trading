@@ -1,8 +1,10 @@
-   .container {
-      display: flex;
-      padding: 5%;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin-bottom: -10rem;
-   }
+.container {
+    display: flex;
+    flex-direction: column;
+    padding: 5%;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    box-sizing: border-box;
+    margin-bottom: 0;
+}
