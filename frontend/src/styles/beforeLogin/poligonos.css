@@ -1,0 +1,68 @@
+.poligonos {
+    display: flex;
+    justify-content: space-evenly;
+    margin: 5rem;
+    gap: 8rem;
+}
+
+.poligono {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    background-color: #1d355722;
+    clip-path: circle(50% at 50% 50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.poligono img {
+    width: 190%;
+    height: auto;
+}
+
+.tooltip {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #162a439e;
+    color: white;
+    font-size: 12px;
+    padding: 50px;
+    border-radius: 5px;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+    white-space: nowrap;
+}
+
+.poligono:hover {
+    cursor: pointer;
+    transition: all 0.5s;
+    transform: scale(1.1);
+}
+
+.poligono:hover .tooltip {
+    opacity: 1;
+    visibility: visible;
+}
+
+.poligono1 img {
+    width: 100%;
+}
+
+.poligono2 img {
+    width: 90%;
+    height: auto;
+}
+
+.poligono3 img{
+    width: 100%;
+    height: auto;
+}
+
+.poligono4 img{
+    width: 100%;
+    height: auto;
+}
