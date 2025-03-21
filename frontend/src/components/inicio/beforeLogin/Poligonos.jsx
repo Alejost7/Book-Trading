@@ -11,8 +11,8 @@ const Poligonos = () => {
             <div className="poligono poligono1">
                 <Link to="/miPerfil">
                     <img src={perfilIcon} alt="Perfil" />
-                </Link>
                 <span className="tooltip">Ir a mi perfil</span> 
+                </Link>
             </div>
             <div className="poligono poligono2">
                 <img src={ayuda} alt="Ayuda" />
