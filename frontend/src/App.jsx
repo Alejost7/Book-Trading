@@ -5,6 +5,7 @@ import BeforeLogin from './components/inicio/beforeLogin/BeforeLogin';
 import AfterLogin from './components/inicio/afterLogin/AfterLogin';
 import MiPerfil from './components/miPerfil/MiPerfil';
 import Ayuda from './components/ayuda/Ayuda';
+import Donacion from './components/donaciones/Donaciones';
 
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
@@ -24,6 +25,10 @@ function App() {
           <Route
             path="/ayuda"
             element={<Ayuda/>}
+          />
+          <Route
+            path="/Donaciones"
+            element={<Donacion/>}
           />
         </Routes>
     </Router>

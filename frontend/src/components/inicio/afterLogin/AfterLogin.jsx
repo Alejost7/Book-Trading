@@ -1,10 +1,11 @@
-import { FiPlus, FiBookOpen, FiUser, FiBookmark, FiArrowLeft, FiLogOut} from 'react-icons/fi';
+import { FiPlus, FiBookOpen, FiUser, FiBookmark, FiArrowLeft, FiLogOut, FiHelpCircle} from 'react-icons/fi';
 import '../../../styles/afterLogin/afterLogin.css';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { openModal } from '../../../Redux/modalSlice';
 import MiPerfil from '../../miPerfil/MiPerfil';
-import Donaciones from '../../donaciones/donaciones';
+import Donaciones from '../../donaciones/Donaciones';
+import Ayuda from '../../ayuda/Ayuda';
 import LogOut from './logOut';
 import { useDispatch } from 'react-redux';
 
@@ -50,10 +51,12 @@ const AfterLogin = () => {
                     <a onClick= {() => setCurrentView("Changes")} className={`nav-item ${currentView === "Changes" ? "active" : ""}`}><FiBookmark />Intercambios</a>
                     <a onClick= {() => setCurrentView("Donation")} className={`nav-item ${currentView === "Donation" ? "active" : ""}`}><FiBookOpen/>Donaciones</a>
                     <a onClick= {() => setCurrentView("Profile")} className={`nav-item ${currentView === "Profile" ? "active" : ""}`}><FiUser />Perfil</a>
+                    <a onClick= {() => setCurrentView("Help")} className={`nav-item ${currentView === "Help" ? "active" : ""}`}><FiHelpCircle />Ayuda</a>
+
                 </nav>
                 <button 
                     className="add-button up" 
-                    onClick={() => currentView === "Profile" || currentView === "Changes" || currentView === "MyBooks" || currentView === "Donation" ? setCurrentView("Books") : navigate("/")}><FiArrowLeft /></button>
+                    onClick={() => currentView === "Profile" || currentView === "Changes" || currentView === "MyBooks" || currentView === "Donation" || currentView === "Help" ? setCurrentView("Books") : navigate("/")}><FiArrowLeft /></button>
                 <button className="logout-button" onClick={handleLogout}><FiLogOut />Cerrar Sesión</button>
             </aside>
             <main className="main-content">
@@ -74,6 +77,7 @@ const AfterLogin = () => {
             )}
             {currentView === "Profile" && <MiPerfil/>}
             {currentView === "Donation" && <Donaciones/>}
+            {currentView === "Help" && <Ayuda/>}
             </main>
             <button className="add-button"><FiPlus /></button>
             <LogOut/>

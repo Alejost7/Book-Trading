@@ -1,39 +1,38 @@
 .ayuda-container {
-    display: flex;
-    height: 100vh;
     background-color: #1b2a4d;
     color: white;
-}
-
-.ayuda-sidebar {
-    width: 18rem;
-    padding: 1.5rem;
-    background-color: #2d3748;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    align-items: flex-start;
+    align-items: center;
+    padding: 2rem;
+    box-sizing: border-box;
 }
 
 .ayuda-title {
-    font-size: 1.8rem;
-    font-weight: bold;
+    font-size: 3rem;
+    margin-bottom: 2rem;
     color: #60a5fa;
 }
 
 .ayuda-nav {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
     list-style: none;
     padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
 }
 
 .ayuda-item {
-    cursor: pointer;
-    padding: 0.75rem;
+    padding: 30px 30px;
+    font-size: 1rem;
     border-radius: 5px;
-    color: #cbd5e1;
+    cursor: pointer;
+    border-radius: 8px;
+    color: #000000;
+    place-items: center;
+    gap: 10px;
+    background-color: #ffffff;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -41,15 +40,11 @@
 .ayuda-item:hover {
     background-color: #3182ce;
     color: white;
+    transform: scale(1.05);
 }
 
 .ayuda-content {
-    flex: 1;
-    padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    max-width: 600px;
     text-align: center;
 }
 
@@ -60,7 +55,6 @@
 
 .ayuda-text {
     font-size: 1.2rem;
-    max-width: 600px;
     line-height: 1.5;
 }
 
@@ -74,6 +68,10 @@
     font-weight: 600;
     font-size: 1rem;
     transition: background-color 0.3s ease;
+}
+
+.ayuda-button:hover {
+    background-color: #2563eb;
 }
 
 .add-button.up {

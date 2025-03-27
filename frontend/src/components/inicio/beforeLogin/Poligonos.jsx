@@ -25,8 +25,10 @@ const Poligonos = () => {
                 <span className="tooltip">Sobre Nosotros</span>
             </div>
             <div className="poligono poligono4">
-                <img src={libroIcon} alt="Lectura" />
-                <span className="tooltip">Donar Libros</span>
+                <Link to="/Donaciones">
+                    <img src={libroIcon} alt="Lectura" />
+                    <span className="tooltip">Donar Libros</span>
+                </Link>
             </div>
         </div>
     );
