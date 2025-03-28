@@ -37,16 +37,19 @@ const Registro = () => {
                 },
                 body: JSON.stringify(form),
             });
+            
+            const data = await response.json();
 
             if(!response.ok) {
-                const data = await response.json();
                 throw new Error(data.message || "Error en la solicitud");
         }
-
-        // Guardar autenticación y redirigir
+        const { userId } = data;
+        localStorage.setItem("userId", userId);
         localStorage.setItem("isAuthenticated", "true");
         localStorage.setItem("userEmail", form.email);
         dispatch(login());
+
+        console.log("User ID recibido del backend:", userId);
 
         setTimeout(() => navigate("/afterLogin"));
 

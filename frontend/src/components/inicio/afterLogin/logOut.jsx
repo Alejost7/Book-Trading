@@ -5,11 +5,11 @@ import {logout } from "../../../Redux/authSlice";
 import "../../../styles/afterLogin/logOut.css"; // Importamos el CSS
 
 const Modal = () => {
-    const isOpen = useSelector((state) => state.modal.isOpen);
+    const { isOpen, modalType} = useSelector((state) => state.modal);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    if (!isOpen) return null;
+    if (!isOpen || modalType !== "logout") return null;
 
     const handleConfirmLogout = () => {
         localStorage.removeItem("isAuthenticated");
