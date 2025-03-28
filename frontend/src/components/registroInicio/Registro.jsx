@@ -21,9 +21,11 @@ const Registro = () => {
 
     const handleSubmit = async (e, action) => {
         e.preventDefault();
+        setIsLoading(true);
 
         if (!form.email.includes("@") || form.password.length < 6) {
             setError("Ingrese un correo válido y una contraseña de almenos 6 caracteres.")
+            setIsLoading(false);
             return;
         }
 
@@ -38,12 +40,17 @@ const Registro = () => {
                 body: JSON.stringify(form),
             });
             
-            const data = await response.json();
 
             if(!response.ok) {
+                const data = await response.json();
                 throw new Error(data.message || "Error en la solicitud");
         }
+        const data = await response.json();
         const { userId } = data;
+        if (!userId) {
+            throw new Error("No se recibió un ID de usuario del servidor"); 
+        }
+
         localStorage.setItem("userId", userId);
         localStorage.setItem("isAuthenticated", "true");
         localStorage.setItem("userEmail", form.email);
@@ -56,6 +63,7 @@ const Registro = () => {
     } catch (error) {
         console.error("Error al conectar con el servidor: ", error);
         setError(error.message || "No se pudo conectar con el servidor");
+        
     } finally {
         setIsLoading(false);
     }

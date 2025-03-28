@@ -28,29 +28,35 @@ app.get("/api/mensaje", (req, res) => {
     res.json({ mensaje: "Hola desde el servidor!!!!"});
 });
 
-app.post("/register", async (req, res) => {  // Enpoint de registro de usuario
+app.post("/register", async (req, res) => {
     try {
         const { email, password } = req.body;
 
         if (!email.includes("@") || password.length < 6) {
-            return res.status(400).json({ message: "correo invalido o contraseña muy corta"});
+            return res.status(400).json({ message: "Correo inválido o contraseña muy corta" });
         }
 
         // Verificar si el usuario ya existe
         const existingUser = await User.findOne({ email });
         if (existingUser) {
-            return res.status(400).json({ message: "El usuario ya existe"});
+            return res.status(400).json({ message: "El usuario ya existe" });
         }
 
-        const newUser = new User({ email, password});
+        // Crear el usuario
+        const newUser = new User({ email, password });
         await newUser.save();
 
-        res.status(201).json({ message: "Usuario registrado exitosamente"});
+        // Responder con el userId
+        res.status(201).json({ 
+            message: "Usuario registrado exitosamente", 
+            userId: newUser._id 
+        });
     } catch (error) {
         console.log("Error al registrar usuario:", error);
-        res.status(500).json({ message: "Error en el servidor"});
+        res.status(500).json({ message: "Error en el servidor" });
     }
 });
+
 
 app.post("/login", async (req, res) => {  // Endpoint de inicio de sesión
     try {
