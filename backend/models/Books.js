@@ -9,7 +9,10 @@ const bookSchema = new mongoose.Schema({
         enum: ["Disponible", "En intercambio", "intercambiado"],
         default: "Disponible"
     },
-    owner: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }
+    owner: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    isDonation: { type: Boolean, default: false },
+    previousOwners: [{ type: mongoose.Schema.Types.ObjectId, ref: "User"}], // Historial de dueños});
+    exchangeWith: { type: mongoose.Schema.Types.ObjectId, ref: "Book", default: null }, // Libro con el que se intercambió
 });
 
 module.exports = mongoose.model("Book", bookSchema);

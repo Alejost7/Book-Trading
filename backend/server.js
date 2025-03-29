@@ -3,7 +3,8 @@ const mongoose = require("mongoose");
 const express = require("express");
 const cors = require("cors");
 const User = require("./models/User");  // Importar el modelo de usuario
-
+const Book = require("./models/Books");
+const Exchange = require("./models/Exchange");
 
 const app = express();
 app.use(express.json());
@@ -16,9 +17,22 @@ mongoose.connect(process.env.MONGO_URI, {
 .then(() => console.log("🟢 Conectado a MongoDB Atlas"))
 .catch(err => console.error("🔴 Error conectando a MongoDB:", err));
 
-const Book = require("./models/Books");
-const Exchange = require("./models/Exchange");
+async function createAdminUser() {
+    const adminEmail = "admin@example.com"; // Cambiar esto por el correo del admin
+    const extingAdmin = await User.findOne({ email: adminEmail });
+    if (!extingAdmin) {
+        const admin = new User({
+            name: "Admin",
+            email: adminEmail,
+            password: "tupassword", // Cambiar esto por una contraseña segura
+            role: "admin"
+        });
+        await admin.save();
+        console.log("Usuario admin creado:", admin);
+    }
+}
 
+createAdminUser();
 
 app.get("/", (req, res) => {
     res.send("¡Servidor funcionando!");
@@ -136,7 +150,7 @@ app.post("/addBooks", async (req, res) => {  // Endpoint para agregar un nuevo l
         if (!mongoose.Types.ObjectId.isValid(owner)) {
             return res.status(400).json({ message: "El ID del propietario no es válido." });
         }
-        ownerId = new mongoose.Types.ObjectId(owner);
+        const ownerId = new mongoose.Types.ObjectId(owner);
 
         // crear nuevo libro
         const newBook = new Book({ title, author, image, owner: ownerId });
@@ -201,8 +215,8 @@ app.patch("/exchange/:id", async (req, res) => { // Endpoint para actualizar el 
             await exchange.offeredBook.save();
         }
         if (status === "aceptado") {
-            exchange.requestedBook.status = "Intercambiado";
-            exchange.offeredBook.status = "Intercambiado";
+            exchange.requestedBook.status = "intercambiado";
+            exchange.offeredBook.status = "intercambiado";
             await exchange.requestedBook.save();
             await exchange.offeredBook.save();
         }
@@ -215,5 +229,71 @@ app.patch("/exchange/:id", async (req, res) => { // Endpoint para actualizar el 
 
 });
 
+app.post("/donate", async (req, res) => {  // Donar un libro 
+    try {
+        const { bookId, userId } = req.body;
+        const book = await Book.findById(bookId);
+        if (!book) return res.status(404).json({ message: "Libro no encontrado" });
+
+
+        // Buscar el usuario admin
+        const adminUser = await User.findOne({ role: "admin"} );
+        if (!adminUser) return res.status(404).json({ message: "Usuario admin no encontrado" });
+
+        book.owner = adminUser._id; // Se transfiere al usuario especial
+        book.isDonation = true;
+        book.status = "Disponible";
+        book.previousOwners.push(userId);
+
+        await book.save();
+        res.json({ message: "Libro donado exitosamente"})        
+    } catch (error) {
+        res.status(500).json({ message: "Error al donar libro" });
+    }
+});
+
+app.get("/donations", async (req, res) => {  // Obtener todos los libros donados
+    try {
+        const books = await Book.find({isDonation: true, status: "Disponible" });
+        res.json(books);
+    } catch (error) {
+        res.status(500).json({ message: "Error al obtener libros de donación" });
+    }
+})
+
+
+app.post("/exchangeDonation", async (req, res) => {  // Intercambiar un libro con uno donado
+    try {
+        const { donatedBookId, userBookId, userId } = req.body;
+
+        const donatedBook = await Book.findById(donatedBookId);
+        const userBook = await Book.findById(userBookId);
+
+        if (!donatedBook || !userBook) {
+            return res.status(404).json({ message: "Libro no encontrado" });
+        }
+
+        if (donatedBook.status !== "available") {
+            return res.status(400).json({ message: "El libro ya fue tomado" });
+        }
+
+        // Intercambio de dueños
+        const adminId = donatedBook.owner;
+        donatedBook.owner = userId;
+        donatedBook.isDonation = false;
+        donatedBook.previousOwners.push(adminId);
+        donatedBook.status = "exchanged";
+
+        userBook.owner = adminId;
+        userBook.status = "available";
+
+        await donatedBook.save();
+        await userBook.save();
+
+        res.json({ message: "Intercambio exitoso" });
+    } catch (error) {
+        res.status(500).json({ message: "Error al intercambiar" });
+    }
+});
 
 app.listen(5000, () => console.log("Servidor corriendo en http://localhost:5000"));
