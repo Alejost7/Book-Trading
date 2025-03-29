@@ -1,22 +1,16 @@
 .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
     background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
     z-index: 999;
 }
 
 .modal-content {
+    display: flex;
+    flex-direction: column;
     background: #ffffff;
     color: black;
     padding: 2rem;
     border-radius: 10px;
-    width: 90%;
+    width: 600px;
     max-width: 500px;
     position: relative;
     box-shadow: 0 4px 200px rgba(12, 57, 255, 0.329);
@@ -47,25 +41,34 @@
 .modal-content label {
     margin-bottom: 1rem;
     font-size: 1rem;
+    font-weight: bold;
 }
 
 .modal-content input {
-    padding: 0.5rem;
+    padding: 0.5rem 1.5rem;
     border: 1px solid #ccc;
-    border-radius: 4px;
-    width: 100%;
+    border-radius: 8px;
+    width: auto;
     margin-top: 0.25rem;
     background-color: #007bff;
+    color: white;
+    font-weight: bold;
 }
 
+
 .modal-content button[type="submit"] {
-    padding: 0.75rem;
-    background: #161491;
-    color: #fff;
+    padding: 1.5rem 1rem;
+    background: #06f096;
+    color: #000000;
     border: none;
-    border-radius: 4px;
+    border-radius: 10%;
     cursor: pointer;
     margin-top: 1rem;
+    font-weight: bold;
+}
+
+.modal-content button[type="submit"]:hover {
+    background: #2e8ff7;
 }
 
 .modal-content button[type="submit"]:disabled {
@@ -76,4 +79,31 @@
 .modal-content .error {
     color: red;
     margin-bottom: 1rem;
+}
+
+.books-list {
+    list-style: none;
+    padding: 0;
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 1rem;
+}
+
+.book-item {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+}
+
+.book-item:hover {
+    background: #f0f0f0;
+}
+
+.book-thumb {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    margin-right: 1rem;
 }

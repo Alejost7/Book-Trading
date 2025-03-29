@@ -52,7 +52,7 @@ const AfterLogin = () => {
 
                 </nav>
                 <button 
-                    className="add-button up" 
+                    className="add-button up"  
                     onClick={() => currentView === "Profile" || currentView === "Changes" || currentView === "MyBooks" || currentView === "Donation" || currentView === "Help" ? setCurrentView("Books") : navigate("/")}><FiArrowLeft /></button>
                 <button className="logout-button" onClick={handleLogout}><FiLogOut />Cerrar Sesión</button>
             </aside>
@@ -77,7 +77,9 @@ const AfterLogin = () => {
             {currentView === "Help" && <Ayuda/>}
             {currentView === "MyBooks" && <MyBooks/>}
             </main>
-            <button className="add-button" onClick={handleAddBook}><FiPlus /></button>
+            <button className="add-button tooltip-btn" onClick={handleAddBook}><FiPlus />
+                <span className="tooltip-text">Agregar libro</span>
+            </button>
             <Upload/>
             <LogOut/>
         </div>

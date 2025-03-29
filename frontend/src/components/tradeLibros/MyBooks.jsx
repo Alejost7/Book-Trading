@@ -25,7 +25,7 @@ import { useEffect, useState } from 'react';
     { id: 20, title: "Ulises", author: "James Joyce", cover: "https://images.cdn3.buscalibre.com/fit-in/360x360/4c/4f/4c4fc4695ca447acd3450f0e52b0a7b5.jpg" }
 ];*/
 
-const AfterLogin = () => {
+const  MyBooks = () => {
     const [books, setBooks] = useState([]);
 
     useEffect(() => {
@@ -62,4 +62,4 @@ const AfterLogin = () => {
     );
 };
 
-export default AfterLogin;
+export default MyBooks;

@@ -1,12 +1,11 @@
 import { useSelector, useDispatch } from "react-redux";
 import { closeModal } from "../../Redux/modalSlice";
 import { useState } from "react";
-import '../../styles/tradeLibros/subirLibros.css';
+import "../../styles/tradeLibros/subirLibros.css";
 
-const ModalUpload = () => {
-    const { isOpen, modalType} = useSelector((state) => state.modal);
+const ModalNuevoLibro = ({ onBookAdded }) => {
+    const { isOpen, modalType } = useSelector((state) => state.modal);
     const dispatch = useDispatch();
-
     const [form, setForm] = useState({
         title: "",
         author: "",
@@ -15,7 +14,8 @@ const ModalUpload = () => {
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
 
-    if (!isOpen || modalType !== "upload") return null;
+    // Este modal se renderiza solo cuando modalType es "uploadNew"
+    if (!isOpen || modalType !== "uploadNew") return null;
 
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
@@ -36,17 +36,17 @@ const ModalUpload = () => {
         try {
         const response = await fetch("http://localhost:5000/addBooks", {
             method: "POST",
-            headers: {
-            "Content-Type": "application/json"
-            },
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ ...form, owner: userId })
         });
         const data = await response.json();
         if (!response.ok) {
             throw new Error(data.message || "Error al subir el libro");
         }
+        if (onBookAdded) {
+            onBookAdded(data.newBook);
+        }
         dispatch(closeModal());
-        // Aquí podrías actualizar la lista de libros o redirigir
         } catch (error) {
         setError(error.message);
         } finally {
@@ -57,8 +57,13 @@ const ModalUpload = () => {
     return (
         <div className="modal-overlay">
         <div className="modal-content">
-            <button className="close-button" onClick={() => dispatch(closeModal())}>X</button>
-            <h2>Subir Nuevo Libro</h2>
+            <button
+            className="close-button"
+            onClick={() => dispatch(closeModal())}
+            >
+            X
+            </button>
+            <h2>Agregar Nuevo Libro para Donación</h2>
             {error && <p className="error">{error}</p>}
             <form onSubmit={handleSubmit}>
             <label>
@@ -91,12 +96,12 @@ const ModalUpload = () => {
                 />
             </label>
             <button type="submit" disabled={isLoading}>
-                {isLoading ? "Subiendo..." : "Subir Libro"}
+                {isLoading ? "Subiendo..." : "Agregar Libro"}
             </button>
             </form>
         </div>
         </div>
     );
-};
+    };
 
-export default ModalUpload;
+export default ModalNuevoLibro;
