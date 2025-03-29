@@ -23,6 +23,7 @@
 - Un usuario puede ver el historial de sus solicitudes (pendientes, aceptadas, rechazadas).
 - Puede cancelar una solicitud antes de que el dueño responda.
 - Se pueden agregar calificaciones o comentarios después del intercambio.
+- Se pueden donar libros, las donaciones son permanentes
 
 ## Lógica:
 
@@ -37,3 +38,23 @@
 - Endpoint para crear solicitudes de intercambio.
 - Endpoint para aceptar/rechazar solicitudes.
 - Enpoint para actualizar el estado de un libro tras un intercambio.
+- Endpoint para donar un libro.
+
+
+### Definición del Flujo de Donaciones e Intercambio
+1. Un usuario dona un libro
+    - El usuario elige un libro de su lista y lo marca como donado.
+    - Este libro pasa a estar disponible para cualquiera que quiera intercambiar.
+    - El libro se asigna a un usuario especial (puede ser un "Admin" o "Biblioteca").
+
+2. Alguien quiere intercambiar por un libro donado
+    - El usuario elige un libro de la lista de donaciones.
+    - Debe ofrecer uno de sus propios libros a cambio.
+    - El sistema realiza automáticamente el intercambio.
+    - El libro donado desaparece de la lista de donaciones y aparece en la biblioteca del nuevo dueño.
+    - El usuario especial (Admin/Biblioteca) recibe el libro intercambiado.
+
+3. Manejo de intercambios temporales (si aplican)
+    - Si el intercambio es temporal, el libro debe marcarse como "No disponible".
+    - Se puede establecer una fecha de devolución.
+    - Una vez devuelto, el libro vuelve a la lista de donaciones.
