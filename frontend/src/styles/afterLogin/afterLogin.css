@@ -85,3 +85,373 @@
 .logout-button:hover {
     background-color: #cc0000;
 }
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding: 0 1rem;
+}
+
+.notification-center {
+    position: relative;
+}
+
+.notification-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: #ef4444;
+    color: white;
+    border-radius: 50%;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+
+.notification-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 320px;
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    z-index: 50;
+}
+
+.notification-header {
+    padding: 1rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.notification-list {
+    max-height: 24rem;
+    overflow-y: auto;
+}
+
+.notification-item {
+    padding: 1rem;
+    border-bottom: 1px solid #e5e7eb;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.notification-item:hover {
+    background-color: #f9fafb;
+}
+
+.notification-item.unread {
+    background-color: #eff6ff;
+}
+
+.notification-message {
+    font-size: 0.875rem;
+    color: #1f2937;
+}
+
+.notification-time {
+    font-size: 0.75rem;
+    color: #6b7280;
+    margin-top: 0.25rem;
+}
+
+.exchange-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.exchange-modal-content {
+    background-color: #2d3748;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    width: 90%;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+    color: white;
+}
+
+.exchange-modal-content h3 {
+    margin-bottom: 1.5rem;
+    color: #60a5fa;
+}
+
+.selected-book {
+    background-color: #1b2a4d;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.selected-book h4 {
+    color: #60a5fa;
+    margin-bottom: 0.5rem;
+}
+
+.my-books-list {
+    margin-bottom: 1.5rem;
+}
+
+.my-books-list h4 {
+    color: #60a5fa;
+    margin-bottom: 1rem;
+}
+
+.book-option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1b2a4d;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.confirm-exchange-btn {
+    background-color: #3182ce;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.confirm-exchange-btn:hover {
+    background-color: #2563eb;
+}
+
+.cancel-exchange-btn {
+    background-color: #e53e3e;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s ease;
+}
+
+.cancel-exchange-btn:hover {
+    background-color: #c53030;
+}
+
+.book-status {
+    margin-top: 1rem;
+    padding: 0.5rem;
+    background-color: #1b2a4d;
+    border-radius: 0.5rem;
+}
+
+.book-status p {
+    margin: 0.25rem 0;
+    color: #e2e8f0;
+}
+
+.donation-badge {
+    display: inline-block;
+    background-color: #48bb78;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+}
+
+.offer-button {
+    background-color: #3182ce;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    margin-top: 0.5rem;
+}
+
+.offer-button:hover {
+    background-color: #2563eb;
+}
+
+.offer-button.offered {
+    background-color: #e53e3e;
+}
+
+.offer-button.offered:hover {
+    background-color: #c53030;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.delete-all-books-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: #e53e3e;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.delete-all-books-btn:hover {
+    background-color: #c53030;
+}
+
+.delete-all-books-btn svg {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+.book-actions {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.book-card:hover .book-actions {
+    opacity: 1;
+}
+
+.delete-book-btn {
+    background-color: #e53e3e;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.delete-book-btn:hover {
+    background-color: #c53030;
+}
+
+.delete-book-btn:disabled {
+    background-color: #718096;
+    cursor: not-allowed;
+}
+
+.delete-book-btn svg {
+    width: 100%;
+    height: auto;
+}
+
+.book-owner {
+    color: #60a5fa;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    font-weight: 500;
+    padding: 0.25rem 0.5rem;
+    background-color: rgba(96, 165, 250, 0.1);
+    border-radius: 0.25rem;
+    display: inline-block;
+}
+
+.book-card {
+    background-color: #2d3748;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(96, 165, 250, 0.3);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+}
+
+.exchanges-container {
+    padding: 2rem;
+}
+
+.exchanges-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 100px;
+}
+
+.exchange-card {
+    background-color: #2d3748;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 0 10px rgba(96, 165, 250, 0.3);
+}
+
+.exchange-books {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.exchange-books .book-info {
+    flex: 1;
+    text-align: center;
+    padding: 1rem;
+    background-color: #1a202c;
+    border-radius: 8px;
+}
+
+.exchange-books img {
+    width: 120px;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin: 0.5rem 0;
+}
+
+.exchange-status {
+    text-align: center;
+    padding-top: 1rem;
+    border-top: 1px solid #4a5568;
+}
+
+.exchange-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+.exchange-actions button {
+    background-color: #60a5fa;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.exchange-actions button:hover {
+    background-color: #4299e1;
+}
+
+.exchange-actions button:last-child {
+    background-color: #fc8181;
+}
+
+.exchange-actions button:last-child:hover {
+    background-color: #f56565;
+}

@@ -1,5 +1,7 @@
 import '../../styles/afterLogin/afterLogin.css';
-import { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { FiTrash2 } from 'react-icons/fi';
 
 
 /*const books = [
@@ -25,39 +27,106 @@ import { useEffect, useState } from 'react';
     { id: 20, title: "Ulises", author: "James Joyce", cover: "https://images.cdn3.buscalibre.com/fit-in/360x360/4c/4f/4c4fc4695ca447acd3450f0e52b0a7b5.jpg" }
 ];*/
 
-const  MyBooks = () => {
+const MyBooks = () => {
     const [books, setBooks] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const storeUserId = localStorage.getItem("userId");
-        console.log("storeUserId:", storeUserId);
-        if (storeUserId) {
-            fetch(`http://localhost:5000/myBooks?owner=${storeUserId}`)
-            .then(response => response.json())
-            .then(data => setBooks(data))
-            .catch(error => console.error("Error fetching books:", error));
-        } else {
-            console.error("UserId no encontrado en local storage.");
+        const userId = localStorage.getItem("userId");
+        if (userId) {
+            fetchMyBooks(userId);
         }
     }, []);
 
+    const fetchMyBooks = async (userId) => {
+        try {
+            const response = await fetch(`http://localhost:5000/myBooks?owner=${userId}`);
+            const data = await response.json();
+            setBooks(data);
+            setLoading(false);
+        } catch (error) {
+            console.error("Error fetching my books:", error);
+            setLoading(false);
+        }
+    };
+
+    const handleOfferToggle = async (bookId, isCurrentlyOffered) => {
+        try {
+            const endpoint = isCurrentlyOffered ? 'unoffer' : 'offer';
+            const response = await axios.patch(`http://localhost:5000/books/${bookId}/${endpoint}`);
+            
+            if (response.status === 200) {
+                // Actualizar el estado local
+                setBooks(books.map(book => 
+                    book._id === bookId 
+                        ? { ...book, isOfferedForExchange: !isCurrentlyOffered, status: "Disponible" }
+                        : book
+                ));
+
+                alert(isCurrentlyOffered 
+                    ? 'Libro retirado de la oferta de intercambio' 
+                    : 'Libro ofertado para intercambio'
+                );
+            }
+        } catch (error) {
+            console.error('Error al cambiar el estado de oferta:', error);
+            alert(error.response?.data?.message || 'Error al cambiar el estado de oferta del libro');
+        }
+    };
+
+    const handleDeleteBook = async (bookId) => {
+        if (window.confirm('¿Estás seguro de que deseas eliminar este libro? Esta acción no se puede deshacer.')) {
+            try {
+                const response = await axios.delete(`http://localhost:5000/books/${bookId}`);
+                if (response.status === 200) {
+                    // Eliminar el libro del estado local
+                    setBooks(books.filter(book => book._id !== bookId));
+                    alert('Libro eliminado exitosamente');
+                }
+            } catch (error) {
+                console.error('Error al eliminar el libro:', error);
+                alert(error.response?.data?.message || 'Error al eliminar el libro');
+            }
+        }
+    };
+
+    if (loading) {
+        return <div>Cargando...</div>;
+    }
 
     return (
-        <div className="afterLogin-container">
-            <main className="main-content">
-                
-                    <h2 className="section-title">Tus Libros</h2>
-                    <div className="books-grid">
-                        {books.map((book) => (
-                            <div key={book._id} className="book-card">
-                                <img src={book.image} alt={book.title} className="book-cover"/>
-                                <h3 className="book-title">{book.title}</h3>
-                                <p className="book-author">{book.author}</p>
-                                <button className="exchange-button">Solicitar Intercambio</button>
-                            </div>
-                        ))}
+        <div className="my-books-container">
+            <div className="books-grid">
+                {books.map((book) => (
+                    <div key={book._id} className="book-card">
+                        <div className="book-actions">
+                            <button 
+                                className="delete-book-btn"
+                                onClick={() => handleDeleteBook(book._id)}
+                                disabled={book.status === "En intercambio"}
+                            >
+                                <FiTrash2 />
+                            </button>
+                        </div>
+                        <img src={book.image} alt={book.title} className="book-cover"/>
+                        <h3 className="book-title">{book.title}</h3>
+                        <p className="book-author">{book.author}</p>
+                        <div className="book-status">
+                            <p>Estado: {book.status}</p>
+                            {book.isDonation ? (
+                                <p className="donation-badge">Donación</p>
+                            ) : (
+                                <button 
+                                    className={`offer-button ${book.isOfferedForExchange ? 'offered' : ''}`}
+                                    onClick={() => handleOfferToggle(book._id, book.isOfferedForExchange)}
+                                >
+                                    {book.isOfferedForExchange ? 'Retirar de oferta' : 'Ofertar para intercambio'}
+                                </button>
+                            )}
+                        </div>
                     </div>
-            </main>
+                ))}
+            </div>
         </div>
     );
 };
