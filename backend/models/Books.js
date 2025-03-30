@@ -11,6 +11,7 @@ const bookSchema = new mongoose.Schema({
     },
     owner: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
     isDonation: { type: Boolean, default: false },
+    isOfferedForExchange: { type: Boolean, default: false },
     previousOwners: [{ type: mongoose.Schema.Types.ObjectId, ref: "User"}], // Historial de dueños});
     exchangeWith: { type: mongoose.Schema.Types.ObjectId, ref: "Book", default: null }, // Libro con el que se intercambió
 });
