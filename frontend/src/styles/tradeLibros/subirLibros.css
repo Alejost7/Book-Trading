@@ -6,8 +6,8 @@
 .modal-content {
     display: flex;
     flex-direction: column;
-    background: #ffffff;
-    color: black;
+    background: #1d2a79b7;
+    color: rgb(255, 255, 255);
     padding: 2rem;
     border-radius: 10px;
     width: 600px;
@@ -21,7 +21,6 @@
     top: 0.5rem;
     right: 0.5rem;
     background: transparent;
-    color: red;
     font-weight: bold;
     border: none;
     font-size: 1.5rem;
@@ -59,16 +58,19 @@
 .modal-content button[type="submit"] {
     padding: 1.5rem 1rem;
     background: #06f096;
-    color: #000000;
+    color: #5f5b5b;
     border: none;
     border-radius: 10%;
     cursor: pointer;
     margin-top: 1rem;
     font-weight: bold;
+    transition: background 0.3s, transform 0.3s;
 }
 
 .modal-content button[type="submit"]:hover {
-    background: #2e8ff7;
+    background: #2ef76aea;
+    color: white;
+    transform: scale(1.05);
 }
 
 .modal-content button[type="submit"]:disabled {
