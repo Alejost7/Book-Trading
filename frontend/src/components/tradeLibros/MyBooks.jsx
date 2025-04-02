@@ -1,5 +1,5 @@
 import '../../styles/afterLogin/afterLogin.css';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { FiTrash2 } from 'react-icons/fi';
 
@@ -28,25 +28,38 @@ import { FiTrash2 } from 'react-icons/fi';
 ];*/
 
 const MyBooks = () => {
-    const [books, setBooks] = useState([]);
+    const [myBooks, setMyBooks] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const userId = localStorage.getItem("userId");
-        if (userId) {
-            fetchMyBooks(userId);
-        }
-    }, []);
-
-    const fetchMyBooks = async (userId) => {
+    const fetchMyBooks = useCallback(async () => {
         try {
-            const response = await fetch(`http://localhost:5000/myBooks?owner=${userId}`);
-            const data = await response.json();
-            setBooks(data);
+            const userId = localStorage.getItem("userId");
+            const response = await axios.get(`http://localhost:5000/myBooks?owner=${userId}`);
+            setMyBooks(response.data);
             setLoading(false);
         } catch (error) {
             console.error("Error fetching my books:", error);
             setLoading(false);
+        }
+    }, []);
+
+    useEffect(() => {
+        fetchMyBooks();
+        // Actualización automática cada 5 segundos
+        const interval = setInterval(fetchMyBooks, 5000);
+        return () => clearInterval(interval);
+    }, [fetchMyBooks]);
+
+    const handleDeleteBook = async (bookId) => {
+        if (window.confirm('¿Estás seguro de que deseas eliminar este libro? Esta acción no se puede deshacer.')) {
+            try {
+                await axios.delete(`http://localhost:5000/books/${bookId}`);
+                setMyBooks(prevBooks => prevBooks.filter(book => book._id !== bookId));
+                alert('Libro eliminado exitosamente');
+            } catch (error) {
+                console.error('Error al eliminar el libro:', error);
+                alert(error.response?.data?.message || 'Error al eliminar el libro');
+            }
         }
     };
 
@@ -57,7 +70,7 @@ const MyBooks = () => {
             
             if (response.status === 200) {
                 // Actualizar el estado local
-                setBooks(books.map(book => 
+                setMyBooks(books => books.map(book => 
                     book._id === bookId 
                         ? { ...book, isOfferedForExchange: !isCurrentlyOffered, status: "Disponible" }
                         : book
@@ -74,30 +87,14 @@ const MyBooks = () => {
         }
     };
 
-    const handleDeleteBook = async (bookId) => {
-        if (window.confirm('¿Estás seguro de que deseas eliminar este libro? Esta acción no se puede deshacer.')) {
-            try {
-                const response = await axios.delete(`http://localhost:5000/books/${bookId}`);
-                if (response.status === 200) {
-                    // Eliminar el libro del estado local
-                    setBooks(books.filter(book => book._id !== bookId));
-                    alert('Libro eliminado exitosamente');
-                }
-            } catch (error) {
-                console.error('Error al eliminar el libro:', error);
-                alert(error.response?.data?.message || 'Error al eliminar el libro');
-            }
-        }
-    };
-
     if (loading) {
         return <div>Cargando...</div>;
     }
 
     return (
-        <div className="my-books-container">
-            <div className="books-grid">
-                {books.map((book) => (
+        <div className="books-grid">
+            {myBooks.length > 0 ? (
+                myBooks.map((book) => (
                     <div key={book._id} className="book-card">
                         <div className="book-actions">
                             <button 
@@ -125,8 +122,12 @@ const MyBooks = () => {
                             )}
                         </div>
                     </div>
-                ))}
-            </div>
+                ))
+            ) : (
+                <div className="no-content-message">
+                    <p>En este momento no hay nada para mostrar</p>
+                </div>
+            )}
         </div>
     );
 };

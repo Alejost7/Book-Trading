@@ -455,3 +455,20 @@
 .exchange-actions button:last-child:hover {
     background-color: #f56565;
 }
+
+.no-content-message {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 3rem;
+    background-color: #2d3748;
+    border-radius: 8px;
+    margin: 2rem auto;
+    max-width: 600px;
+    box-shadow: 0 0 10px rgba(96, 165, 250, 0.3);
+}
+
+.no-content-message p {
+    color: #a0aec0;
+    font-size: 1.2rem;
+    margin: 0;
+}

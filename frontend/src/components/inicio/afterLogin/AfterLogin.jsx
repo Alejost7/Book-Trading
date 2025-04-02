@@ -199,22 +199,28 @@ const AfterLogin = () => {
                         )}
                     </div>
                 </div>
-                {currentView === "Books" &&(
+                {currentView === "Books" && (
                     <div className="books-grid">
-                        {books.map((book) => (
-                            <div key={book._id} className="book-card">
-                                <img src={book.image} alt={book.title} className="book-cover"/>
-                                <h3 className="book-title">{book.title}</h3>
-                                <p className="book-author">{book.author}</p>
-                                <p className="book-owner">Ofertado por: {book.owner?.name || 'Usuario'}</p>
-                                <button 
-                                    className="exchange-button"
-                                    onClick={() => handleExchangeRequest(book)}
-                                >
-                                    Solicitar Intercambio
-                                </button>
+                        {books.length > 0 ? (
+                            books.map((book) => (
+                                <div key={book._id} className="book-card">
+                                    <img src={book.image} alt={book.title} className="book-cover"/>
+                                    <h3 className="book-title">{book.title}</h3>
+                                    <p className="book-author">{book.author}</p>
+                                    <p className="book-owner">Ofertado por: {book.owner?.name || 'Usuario'}</p>
+                                    <button 
+                                        className="exchange-button"
+                                        onClick={() => handleExchangeRequest(book)}
+                                    >
+                                        Solicitar Intercambio
+                                    </button>
+                                </div>
+                            ))
+                        ) : (
+                            <div className="no-content-message">
+                                <p>En este momento no hay nada para mostrar</p>
                             </div>
-                        ))}
+                        )}
                     </div>
                 )}
                 {currentView === "Changes" && <MisIntercambios userId={userId} />}

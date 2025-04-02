@@ -55,60 +55,66 @@ const MisIntercambios = ({ userId }) => {
     return (
         <div className="exchanges-container">
             <div className="exchanges-grid">
-                {exchanges.map((exchange) => (
-                    <div key={exchange._id} className="exchange-card">
-                        <div className="exchange-books">
-                            <div className="book-info">
-                                <h4>Libro Solicitado</h4>
-                                <img src={exchange.requestedBook.image} alt={exchange.requestedBook.title} />
-                                <p>{exchange.requestedBook.title}</p>
+                {exchanges.length > 0 ? (
+                    exchanges.map((exchange) => (
+                        <div key={exchange._id} className="exchange-card">
+                            <div className="exchange-books">
+                                <div className="book-info">
+                                    <h4>Libro Solicitado</h4>
+                                    <img src={exchange.requestedBook.image} alt={exchange.requestedBook.title} />
+                                    <p>{exchange.requestedBook.title}</p>
+                                </div>
+                                <div className="book-info">
+                                    <h4>Libro Ofrecido</h4>
+                                    <img src={exchange.offeredBook.image} alt={exchange.offeredBook.title} />
+                                    <p>{exchange.offeredBook.title}</p>
+                                </div>
                             </div>
-                            <div className="book-info">
-                                <h4>Libro Ofrecido</h4>
-                                <img src={exchange.offeredBook.image} alt={exchange.offeredBook.title} />
-                                <p>{exchange.offeredBook.title}</p>
+                            <div className="exchange-status">
+                                <p>Estado: {exchange.status}</p>
+                                {exchange.status === "pendiente" && exchange.isRequester && (
+                                    <div className="exchange-actions">
+                                        <button onClick={() => handleViewExchangeDetails(exchange)}>
+                                            Ver Detalles
+                                        </button>
+                                    </div>
+                                )}
+                                {exchange.status === "pendiente" && exchange.isOwner && (
+                                    <div className="exchange-actions">
+                                        <button onClick={() => handleExchangeResponse(exchange._id, "aceptado")}>
+                                            Aceptar
+                                        </button>
+                                        <button onClick={() => handleExchangeResponse(exchange._id, "rechazado")}>
+                                            Rechazar
+                                        </button>
+                                    </div>
+                                )}
+                                {exchange.status === "aceptado" && exchange.isRequester && 
+                                 (!exchange.exchangeDetails || exchange.exchangeDetails.status !== "meetup_scheduled") && (
+                                    <div className="exchange-actions">
+                                        <button onClick={() => handleViewExchangeDetails(exchange)}>
+                                            Coordinar Entrega
+                                        </button>
+                                    </div>
+                                )}
+                                {exchange.status === "aceptado" && (
+                                    exchange.isOwner || 
+                                    (exchange.isRequester && exchange.exchangeDetails?.status === "meetup_scheduled")
+                                ) && (
+                                    <div className="exchange-actions">
+                                        <button onClick={() => handleViewExchangeDetails(exchange)}>
+                                            Ver Detalles de Entrega
+                                        </button>
+                                    </div>
+                                )}
                             </div>
                         </div>
-                        <div className="exchange-status">
-                            <p>Estado: {exchange.status}</p>
-                            {exchange.status === "pendiente" && exchange.isRequester && (
-                                <div className="exchange-actions">
-                                    <button onClick={() => handleViewExchangeDetails(exchange)}>
-                                        Ver Detalles
-                                    </button>
-                                </div>
-                            )}
-                            {exchange.status === "pendiente" && exchange.isOwner && (
-                                <div className="exchange-actions">
-                                    <button onClick={() => handleExchangeResponse(exchange._id, "aceptado")}>
-                                        Aceptar
-                                    </button>
-                                    <button onClick={() => handleExchangeResponse(exchange._id, "rechazado")}>
-                                        Rechazar
-                                    </button>
-                                </div>
-                            )}
-                            {exchange.status === "aceptado" && exchange.isRequester && 
-                            (!exchange.exchangeDetails || exchange.exchangeDetails.status !== "meetup_scheduled") && (
-                                <div className="exchange-actions">
-                                    <button onClick={() => handleViewExchangeDetails(exchange)}>
-                                        Coordinar Entrega
-                                    </button>
-                                </div>
-                            )}
-                            {exchange.status === "aceptado" && (
-                                exchange.isOwner || 
-                                (exchange.isRequester && exchange.exchangeDetails?.status === "meetup_scheduled")
-                            ) && (
-                                <div className="exchange-actions">
-                                    <button onClick={() => handleViewExchangeDetails(exchange)}>
-                                        Ver Detalles de Entrega
-                                    </button>
-                                </div>
-                            )}
-                        </div>
+                    ))
+                ) : (
+                    <div className="no-content-message">
+                        <p>En este momento no hay nada para mostrar</p>
                     </div>
-                ))}
+                )}
             </div>
 
             {showExchangeDetails && selectedExchange && (
