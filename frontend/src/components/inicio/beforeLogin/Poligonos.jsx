@@ -4,15 +4,33 @@ import ayuda from '../../../assets/icons/ayuda.png';
 import sobreNosotros from '../../../assets/icons/sobre-nosotros.png';
 import libroIcon from '../../../assets/icons/lectura.png';
 import { Link } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { openModal } from '../../../Redux/modalSlice';
+import AuthModal from './AuthModal';
 
 const Poligonos = () => {
+    const dispatch = useDispatch();
+    const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
+    const handleAuthClick = (e) => {
+        e.preventDefault();
+        dispatch(openModal("auth"));
+    };
+
     return(
         <div className="poligonos">
             <div className="poligono poligono1">
-                <Link to="/miPerfil">
-                    <img src={perfilIcon} alt="Perfil" />
-                    <span className="tooltip">Ir a mi perfil</span> 
-                </Link>
+                {isAuthenticated ? (
+                    <Link to="/miPerfil">
+                        <img src={perfilIcon} alt="Perfil" />
+                        <span className="tooltip">Ir a mi perfil</span> 
+                    </Link>
+                ) : (
+                    <Link to="#" onClick={handleAuthClick}>
+                        <img src={perfilIcon} alt="Perfil" />
+                        <span className="tooltip">Ir a mi perfil</span> 
+                    </Link>
+                )}
             </div>
             <div className="poligono poligono2">
                 <Link to="/ayuda">
@@ -25,11 +43,19 @@ const Poligonos = () => {
                 <span className="tooltip">Sobre Nosotros</span>
             </div>
             <div className="poligono poligono4">
-                <Link to="/Donaciones">
-                    <img src={libroIcon} alt="Lectura" />
-                    <span className="tooltip">Donar Libros</span>
-                </Link>
+                {isAuthenticated ? (
+                    <Link to="/Donaciones">
+                        <img src={libroIcon} alt="Lectura" />
+                        <span className="tooltip">Donar Libros</span>
+                    </Link>
+                ) : (
+                    <Link to="#" onClick={handleAuthClick}>
+                        <img src={libroIcon} alt="Lectura" />
+                        <span className="tooltip">Donar Libros</span>
+                    </Link>
+                )}
             </div>
+            <AuthModal />
         </div>
     );
 };

@@ -1,27 +1,46 @@
 import '../../../styles/beforeLogin/features.css';
-import { useState } from 'react';
 import imageRef from '../../../assets/images/imageLibraryRef.jpg';
-import TestAPI from '../../tests/TestAPI';
+import imageSpy from '../../../assets/images/spideyPFP.jpg';
+import imagePersonalizable from '../../../assets/images/fondoHero.jpg';
+import { useState } from 'react';
 
 const Features = () => {
-    const[mostrarTestAPI, setMostrarTestAPI] = useState(false);
+    const [selectedFeature, setSelectedFeature] = useState(null);
+
+    const handleFeatureClick = (feature) => {
+        setSelectedFeature(feature);
+    };
 
     return (
         <section className="features-container">
             <h2 className="features-title">Nuestras Características</h2>
             <ul className="features-list">
-                <li className="feature-item">Fácil de usar</li>
-                <li className="feature-item">Diseño moderno</li>
-                <li className="feature-item">Soporte 24/7</li>
-                <li className="feature-item">Personalizable</li>
                 <li 
-                    className="feature-item" 
-                    onClick={() => setMostrarTestAPI(!mostrarTestAPI)}>{mostrarTestAPI ? "ocultar mensaje del servidor" : "mensaje desde el servidor" }</li>
+                    className={`feature-item ${selectedFeature === "facil" ? "active" : ""}`}
+                    onClick={() => handleFeatureClick("facil")}
+                >
+                    Fácil de usar
+                </li>
+                <li 
+                    className={`feature-item ${selectedFeature === "moderno" ? "active" : ""}`}
+                    onClick={() => handleFeatureClick("moderno")}
+                >
+                    Diseño moderno
+                </li>
+                <li 
+                    className={`feature-item ${selectedFeature === "personalizable" ? "active" : ""}`}
+                    onClick={() => handleFeatureClick("personalizable")}
+                >
+                    Personalizable
+                </li>
             </ul>
-            <div className="features-img">
-                <img src={imageRef}></img>
-            </div>
-            {mostrarTestAPI && <TestAPI/>}
+            {selectedFeature && (
+                <div className="features-img">
+                    {selectedFeature === "facil" && <img src={imageRef} alt="Característica fácil de usar" />}
+                    {selectedFeature === "moderno" && <img src={imageSpy} alt="Diseño moderno" />}
+                    {selectedFeature === "personalizable" && <img src={imagePersonalizable} alt="Personalizable" />}
+                </div>
+            )}
         </section>
     );
 };

@@ -69,13 +69,13 @@ const AfterLogin = () => {
         }
     }, [fetchBooks, fetchMyBooks, fetchUserRole]);
 
-    // Actualización automática cada 5 segundos
+    // Actualización automática cada 3 segundos
     useEffect(() => {
         if (userId) {
             const interval = setInterval(() => {
                 fetchBooks();
                 fetchMyBooks();
-            }, 5000); // 5000 ms = 5 segundos
+            }, 3000); // 3000 ms = 3 segundos
 
             return () => clearInterval(interval);
         }
