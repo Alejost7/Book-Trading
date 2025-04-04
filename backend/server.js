@@ -39,10 +39,6 @@ app.get("/", (req, res) => {
     res.send("¡Servidor funcionando!");
 });
 
-app.get("/api/mensaje", (req, res) => {
-    res.json({ mensaje: "Hola desde el servidor!!!!"});
-});
-
 app.post("/register", async (req, res) => {
     try {
         const { email, password } = req.body;
