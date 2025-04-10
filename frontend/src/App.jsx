@@ -5,6 +5,7 @@ import BeforeLogin from './components/inicio/beforeLogin/BeforeLogin';
 import AfterLogin from './components/inicio/afterLogin/AfterLogin';
 import MiPerfil from './components/miPerfil/MiPerfil';
 import Ayuda from './components/ayuda/Ayuda';
+import MyBooks from './components/tradeLibros/MyBooks';
 import Donacion from './components/donaciones/Donaciones';
 
 function App() {
@@ -29,6 +30,10 @@ function App() {
           <Route
             path="/Donaciones"
             element={<Donacion/>}
+          />
+          <Route
+            path="/afterLogin/myBooks"
+            element={<MyBooks/>}
           />
         </Routes>
     </Router>

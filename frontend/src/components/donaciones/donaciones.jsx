@@ -84,7 +84,7 @@ const Donacion = () => {
                     <p>
                         <strong>
                             Hola, aquí puedes donar los libros que quieras para que otros tenga la oportunidad de intercambiarlos<br></br>
-                            Para más información o si tienes algún problema dirigete al apartado de ayuda sección "donar libros"
+                            Para más información o si tienes algún problema dirigete al apartado de ayuda sección "donación libros"
                         </strong>
                     </p>
                 </h3>

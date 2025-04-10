@@ -152,14 +152,8 @@ const AfterLogin = () => {
                 return "Mis Libros";
             case "Changes":
                 return "Intercambios";
-            case "Donation":
-                return "Donaciones";
-            case "Profile":
-                return "Mi Perfil";
-            case "Help":
-                return "Ayuda";
             default:
-                return "BookZone";
+                return;
         }
     };
 
