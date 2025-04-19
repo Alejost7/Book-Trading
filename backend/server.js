@@ -111,9 +111,7 @@ app.get("/books", async (req, res) => {  // Endpoint para obtener todos los libr
         if (excludeOwner) {
             query.owner = { $ne: excludeOwner };
         }
-        console.log("Query de búsqueda:", query); // Para debugging
         const books = await Book.find(query).populate("owner", "email");
-        console.log("Libros encontrados:", books.length); // Para debugging
         
         // Procesar los libros para extraer el nombre de usuario del correo
         const processedBooks = books.map(book => {
@@ -500,10 +498,15 @@ app.delete("/books/:id", async (req, res) => {
 });
 
 // Endpoint para eliminar todos los libros
-app.delete("/books/all", async (req, res) => {
+app.delete("/booksDelete", async (req, res) => {
     try {
-        await Book.deleteMany({});
-        res.json({ message: "Todos los libros han sido eliminados" });
+        const total = await Book.countDocuments({});
+        if (total === 0) {
+            res.json({message: "No hay libros para eliminar"});
+        } else  {
+            await Book.deleteMany({});
+            res.json({ message: "Todos los libros han sido eliminados" });
+        }
     } catch (error) {
         res.status(500).json({ message: "Error al eliminar los libros" });
     }

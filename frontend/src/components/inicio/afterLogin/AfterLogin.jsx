@@ -92,10 +92,11 @@ const AfterLogin = () => {
     const handleDeleteAllBooks = async () => {
         if (window.confirm('¿Estás seguro de que deseas eliminar todos los libros? Esta acción no se puede deshacer.')) {
             try {
-                await axios.delete('http://localhost:5000/books/all');
+                const response = await axios.delete('http://localhost:5000/booksDelete');
                 setBooks([]);
                 setMyBooks([]);
-                alert('Todos los libros han sido eliminados exitosamente');
+                const messagee = response.data.message;
+                alert(messagee);
             } catch (error) {
                 console.error('Error al eliminar los libros:', error);
                 alert('Error al eliminar los libros');

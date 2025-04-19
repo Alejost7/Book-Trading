@@ -3,7 +3,6 @@
 }
 
 .notification-button {
-    position: relative;
     padding: clamp(0.25rem, 0.75vw, 0.5rem);
     color: #4B5563;
     background: none;

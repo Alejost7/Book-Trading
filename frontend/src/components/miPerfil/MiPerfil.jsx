@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  FiEdit2, FiLogOut, FiBookOpen, FiHeart, 
-  FiRefreshCw, FiUser, FiSettings, FiMail, 
-  FiMapPin, FiCalendar, FiArrowLeft, FiPlus 
+    FiEdit2, FiLogOut, FiBookOpen, FiHeart, 
+    FiRefreshCw, FiUser, FiSettings, FiMail, 
+    FiMapPin, FiCalendar, FiArrowLeft, FiPlus 
 } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -277,14 +277,6 @@ const MiPerfil = () => {
                         <div className="user-stat-value">{stats.exchangesCompleted}</div>
                         <div className="user-stat-label">Intercambios</div>
                     </div>
-                    <div className="user-stat-card genres">
-                        <div className="user-stat-value user-genres-list">
-                            {stats.favoriteGenres.map((genre, index) => (
-                                <span key={index} className="user-genre-tag">{genre}</span>
-                            ))}
-                        </div>
-                        <div className="user-stat-label">Géneros favoritos</div>
-                    </div>
                 </div>
                 
                 <div className="user-profile-tabs">
@@ -309,13 +301,6 @@ const MiPerfil = () => {
                         <FiRefreshCw />
                         <span>Intercambios</span>
                     </button>
-                    <button 
-                        className={`user-tab-btn ${activeTab === 'favoritos' ? 'active' : ''}`}
-                        onClick={() => setActiveTab('favoritos')}
-                    >
-                        <FiHeart />
-                        <span>Favoritos</span>
-                    </button>
                 </div>
                 
                 <div className="user-profile-content">
@@ -337,23 +322,6 @@ const MiPerfil = () => {
                                         <h3>Biografía</h3>
                                         <div className="user-bio-content">
                                             {formatBio(userBio)}
-                                        </div>
-                                    </div>
-                                    
-                                    <div className="user-about-details">
-                                        <div className="user-detail-item">
-                                            <h4>Contacto</h4>
-                                            <p className="user-contact-email">
-                                                <FiMail /> {user?.email}
-                                            </p>
-                                        </div>
-                                        <div className="user-detail-item">
-                                            <h4>Géneros favoritos</h4>
-                                            <div className="user-genres-container">
-                                                {stats.favoriteGenres.map((genre, index) => (
-                                                    <span key={index} className="user-genre-pill">{genre}</span>
-                                                ))}
-                                            </div>
                                         </div>
                                     </div>
                                 </motion.div>
@@ -539,26 +507,6 @@ const MiPerfil = () => {
                                 </motion.div>
                             )}
                             
-                            {activeTab === 'favoritos' && (
-                                <motion.div 
-                                    className="user-favorites-section"
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 0.5 }}
-                                >
-                                    <div className="user-section-placeholder">
-                                        <FiHeart size={50} />
-                                        <h3>Libros Favoritos</h3>
-                                        <p>Próximamente: Aquí se mostrarán los libros que marques como favoritos para seguimiento.</p>
-                                        <button 
-                                            className="user-explore-btn"
-                                            onClick={() => navigate('/afterLogin')}
-                                        >
-                                            Explorar libros
-                                        </button>
-                                    </div>
-                                </motion.div>
-                            )}
                         </>
                     )}
                 </div>
