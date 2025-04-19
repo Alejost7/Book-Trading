@@ -1,15 +1,16 @@
 .poligonos {
     display: flex;
     justify-content: space-evenly;
-    margin: 5rem 0;
-    gap: 4rem;
-    padding: 0 2rem;
+    margin: clamp(2rem, 5vw, 5rem) 0;
+    gap: clamp(2rem, 4vw, 4rem);
+    padding: 0 clamp(1rem, 3vw, 2rem);
+    flex-wrap: wrap;
 }
 
 .poligono {
     position: relative;
-    width: 80px;
-    height: 80px;
+    width: clamp(60px, 8vw, 80px);
+    height: clamp(60px, 8vw, 80px);
     background: linear-gradient(145deg, #1e3a5f, #233e66);
     border-radius: 50%;
     box-shadow: 
@@ -20,6 +21,7 @@
     align-items: center;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     overflow: hidden;
+    margin: 0.5rem;
 }
 
 .poligono::before {
@@ -61,14 +63,15 @@
     transform: translateX(-50%);
     background: rgba(22, 42, 67, 0.95);
     color: white;
-    font-size: 0.6rem;
-    padding: 0.5rem 1rem;
+    font-size: clamp(0.5rem, 1vw, 0.6rem);
+    padding: clamp(0.375rem, 1vw, 0.5rem) clamp(0.75rem, 1.5vw, 1rem);
     border-radius: 4px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.3);
     opacity: 0;
     pointer-events: none;
     transition: all 0.3s ease;
     white-space: nowrap;
+    z-index: 10;
 }
 
 .tooltip::before {
@@ -77,7 +80,7 @@
     bottom: 100%;
     left: 50%;
     transform: translateX(-50%);
-    border: 6px solid transparent;
+    border: clamp(4px, 1vw, 6px) solid transparent;
     border-bottom-color: rgba(22, 42, 67, 0.95);
 }
 
@@ -102,4 +105,32 @@
 .poligono4 img{
     width: 100%;
     height: auto;
+}
+
+/* Media Queries */
+@media screen and (max-width: 768px) {
+    .poligonos {
+        gap: clamp(1.5rem, 3vw, 2rem);
+    }
+    
+    .poligono {
+        width: clamp(50px, 7vw, 60px);
+        height: clamp(50px, 7vw, 60px);
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .poligonos {
+        gap: 1rem;
+    }
+    
+    .poligono {
+        width: 45px;
+        height: 45px;
+    }
+    
+    .tooltip {
+        font-size: 0.5rem;
+        padding: 0.375rem 0.75rem;
+    }
 }

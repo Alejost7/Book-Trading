@@ -1,14 +1,17 @@
 #root {
   text-align: center;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
 }
 
 /* Estilos de los enlaces */
 .section-route {
-  font-size: 18px;
+  font-size: clamp(0.9rem, 2vw, 1.125rem);
   font-weight: 600;
   color: white;
   text-decoration: none;
-  padding: 8px 15px;
+  padding: 0.5rem 1rem;
   border-radius: 8px;
   transition: all 0.3s ease-in-out;
 }
@@ -36,14 +39,15 @@
   right: 1.5rem;
   background-color: #3182ce;
   color: white;
-  padding: 1rem;
+  padding: clamp(0.75rem, 2vw, 1rem);
   border-radius: 50%;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
+  font-size: clamp(1.25rem, 3vw, 1.5rem);
   transition: background-color 0.3s ease, transform 0.2s ease;
+  z-index: 1000;
 }
 
 .tooltip-text {
@@ -51,7 +55,7 @@
   background: black;
   color: white;
   text-align: center;
-  font-size: 1rem;
+  font-size: clamp(0.8rem, 2vw, 1rem);
   padding: 5px;
   border-radius: 5px;
   position: absolute;
@@ -74,28 +78,29 @@
   cursor: pointer;
 }
 
-
 .section-title {
-  font-size: 2rem;
+  font-size: clamp(1.5rem, 4vw, 2rem);
   font-weight: bold;
-  margin-bottom: 2rem;
+  margin-bottom: clamp(1rem, 3vw, 2rem);
   text-align: left;
 }
 
 .books-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
-  margin-top: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: clamp(1rem, 2vw, 1.5rem);
+  margin-top: clamp(1rem, 2vw, 1.5rem);
+  padding: 0 1rem;
 }
 
 .book-card {
   background-color: #2d3748;
-  padding: 1rem;
+  padding: clamp(0.75rem, 2vw, 1rem);
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(96, 165, 250, 0.3);
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  max-width: 100%;
 }
 
 .book-card:hover {
@@ -105,27 +110,56 @@
 
 .book-cover {
   width: 100%;
-  height: 12rem;
+  height: auto;
+  max-height: 12rem;
   object-fit: cover;
   border-radius: 8px;
 }
 
 .tamn {
-  width: 8%;
+  width: clamp(5%, 8%, 10%);
   height: auto;
 }
 
 .book-title {
   margin-top: 0.5rem;
-  font-size: 1.2rem;
+  font-size: clamp(1rem, 2vw, 1.2rem);
   font-weight: 600;
-  margin-top: 1.5rem;
+  margin-top: clamp(0.5rem, 2vw, 1.5rem);
 }
 
 .book-author {
   color: #a0aec0;
-  font-size: 0.9rem;
+  font-size: clamp(0.8rem, 1.5vw, 0.9rem);
   margin-top: 0.25rem;
+}
+
+/* Media Queries */
+@media screen and (max-width: 768px) {
+  .books-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+  }
+  
+  .book-cover {
+    max-height: 10rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .books-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .section-route {
+    padding: 0.5rem;
+    font-size: 0.9rem;
+  }
+  
+  .add-button {
+    bottom: 1rem;
+    right: 1rem;
+  }
 }
 
 

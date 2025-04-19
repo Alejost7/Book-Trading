@@ -4,7 +4,7 @@
 
 .notification-button {
     position: relative;
-    padding: 0.5rem;
+    padding: clamp(0.25rem, 0.75vw, 0.5rem);
     color: #4B5563;
     background: none;
     border: none;
@@ -20,8 +20,8 @@
 }
 
 .notification-icon {
-    width: 1.5rem;
-    height: 1.5rem;
+    width: clamp(1.25rem, 2vw, 1.5rem);
+    height: clamp(1.25rem, 2vw, 1.5rem);
     color: #ffffff;
 }
 
@@ -36,8 +36,8 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 0.25rem 0.5rem;
-    font-size: 0.75rem;
+    padding: clamp(0.15rem, 0.5vw, 0.25rem) clamp(0.25rem, 0.75vw, 0.5rem);
+    font-size: clamp(0.625rem, 1.25vw, 0.75rem);
     font-weight: bold;
     line-height: 1;
     color: white;
@@ -49,37 +49,37 @@
 .notification-dropdown {
     position: absolute;
     right: 0;
-    margin-top: 0.5rem;
-    width: 20rem;
+    margin-top: clamp(0.25rem, 0.75vw, 0.5rem);
+    width: min(90vw, 20rem);
     background-color: white;
-    border-radius: 0.5rem;
+    border-radius: clamp(0.25rem, 0.75vw, 0.5rem);
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
     z-index: 50;
 }
 
 .notification-header {
-    padding: 1rem;
+    padding: clamp(0.5rem, 1.5vw, 1rem);
     border-bottom: 1px solid #E5E7EB;
 }
 
 .notification-title {
-    font-size: 1.125rem;
+    font-size: clamp(0.875rem, 1.5vw, 1.125rem);
     font-weight: 600;
 }
 
 .notification-list {
-    max-height: 24rem;
+    max-height: min(50vh, 24rem);
     overflow-y: auto;
 }
 
 .notification-empty {
-    padding: 1rem;
+    padding: clamp(0.5rem, 1.5vw, 1rem);
     text-align: center;
     color: #6B7280;
 }
 
 .notification-item {
-    padding: 1rem;
+    padding: clamp(0.5rem, 1.5vw, 1rem);
     border-bottom: 1px solid #E5E7EB;
     cursor: pointer;
 }
@@ -93,12 +93,24 @@
 }
 
 .notification-message {
-    font-size: 0.875rem;
+    font-size: clamp(0.75rem, 1.25vw, 0.875rem);
     color: #1F2937;
 }
 
 .notification-time {
-    font-size: 0.75rem;
+    font-size: clamp(0.625rem, 1.25vw, 0.75rem);
     color: #6B7280;
-    margin-top: 0.25rem;
+    margin-top: clamp(0.15rem, 0.5vw, 0.25rem);
+}
+
+/* Media Queries */
+@media screen and (max-width: 480px) {
+    .notification-dropdown {
+        width: 95vw;
+        right: -2.5vw;
+    }
+    
+    .notification-list {
+        max-height: 60vh;
+    }
 } 

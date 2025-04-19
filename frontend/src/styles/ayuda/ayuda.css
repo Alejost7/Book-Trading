@@ -5,35 +5,40 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 2rem;
+    padding: clamp(1rem, 2vw, 2rem);
     box-sizing: border-box;
 }
 
 .ayuda-title {
-    font-size: 3rem;
-    margin-bottom: 2rem;
+    font-size: clamp(1.5rem, 3vw, 3rem);
+    margin-bottom: clamp(1rem, 2vw, 2rem);
     color: #60a5fa;
+    text-align: center;
 }
 
 .ayuda-nav {
     display: flex;
-    gap: 1rem;
-    margin-bottom: 2rem;
+    gap: clamp(0.5rem, 1.5vw, 1rem);
+    margin-bottom: clamp(1rem, 2vw, 2rem);
     list-style: none;
     padding: 0;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .ayuda-item {
-    padding: 30px 30px;
-    font-size: 1rem;
-    border-radius: 5px;
+    padding: clamp(0.75rem, 1.5vw, 30px) clamp(1rem, 2vw, 30px);
+    font-size: clamp(0.875rem, 1.5vw, 1rem);
+    border-radius: clamp(4px, 1vw, 5px);
     cursor: pointer;
-    border-radius: 8px;
+    border-radius: clamp(6px, 1.5vw, 8px);
     color: #000000;
     place-items: center;
-    gap: 10px;
+    gap: clamp(0.5rem, 1vw, 10px);
     background-color: #ffffff;
     transition: all 0.3s ease;
+    min-width: clamp(120px, 20vw, 200px);
+    text-align: center;
 }
 
 .ayuda-item.active,
@@ -44,30 +49,33 @@
 }
 
 .ayuda-content {
-    max-width: 600px;
+    max-width: min(600px, 90vw);
     text-align: center;
+    padding: clamp(1rem, 2vw, 2rem);
 }
 
 .ayuda-section-title {
-    font-size: 2rem;
-    margin-bottom: 1.5rem;
+    font-size: clamp(1.25rem, 2.5vw, 2rem);
+    margin-bottom: clamp(1rem, 1.5vw, 1.5rem);
 }
 
 .ayuda-text {
-    font-size: 1.2rem;
+    font-size: clamp(0.875rem, 1.5vw, 1.2rem);
     line-height: 1.5;
+    margin-bottom: clamp(1rem, 2vw, 2rem);
 }
 
 .ayuda-button {
-    margin-top: 1.5rem;
-    padding: 0.8rem 1.5rem;
+    margin-top: clamp(1rem, 1.5vw, 1.5rem);
+    padding: clamp(0.5rem, 1vw, 0.8rem) clamp(1rem, 1.5vw, 1.5rem);
     background-color: #3182ce;
     border: none;
-    border-radius: 5px;
+    border-radius: clamp(4px, 1vw, 5px);
     color: white;
     font-weight: 600;
-    font-size: 1rem;
+    font-size: clamp(0.875rem, 1.5vw, 1rem);
     transition: background-color 0.3s ease;
+    cursor: pointer;
 }
 
 .ayuda-button:hover {
@@ -75,7 +83,7 @@
 }
 
 .add-button.up {
-    bottom: 6rem;
+    bottom: clamp(4rem, 8vw, 6rem);
     z-index: 1;
 }
 
@@ -91,14 +99,15 @@
     justify-content: center;
     align-items: center;
     z-index: 1000;
+    padding: clamp(1rem, 2vw, 2rem);
 }
 
 .support-modal {
     background-color: #1b2a4d;
-    padding: 2rem 3rem;
-    border-radius: 8px;
-    width: 90%;
-    max-width: 500px;
+    padding: clamp(1rem, 2vw, 2rem) clamp(1.5rem, 3vw, 3rem);
+    border-radius: clamp(6px, 1.5vw, 8px);
+    width: 100%;
+    max-width: min(500px, 90vw);
     position: relative;
     color: white;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
@@ -188,4 +197,49 @@
     color: #48bb78;
     font-weight: 500;
     font-size: 1.1rem;
+}
+
+/* Media Queries */
+@media screen and (max-width: 768px) {
+    .ayuda-nav {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .ayuda-item {
+        width: 100%;
+        max-width: 300px;
+    }
+    
+    .ayuda-content {
+        padding: 1rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .ayuda-container {
+        padding: 1rem;
+    }
+    
+    .ayuda-title {
+        font-size: 1.5rem;
+    }
+    
+    .ayuda-item {
+        padding: 0.75rem 1rem;
+        font-size: 0.875rem;
+    }
+    
+    .ayuda-section-title {
+        font-size: 1.25rem;
+    }
+    
+    .ayuda-text {
+        font-size: 0.875rem;
+    }
+    
+    .ayuda-button {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+    }
 }

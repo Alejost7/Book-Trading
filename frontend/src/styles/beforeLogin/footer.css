@@ -2,8 +2,25 @@ footer {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 5%;
-    gap: 5%;
+    padding: clamp(2rem, 5vw, 5%);
+    gap: clamp(1rem, 3vw, 5%);
     background-color: hsla(229, 83%, 68%, 0.116);
     color: white;
+    flex-wrap: wrap;
+}
+
+/* Media Queries */
+@media screen and (max-width: 768px) {
+    footer {
+        padding: 1.5rem;
+        gap: 1.5rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    footer {
+        padding: 1rem;
+        gap: 1rem;
+        flex-direction: column;
+    }
 }

@@ -1,7 +1,7 @@
 .search-container {
     position: relative;
     width: 100%;
-    max-width: 500px;
+    max-width: min(500px, 90vw);
     z-index: 1000;
 }
 
@@ -10,8 +10,8 @@
     align-items: center;
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
-    border-radius: 30px;
-    padding: 5px 8px 5px 15px;
+    border-radius: clamp(20px, 3vw, 30px);
+    padding: clamp(4px, 1vw, 5px) clamp(6px, 1.5vw, 8px) clamp(4px, 1vw, 5px) clamp(12px, 2vw, 15px);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease;
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -24,8 +24,8 @@
 
 .search-icon-left {
     color: white;
-    margin-right: 8px;
-    font-size: 18px;
+    margin-right: clamp(6px, 1.5vw, 8px);
+    font-size: clamp(14px, 2vw, 18px);
     opacity: 0.8;
 }
 
@@ -33,8 +33,8 @@
     flex: 1;
     border: none;
     outline: none;
-    padding: 10px 0;
-    font-size: 16px;
+    padding: clamp(8px, 1.5vw, 10px) 0;
+    font-size: clamp(14px, 2vw, 16px);
     color: white;
     background: transparent;
 }
@@ -48,25 +48,25 @@
     border: none;
     color: white;
     cursor: pointer;
-    padding: 4px;
+    padding: clamp(3px, 1vw, 4px);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: 5px;
+    margin-right: clamp(4px, 1vw, 5px);
 }
 
 .search-button {
     background: linear-gradient(90deg, #3b82f6, #60a5fa);
     color: white;
     border: none;
-    border-radius: 20px;
-    padding: 8px 15px;
+    border-radius: clamp(15px, 2.5vw, 20px);
+    padding: clamp(6px, 1.5vw, 8px) clamp(12px, 2vw, 15px);
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    font-size: 14px;
+    font-size: clamp(12px, 1.5vw, 14px);
 }
 
 .search-button:hover {
@@ -80,17 +80,17 @@
     left: 0;
     right: 0;
     background: white;
-    border-radius: 12px;
+    border-radius: clamp(10px, 2vw, 12px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-    padding: 10px 0;
+    padding: clamp(8px, 1.5vw, 10px) 0;
     overflow: hidden;
 }
 
 .suggestions-title {
-    font-size: 12px;
+    font-size: clamp(10px, 1.5vw, 12px);
     font-weight: 600;
     color: #94a3b8;
-    padding: 8px 15px;
+    padding: clamp(6px, 1.5vw, 8px) clamp(12px, 2vw, 15px);
     text-transform: uppercase;
     letter-spacing: 1px;
 }
@@ -98,16 +98,16 @@
 .suggestion-item {
     display: flex;
     align-items: center;
-    padding: 10px 15px;
+    padding: clamp(8px, 1.5vw, 10px) clamp(12px, 2vw, 15px);
     cursor: pointer;
     color: #1e293b;
     transition: all 0.2s ease;
 }
 
 .suggestion-icon {
-    margin-right: 10px;
+    margin-right: clamp(8px, 1.5vw, 10px);
     color: #3b82f6;
-    font-size: 16px;
+    font-size: clamp(14px, 2vw, 16px);
 }
 
 .suggestion-item.recent .suggestion-icon {
@@ -115,7 +115,7 @@
 }
 
 .no-suggestions {
-    padding: 15px;
+    padding: clamp(12px, 2vw, 15px);
     color: #64748b;
     text-align: center;
     font-style: italic;
@@ -128,13 +128,13 @@
     right: 0;
     color: #1e293b;
     background: white;
-    border-radius: 15px;
-    margin-top: 10px;
+    border-radius: clamp(12px, 2vw, 15px);
+    margin-top: clamp(8px, 1.5vw, 10px);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
     max-height: 80vh;
     overflow-y: auto;
     z-index: 1000;
-    padding: 15px;
+    padding: clamp(12px, 2vw, 15px);
 }
 
 .search-loading-container {
@@ -142,18 +142,18 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 30px;
+    padding: clamp(20px, 3vw, 30px);
     text-align: center;
 }
 
 .search-loader {
-    width: 40px;
-    height: 40px;
+    width: clamp(30px, 4vw, 40px);
+    height: clamp(30px, 4vw, 40px);
     border: 3px solid #f3f3f3;
     border-top: 3px solid #3b82f6;
     border-radius: 50%;
     animation: spin 1s linear infinite;
-    margin-bottom: 15px;
+    margin-bottom: clamp(12px, 2vw, 15px);
 }
 
 @keyframes spin {
@@ -163,41 +163,41 @@
 
 .search-loading-text {
     color: #64748b;
-    font-size: 14px;
+    font-size: clamp(12px, 1.5vw, 14px);
 }
 
 .search-no-results {
-    padding: 25px 15px;
+    padding: clamp(20px, 3vw, 25px) clamp(12px, 2vw, 15px);
     text-align: center;
 }
 
 .no-results-icon {
-    font-size: 32px;
-    margin-bottom: 15px;
+    font-size: clamp(24px, 3vw, 32px);
+    margin-bottom: clamp(12px, 2vw, 15px);
 }
 
 .search-no-results p {
     color: #64748b;
-    margin-bottom: 20px;
+    margin-bottom: clamp(15px, 2.5vw, 20px);
 }
 
 .search-all-books {
-    padding: 20px 0;
+    padding: clamp(15px, 2.5vw, 20px) 0;
 }
 
 .search-all-books h3 {
-    margin-bottom: 20px;
+    margin-bottom: clamp(15px, 2.5vw, 20px);
     color: #1e293b;
-    font-size: 18px;
+    font-size: clamp(16px, 2.5vw, 18px);
     text-align: left;
 }
 
 .search-books-grid,
 .search-results-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 20px;
-    padding: 10px 0;
+    grid-template-columns: repeat(auto-fill, minmax(clamp(120px, 15vw, 150px), 1fr));
+    gap: clamp(15px, 2.5vw, 20px);
+    padding: clamp(8px, 1.5vw, 10px) 0;
 }
 
 .results-header {
@@ -205,23 +205,23 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 20px;
+    margin-bottom: clamp(15px, 2.5vw, 20px);
 }
 
 .results-header h3 {
-    font-size: 18px;
+    font-size: clamp(16px, 2.5vw, 18px);
     color: #1e293b;
     margin: 0;
 }
 
 .results-count {
-    font-size: 14px;
+    font-size: clamp(12px, 1.5vw, 14px);
     color: #64748b;
 }
 
 .search-book-item {
     background: white;
-    border-radius: 12px;
+    border-radius: clamp(10px, 2vw, 12px);
     padding: 0;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
     transition: all 0.3s ease;
@@ -232,7 +232,7 @@
 
 .book-cover-container {
     position: relative;
-    height: 200px;
+    height: clamp(150px, 20vw, 200px);
     overflow: hidden;
 }
 
@@ -332,13 +332,40 @@
     margin: 0;
 }
 
-@media (max-width: 768px) {
+/* Media Queries */
+@media screen and (max-width: 768px) {
     .search-container {
         max-width: 100%;
     }
     
     .search-books-grid,
     .search-results-grid {
-        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 15px;
+    }
+    
+    .book-cover-container {
+        height: 180px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .search-books-grid,
+    .search-results-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .book-cover-container {
+        height: 160px;
+    }
+    
+    .results-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .search-results-container {
+        padding: 10px;
     }
 }

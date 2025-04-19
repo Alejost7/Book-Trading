@@ -8,63 +8,66 @@
     flex-direction: column;
     background: #1d2a79b7;
     color: rgb(255, 255, 255);
-    padding: 2rem;
-    border-radius: 10px;
-    width: 600px;
-    max-width: 500px;
+    padding: clamp(1rem, 2vw, 2rem);
+    border-radius: clamp(8px, 2vw, 10px);
+    width: min(90vw, 600px);
+    max-width: min(90vw, 500px);
     position: relative;
     box-shadow: 0 4px 200px rgba(12, 57, 255, 0.329);
 }
 
 .close-button {
     position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
+    top: clamp(0.25rem, 0.75vw, 0.5rem);
+    right: clamp(0.25rem, 0.75vw, 0.5rem);
     background: transparent;
     font-weight: bold;
     border: none;
-    font-size: 1.5rem;
+    font-size: clamp(1.25rem, 2vw, 1.5rem);
     cursor: pointer;
 }
 
 .modal-content h2 {
     margin-top: 0;
-    margin-bottom: 1.5rem;
+    margin-bottom: clamp(0.75rem, 1.5vw, 1.5rem);
+    font-size: clamp(1.25rem, 2vw, 1.5rem);
 }
 
 .modal-content form {
     display: flex;
     flex-direction: column;
+    gap: clamp(0.5rem, 1.5vw, 1rem);
 }
 
 .modal-content label {
-    margin-bottom: 1rem;
-    font-size: 1rem;
+    margin-bottom: clamp(0.5rem, 1.5vw, 1rem);
+    font-size: clamp(0.875rem, 1.5vw, 1rem);
     font-weight: bold;
 }
 
 .modal-content input {
-    padding: 0.5rem 1.5rem;
+    padding: clamp(0.25rem, 0.75vw, 0.5rem) clamp(0.75rem, 1.5vw, 1.5rem);
     border: 1px solid #ccc;
-    border-radius: 8px;
-    width: auto;
-    margin-top: 0.25rem;
+    border-radius: clamp(4px, 1vw, 8px);
+    width: 100%;
+    margin-top: clamp(0.15rem, 0.5vw, 0.25rem);
     background-color: #007bff;
     color: white;
     font-weight: bold;
+    font-size: clamp(0.875rem, 1.5vw, 1rem);
 }
 
-
 .modal-content button[type="submit"] {
-    padding: 1.5rem 1rem;
+    padding: clamp(0.75rem, 1.5vw, 1.5rem) clamp(0.5rem, 1.5vw, 1rem);
     background: #06f096;
     color: #5f5b5b;
     border: none;
-    border-radius: 10%;
+    border-radius: clamp(4px, 1vw, 10%);
     cursor: pointer;
-    margin-top: 1rem;
+    margin-top: clamp(0.5rem, 1.5vw, 1rem);
     font-weight: bold;
     transition: background 0.3s, transform 0.3s;
+    font-size: clamp(0.875rem, 1.5vw, 1rem);
 }
 
 .modal-content button[type="submit"]:hover {
@@ -80,21 +83,22 @@
 
 .modal-content .error {
     color: red;
-    margin-bottom: 1rem;
+    margin-bottom: clamp(0.5rem, 1.5vw, 1rem);
+    font-size: clamp(0.75rem, 1.25vw, 0.875rem);
 }
 
 .books-list {
     list-style: none;
     padding: 0;
-    max-height: 300px;
+    max-height: min(50vh, 300px);
     overflow-y: auto;
-    margin-bottom: 1rem;
+    margin-bottom: clamp(0.5rem, 1.5vw, 1rem);
 }
 
 .book-item {
     display: flex;
     align-items: center;
-    padding: 0.5rem;
+    padding: clamp(0.25rem, 0.75vw, 0.5rem);
     border-bottom: 1px solid #ddd;
     cursor: pointer;
 }
@@ -104,8 +108,30 @@
 }
 
 .book-thumb {
-    width: 50px;
-    height: 50px;
+    width: clamp(40px, 5vw, 50px);
+    height: clamp(40px, 5vw, 50px);
     object-fit: cover;
-    margin-right: 1rem;
+    margin-right: clamp(0.5rem, 1.5vw, 1rem);
+}
+
+/* Media Queries */
+@media screen and (max-width: 480px) {
+    .modal-content {
+        width: 95vw;
+        max-width: 95vw;
+        padding: 1rem;
+    }
+    
+    .modal-content form {
+        gap: 0.75rem;
+    }
+    
+    .book-item {
+        padding: 0.5rem;
+    }
+    
+    .book-thumb {
+        width: 40px;
+        height: 40px;
+    }
 }
