@@ -6,6 +6,7 @@ import { openModal } from '../../Redux/modalSlice';
 import { useState } from 'react';
 import DonarLibro from './DonarLibro';
 import ModalNuevoLibro from '../tradeLibros/ModalNuevoLibro';
+const API_URL = import.meta.env.VITE_API_URL;
 
 const Donacion = () => {
     const navigate = useNavigate();
@@ -32,7 +33,7 @@ const Donacion = () => {
         };
 
         try {
-            const response = await fetch("http://localhost:5000/donate", {
+            const response = await fetch(`${API_URL}/donations/donate`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

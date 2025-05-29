@@ -2,6 +2,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { closeModal } from "../../Redux/modalSlice";
 import { useState, useEffect } from "react";
 import "../../styles/tradeLibros/subirLibros.css";
+const API_URL = import.meta.env.VITE_API_URL;
 
 const ModalDonateBook = ({ onBookSelect }) => {
     const { isOpen, modalType } = useSelector((state) => state.modal);
@@ -14,8 +15,7 @@ const ModalDonateBook = ({ onBookSelect }) => {
     useEffect(() => {
         setIsLoading(true);
         const userId = localStorage.getItem("userId");
-        // Ejemplo: obtener los libros disponibles del usuario (puedes cambiar la URL según tu lógica)
-        fetch(`http://localhost:5000/myBooks?owner=${userId}`)
+        fetch(`${API_URL}/books/myBooks?owner=${userId}`)
         .then((res) => res.json())
         .then((data) => {
             setBooks(data);
