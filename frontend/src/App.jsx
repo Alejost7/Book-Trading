@@ -7,6 +7,8 @@ import MiPerfil from './components/miPerfil/MiPerfil';
 import Ayuda from './components/ayuda/Ayuda';
 import MyBooks from './components/tradeLibros/MyBooks';
 import Donacion from './components/donaciones/Donaciones';
+import AboutUs from './components/AboutUs';
+import FrecuentQuestions from './components/FrecuentQuestions';
 
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
@@ -34,6 +36,14 @@ function App() {
           <Route
             path="/afterLogin/myBooks"
             element={<MyBooks/>}
+          />
+          <Route
+            path="/aboutUs"
+            element={<AboutUs/>}
+          />
+          <Route
+            path="/frecuentQuestions"
+            element={<FrecuentQuestions/>}
           />
         </Routes>
     </Router>
