@@ -1,0 +1,110 @@
+User
+const mongoose = require("mongoose");
+
+const userSchema = new mongoose.Schema({
+    name: { type: String, default: "Usuario"},
+    email: { type: String, required: true, unique: true},
+    password: { type: String, required: true},
+    role: { type: String, enum: ["user", "admin"], default: "user"}
+}, { timestamps: true });
+
+const User = mongoose.model("User", userSchema);
+
+module.exports = User;
+
+
+
+Boooks
+const mongoose = require("mongoose");
+
+const bookSchema = new mongoose.Schema({
+    title: { type: String, required: true},
+    author: { type: String, required: true},
+    image: { type: String, default: "https://via.placeholder.com/150" },
+    status: {
+        type: String,
+        enum: ["Disponible", "En intercambio", "intercambiado"],
+        default: "Disponible"
+    },
+    owner: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    isDonation: { type: Boolean, default: false },
+    isOfferedForExchange: { type: Boolean, default: false },
+    previousOwners: [{ type: mongoose.Schema.Types.ObjectId, ref: "User"}], // Historial de dueños});
+    exchangeWith: { type: mongoose.Schema.Types.ObjectId, ref: "Book", default: null }, // Libro con el que se intercambió
+});
+
+module.exports = mongoose.model("Book", bookSchema);
+
+
+
+Exchange
+const mongoose = require("mongoose");
+
+const exchangeSchema = new mongoose.Schema({
+    requester: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    requestedBook: { type: mongoose.Schema.Types.ObjectId, ref: "Book", required: true },
+    offeredBook: { type: mongoose.Schema.Types.ObjectId, ref: "Book", required: true },
+    status: {
+        type: String,
+        enum: ["pendiente", "aceptado", "rechazado", "completado"],
+        default: "pendiente"
+    },
+    exchangeDetails: {
+        requesterAddress: String,
+        requesterPhone: String,
+        requesterEmail: String,
+        ownerAddress: String,
+        ownerPhone: String,
+        ownerEmail: String,
+        meetingPoint: String,
+        meetingDate: Date,
+        status: {
+            type: String,
+            enum: ["pending_meetup", "meetup_scheduled", "completed"],
+            default: "pending_meetup"
+        }
+    },
+    requestedAt: { type: Date, default: Date.now }
+});
+
+module.exports = mongoose.model("Exchange", exchangeSchema);
+
+
+Notification
+const mongoose = require('mongoose');
+
+const notificationSchema = new mongoose.Schema({
+    recipient: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
+    type: {
+        type: String,
+        enum: ['exchange_request', 'exchange_accepted', 'exchange_rejected', 'donation'],
+        required: true
+    },
+    message: {
+        type: String,
+        required: true
+    },
+    relatedExchange: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Exchange'
+    },
+    read: {
+        type: Boolean,
+        default: false
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    }
+});
+
+module.exports = mongoose.model('Notification', notificationSchema); 
+
+
+
+
+
