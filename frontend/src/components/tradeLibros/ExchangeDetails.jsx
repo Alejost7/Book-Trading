@@ -4,7 +4,7 @@ import '../../styles/tradeLibros/exchangeDetails.css';
 const API_URL = import.meta.env.VITE_API_URL;
 
 
-const ExchangeDetails = ({ exchange, onClose, userId }) => {
+const ExchangeDetails = ({ exchange, onClose, userId, onExchangeUpdated }) => {
     const [details, setDetails] = useState({
         requesterAddress: '',
         requesterPhone: '',
@@ -19,12 +19,43 @@ const ExchangeDetails = ({ exchange, onClose, userId }) => {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
 
+    // Función para validar que todos los campos estén llenos
+    const isFormValid = () => {
+        return Object.values(details).every(value => value.trim() !== '');
+    };
+
+    // Función para verificar si los detalles ya están actualizados
+    const areDetailsUpdated = () => {
+        return exchange.exchangeDetails && 
+            exchange.exchangeDetails.meetingPoint && 
+            exchange.exchangeDetails.meetingDate;
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+        
+        if (!isFormValid()) {
+            setError('Por favor, completa todos los campos del formulario');
+            return;
+        }
+
         try {
-            await axios.patch(`${API_URL}/exchanges/exchanges/${exchange._id}/details`, details);
+            await axios.post(`${API_URL}/exchanges/exchan/${exchange._id}/details`, { 
+                ...details, 
+                userId: userId
+            });
+            
             setSuccess('Detalles del intercambio actualizados exitosamente');
             setError('');
+            // Actualizamos el intercambio en el componente padre
+            if (onExchangeUpdated) {
+                const updatedExchange = {
+                    ...exchange,
+                    exchangeDetails: details,
+                    status: "meetup_scheduled"
+                };
+                onExchangeUpdated(updatedExchange);
+            }
             // Cerrar el modal después de 2 segundos
             setTimeout(() => {
                 onClose();
@@ -37,12 +68,27 @@ const ExchangeDetails = ({ exchange, onClose, userId }) => {
 
     const handleConfirmDelivery = async (bookId) => {
         try {
-            await axios.patch(`${API_URL}/exchanges/exchanges/${exchange._id}/confirm-delivery`, {
+            const response = await axios.patch(`${API_URL}/exchanges/${exchange._id}/confirm-delivery`, {
                 confirmedBy: userId,
                 bookId: bookId
             });
-            setSuccess('Entrega confirmada exitosamente');
+
+            // Verificar si el intercambio se completó
+            if (response.data.exchange.status === "completado") {
+                setSuccess('¡Intercambio completado exitosamente! Los libros han cambiado de propietario.');
+            } else {
+                setSuccess('Entrega confirmada. Esperando la confirmación de la otra parte.');
+            }
+            
             setError('');
+            
+            // Actualizar el estado local del intercambio
+            if (response.data.exchange) {
+                // Aquí podrías actualizar el estado del intercambio en el componente padre
+                // si es necesario, usando un callback
+                onExchangeUpdated?.(response.data.exchange);
+            }
+
             // Cerrar el modal después de 2 segundos
             setTimeout(() => {
                 onClose();
@@ -84,18 +130,21 @@ const ExchangeDetails = ({ exchange, onClose, userId }) => {
                                         placeholder="Tu dirección"
                                         value={details.requesterAddress}
                                         onChange={(e) => setDetails({...details, requesterAddress: e.target.value})}
+                                        required
                                     />
                                     <input
                                         type="tel"
                                         placeholder="Tu teléfono"
                                         value={details.requesterPhone}
                                         onChange={(e) => setDetails({...details, requesterPhone: e.target.value})}
+                                        required
                                     />
                                     <input
                                         type="email"
                                         placeholder="Tu email"
                                         value={details.requesterEmail}
                                         onChange={(e) => setDetails({...details, requesterEmail: e.target.value})}
+                                        required
                                     />
                                 </div>
 
@@ -106,18 +155,21 @@ const ExchangeDetails = ({ exchange, onClose, userId }) => {
                                         placeholder="Dirección del propietario"
                                         value={details.ownerAddress}
                                         onChange={(e) => setDetails({...details, ownerAddress: e.target.value})}
+                                        required
                                     />
                                     <input
                                         type="tel"
                                         placeholder="Teléfono del propietario"
                                         value={details.ownerPhone}
                                         onChange={(e) => setDetails({...details, ownerPhone: e.target.value})}
+                                        required
                                     />
                                     <input
                                         type="email"
                                         placeholder="Email del propietario"
                                         value={details.ownerEmail}
                                         onChange={(e) => setDetails({...details, ownerEmail: e.target.value})}
+                                        required
                                     />
                                 </div>
 
@@ -128,16 +180,33 @@ const ExchangeDetails = ({ exchange, onClose, userId }) => {
                                         placeholder="Punto de encuentro"
                                         value={details.meetingPoint}
                                         onChange={(e) => setDetails({...details, meetingPoint: e.target.value})}
+                                        required
                                     />
                                     <input
                                         type="datetime-local"
                                         value={details.meetingDate}
                                         onChange={(e) => setDetails({...details, meetingDate: e.target.value})}
+                                        required
                                     />
                                 </div>
 
-                                <button type="submit" className="submit-btn">
-                                    Actualizar Detalles
+                                <button 
+                                    type="submit" 
+                                    className="submit-btn"
+                                    disabled={!isFormValid()}
+                                >
+                                    {!isFormValid() 
+                                        ? "Completa todos los campos" 
+                                        : "Actualizar Detalles"}
+                                </button>
+                                <button 
+                                    onClick={() => handleConfirmDelivery(exchange.offeredBook._id)}
+                                    className="confirm-delivery-btn"
+                                    disabled={!areDetailsUpdated()}
+                                >
+                                    {!areDetailsUpdated() 
+                                        ? "Primero actualiza los detalles del intercambio"
+                                        : "Confirmar que recibiste el libro ofrecido"}
                                 </button>
                             </form>
                         ) : (
@@ -157,14 +226,15 @@ const ExchangeDetails = ({ exchange, onClose, userId }) => {
                                             <p><strong>Fecha y hora:</strong> {new Date(exchange.exchangeDetails.meetingDate).toLocaleString()}</p>
                                         </div>
 
-                                        <div className="delivery-actions">
-                                            <button 
-                                                onClick={() => handleConfirmDelivery(exchange.requestedBook._id)}
-                                                className="confirm-delivery-btn"
-                                            >
-                                                Confirmar Entrega
-                                            </button>
-                                        </div>
+                                        <button 
+                                            onClick={() => handleConfirmDelivery(exchange.requestedBook._id)}
+                                            className="confirm-delivery-btn"
+                                            disabled={!areDetailsUpdated()}
+                                        >
+                                            {!areDetailsUpdated() 
+                                                ? "Esperando que el solicitante actualice los detalles"
+                                                : "Confirmar que entregaste el libro solicitado"}
+                                        </button>
                                     </>
                                 ) : (
                                     <p className="waiting-message">
@@ -178,22 +248,50 @@ const ExchangeDetails = ({ exchange, onClose, userId }) => {
                 )}
 
                 {exchange.status === "meetup_scheduled" && (
-                    <div className="meetup-details">
-                        <h3>Detalles del Encuentro</h3>
-                        <div className="contact-info">
-                            <h4>Información de Contacto</h4>
-                            <p><strong>Punto de encuentro:</strong> {exchange.exchangeDetails.meetingPoint}</p>
-                            <p><strong>Fecha y hora:</strong> {new Date(exchange.exchangeDetails.meetingDate).toLocaleString()}</p>
+                    <div className="delivery-actions">
+                        <div className="delivery-status">
+                            <h4>Estado de las entregas:</h4>
+                            <div className="book-status">
+                                <p>Libro solicitado: 
+                                    <span className={`status ${exchange.requestedBook.status === "intercambiado" ? "completed" : "pending"}`}>
+                                        {exchange.requestedBook.status === "intercambiado" ? "Entregado" : "Pendiente"}
+                                    </span>
+                                </p>
+                            </div>
+                            <div className="book-status">
+                                <p>Libro ofrecido: 
+                                    <span className={`status ${exchange.offeredBook.status === "intercambiado" ? "completed" : "pending"}`}>
+                                        {exchange.offeredBook.status === "intercambiado" ? "Entregado" : "Pendiente"}
+                                    </span>
+                                </p>
+                            </div>
                         </div>
 
-                        <div className="delivery-actions">
+                        {exchange.isRequester ? (
+                            <button 
+                                onClick={() => handleConfirmDelivery(exchange.offeredBook._id)}
+                                className="confirm-delivery-btn"
+                                disabled={exchange.offeredBook.status === "intercambiado" || !areDetailsUpdated()}
+                            >
+                                {exchange.offeredBook.status === "intercambiado" 
+                                    ? "Libro ya confirmado" 
+                                    : !areDetailsUpdated()
+                                        ? "Primero actualiza los detalles del intercambio"
+                                        : "Confirmar que recibiste el libro ofrecido"}
+                            </button>
+                        ) : (
                             <button 
                                 onClick={() => handleConfirmDelivery(exchange.requestedBook._id)}
                                 className="confirm-delivery-btn"
+                                disabled={exchange.requestedBook.status === "intercambiado" || !areDetailsUpdated()}
                             >
-                                Confirmar Entrega
+                                {exchange.requestedBook.status === "intercambiado" 
+                                    ? "Libro ya confirmado" 
+                                    : !areDetailsUpdated()
+                                        ? "Esperando que el solicitante actualice los detalles"
+                                        : "Confirmar que entregaste el libro solicitado"}
                             </button>
-                        </div>
+                        )}
                     </div>
                 )}
 

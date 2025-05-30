@@ -20,12 +20,16 @@ const NotificationCenter = ({ userId }) => {
     useEffect(() => {
         if (userId) {
             fetchNotifications();
+            const interval = setInterval(() => {
+                fetchNotifications();
+            }, 5000); // Fetch notifications every 5 seconds
+            return () => clearInterval(interval);
         }
     }, [userId, fetchNotifications]);
 
     const markAsRead = async (notificationId) => {
         try {
-            await axios.patch(`${API_URL}/notifications/notifications/${notificationId}/read`);
+            await axios.patch(`${API_URL}/notifications/${notificationId}/read`);
             setNotifications(notifications.map(notification => 
                 notification._id === notificationId 
                     ? { ...notification, read: true }
@@ -33,6 +37,15 @@ const NotificationCenter = ({ userId }) => {
             ));
         } catch (error) {
             console.error('Error marking notification as read:', error);
+        }
+    };
+
+    const deleteAllNotifications = async () => {
+        try {
+            await axios.delete(`${API_URL}/notifications/${userId}/all`);
+            setNotifications([]); // Limpiar las notificaciones del estado
+        } catch (error) {
+            console.error('Error deleting all notifications:', error);
         }
     };
 
@@ -69,6 +82,14 @@ const NotificationCenter = ({ userId }) => {
                 <div className="notification-dropdown">
                     <div className="notification-header">
                         <h3 className="notification-title">Notificaciones</h3>
+                        {notifications.length > 0 && (
+                            <button 
+                                className="delete-all-button"
+                                onClick={deleteAllNotifications}
+                            >
+                                Borrar todas las notificaciones
+                            </button>
+                        )}
                     </div>
                     <div className="notification-list">
                         {notifications.length === 0 ? (

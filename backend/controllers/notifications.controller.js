@@ -25,3 +25,14 @@ exports.markAsRead = async (req, res) => {
         res.status(500).json({ message: "Error al actualizar la notificación" });
     }
 };
+
+exports.deleteAllNotifications = async (req, res) => {
+    try {
+        const { userId } = req.params;
+        await Notification.deleteMany({ recipient: userId });
+        res.json({ message: "Todas las notificaciones han sido eliminadas" });
+    } catch (error) {
+        console.error('Error al eliminar notificaciones:', error);
+        res.status(500).json({ message: "Error al eliminar las notificaciones" });
+    }
+};

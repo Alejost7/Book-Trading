@@ -117,71 +117,6 @@ exports.deleteBooks = async (req, res) => {  // Endpoint para eliminar todos los
     }
 };
 
-exports.confirmDeliveryBook = async (req, res) => {
-    try {
-        const { confirmedBy, bookId } = req.body;
-        const exchange = await Exchange.findById(req.params.id)
-            .populate("requestedBook")
-            .populate("offeredBook");
-
-        if (!exchange) {
-            return res.status(404).json({ message: "Intercambio no encontrado" });
-        }
-
-        // Verificar que el usuario que confirma es parte del intercambio
-        if (confirmedBy !== exchange.requester.toString() && 
-            confirmedBy !== exchange.requestedBook.owner.toString()) {
-            return res.status(403).json({ message: "No autorizado para confirmar la entrega" });
-        }
-
-        // Actualizar el estado del libro específico
-        if (bookId === exchange.requestedBook._id.toString()) {
-            exchange.requestedBook.status = "intercambiado";
-            await exchange.requestedBook.save();
-        } else if (bookId === exchange.offeredBook._id.toString()) {
-            exchange.offeredBook.status = "intercambiado";
-            await exchange.offeredBook.save();
-        }
-
-        // Si ambos libros han sido entregados, actualizar el estado del intercambio
-        if (exchange.requestedBook.status === "intercambiado" && 
-            exchange.offeredBook.status === "intercambiado") {
-            exchange.status = "completado";
-            await exchange.save();
-
-            // Crear notificaciones de confirmación
-            const requesterNotification = new Notification({
-                recipient: exchange.requester,
-                type: 'exchange_completed',
-                message: `El intercambio ha sido completado exitosamente`,
-                relatedExchange: exchange._id
-            });
-
-            const ownerNotification = new Notification({
-                recipient: exchange.requestedBook.owner,
-                type: 'exchange_completed',
-                message: `El intercambio ha sido completado exitosamente`,
-                relatedExchange: exchange._id
-            });
-
-            await requesterNotification.save();
-            await ownerNotification.save();
-        }
-
-        res.json({ 
-            message: "Entrega confirmada",
-            exchange,
-            requestedBook: exchange.requestedBook,
-            offeredBook: exchange.offeredBook
-        });
-    } catch (error) {
-        console.error('Error al confirmar la entrega:', error);
-        res.status(500).json({ 
-            message: "Error al confirmar la entrega",
-            error: error.message 
-        });
-    }
-};
 
 // Nuevo endpoint para ofertar un libro para intercambio
 exports.offerBook =  async (req, res) => {
@@ -213,6 +148,10 @@ exports.unofferBook = async (req, res) => {
         const book = await Book.findById(req.params.id);
         if (!book) {
             return res.status(404).json({ message: "Libro no encontrado" });
+        }
+
+        if (book.status !== "Disponible" ) {
+            return res.status(400).json({ message: "Solo se pueden retirar Libros que estén disponibles para intercambio"});
         }
 
         book.isOfferedForExchange = false;

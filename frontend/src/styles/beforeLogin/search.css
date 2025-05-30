@@ -98,16 +98,35 @@
 .suggestion-item {
     display: flex;
     align-items: center;
-    padding: clamp(8px, 1.5vw, 10px) clamp(12px, 2vw, 15px);
+    padding: 10px 15px;
     cursor: pointer;
-    color: #1e293b;
     transition: all 0.2s ease;
 }
 
+.suggestion-item:hover {
+    background-color: #f0f9ff;
+}
+
 .suggestion-icon {
-    margin-right: clamp(8px, 1.5vw, 10px);
+    margin-right: 12px;
     color: #3b82f6;
-    font-size: clamp(14px, 2vw, 16px);
+    font-size: 16px;
+}
+
+.suggestion-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.suggestion-title {
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.suggestion-author {
+    font-size: 0.85em;
+    color: #64748b;
 }
 
 .suggestion-item.recent .suggestion-icon {

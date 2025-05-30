@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import ExchangeDetails from '../tradeLibros/ExchangeDetails';
 import '../../styles/afterLogin/afterLogin.css';
+const API_URL = import.meta.env.VITE_API_URL;
 
 const MisIntercambios = ({ userId }) => {
     const [exchanges, setExchanges] = useState([]);
@@ -10,7 +11,7 @@ const MisIntercambios = ({ userId }) => {
 
     const fetchExchanges = useCallback(async () => {
         try {
-            const response = await axios.get(`http://localhost:5000/exchanges?userId=${userId}`);
+            const response = await axios.get(`${API_URL}/exchanges/exchangesUser?userId=${userId}`);
             // Ordenar los intercambios por fecha, los más recientes primero
             const sortedExchanges = response.data.sort((a, b) => 
                 new Date(b.requestedAt) - new Date(a.requestedAt)
@@ -30,8 +31,9 @@ const MisIntercambios = ({ userId }) => {
 
     const handleExchangeResponse = async (exchangeId, action) => {
         try {
-            const response = await axios.patch(`http://localhost:5000/exchanges/${exchangeId}`, {
-                status: action
+            const response = await axios.patch(`${API_URL}/exchanges/updateExchange/${exchangeId}`, {
+                status: action,
+                userId
             });
 
             if (response.data.exchange) {
@@ -90,7 +92,7 @@ const MisIntercambios = ({ userId }) => {
                                     </div>
                                 )}
                                 {exchange.status === "aceptado" && exchange.isRequester && 
-                                 (!exchange.exchangeDetails || exchange.exchangeDetails.status !== "meetup_scheduled") && (
+                                (!exchange.exchangeDetails || exchange.exchangeDetails.status !== "meetup_scheduled") && (
                                     <div className="exchange-actions">
                                         <button onClick={() => handleViewExchangeDetails(exchange)}>
                                             Coordinar Entrega

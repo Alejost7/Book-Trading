@@ -74,15 +74,61 @@ const Search = () => {
         setShowSuggestions(false);
         
         try {
-            const response = await fetch(`${API_URL}/books/books/search?q=${encodeURIComponent(searchTerm)}`);
-            const data = await response.json();
-            
-            if (data.length === 0) {
-                setNoResults(true);
-                setSearchResults([]);
-            } else {
+            // Primero buscamos coincidencias exactas en los libros locales
+            const exactMatches = allBooks.filter(book => {
+                const searchTermLower = searchTerm.toLowerCase();
+                const titleLower = book.title.toLowerCase();
+                const authorLower = book.author.toLowerCase();
+                
+                // Coincidencia exacta con el título o autor
+                return titleLower === searchTermLower || authorLower === searchTermLower;
+            });
+
+            if (exactMatches.length > 0) {
+                // Si encontramos coincidencias exactas, las mostramos
                 setNoResults(false);
-                setSearchResults(data);
+                setSearchResults(exactMatches);
+            } else {
+                // Si no hay coincidencias exactas, intentamos la búsqueda en el servidor
+                const response = await fetch(`${API_URL}/books/books/search?q=${encodeURIComponent(searchTerm)}`);
+                const data = await response.json();
+                
+                if (data.length === 0) {
+                    // Si no hay resultados del servidor, buscamos coincidencias parciales
+                    const partialMatches = allBooks.filter(book => {
+                        const searchTermLower = searchTerm.toLowerCase();
+                        const titleLower = book.title.toLowerCase();
+                        const authorLower = book.author.toLowerCase();
+                        
+                        // Buscar coincidencias en el título
+                        if (titleLower.includes(searchTermLower)) return true;
+                        
+                        // Buscar coincidencias en el autor
+                        if (authorLower.includes(searchTermLower)) return true;
+                        
+                        // Buscar palabras individuales
+                        const searchWords = searchTermLower.split(' ');
+                        const titleWords = titleLower.split(' ');
+                        const authorWords = authorLower.split(' ');
+                        
+                        // Verificar si alguna palabra de búsqueda coincide con palabras del título o autor
+                        return searchWords.some(word => 
+                            titleWords.some(titleWord => titleWord.includes(word)) ||
+                            authorWords.some(authorWord => authorWord.includes(word))
+                        );
+                    });
+                    
+                    if (partialMatches.length > 0) {
+                        setNoResults(false);
+                        setSearchResults(partialMatches);
+                    } else {
+                        setNoResults(true);
+                        setSearchResults([]);
+                    }
+                } else {
+                    setNoResults(false);
+                    setSearchResults(data);
+                }
             }
             
             // Guardar en búsquedas recientes
@@ -113,11 +159,25 @@ const Search = () => {
         
         if (value.length > 2) {
             // Filtrar sugerencias basadas en la entrada
-            const filtered = suggestions.filter(
-                item => item.toLowerCase().includes(value.toLowerCase())
-            ).slice(0, 5);
+            const searchTermLower = value.toLowerCase();
+            const filtered = allBooks
+                .filter(book => {
+                    const titleLower = book.title.toLowerCase();
+                    const authorLower = book.author.toLowerCase();
+                    
+                    return titleLower.includes(searchTermLower) || 
+                           authorLower.includes(searchTermLower);
+                })
+                .map(book => ({
+                    type: 'book',
+                    title: book.title,
+                    author: book.author,
+                    id: book._id
+                }))
+                .slice(0, 5);
             
             if (filtered.length > 0) {
+                setSuggestions(filtered);
                 setShowSuggestions(true);
             } else {
                 setShowSuggestions(false);
@@ -230,22 +290,21 @@ const Search = () => {
                         {searchTerm.length > 0 ? (
                             <>
                                 <div className="suggestions-title">Sugerencias</div>
-                                {suggestions
-                                    .filter(item => item.toLowerCase().includes(searchTerm.toLowerCase()))
-                                    .slice(0, 5)
-                                    .map((suggestion, index) => (
-                                        <motion.div 
-                                            key={index} 
-                                            className="suggestion-item"
-                                            onClick={() => handleSuggestionClick(suggestion)}
-                                            whileHover={{ backgroundColor: '#f0f9ff', x: 4 }}
-                                            transition={{ duration: 0.2 }}
-                                        >
-                                            <FiBookOpen className="suggestion-icon" />
-                                            <span>{suggestion}</span>
-                                        </motion.div>
-                                    ))
-                                }
+                                {suggestions.map((suggestion, index) => (
+                                    <motion.div 
+                                        key={index} 
+                                        className="suggestion-item"
+                                        onClick={() => handleSuggestionClick(suggestion.title)}
+                                        whileHover={{ backgroundColor: '#f0f9ff', x: 4 }}
+                                        transition={{ duration: 0.2 }}
+                                    >
+                                        <FiBookOpen className="suggestion-icon" />
+                                        <div className="suggestion-content">
+                                            <span className="suggestion-title">{suggestion.title}</span>
+                                            <span className="suggestion-author">{suggestion.author}</span>
+                                        </div>
+                                    </motion.div>
+                                ))}
                             </>
                         ) : (
                             <>

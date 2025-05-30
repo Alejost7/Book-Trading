@@ -59,7 +59,7 @@ const MyBooks = () => {
                     ? 'Libro retirado de la oferta de intercambio' 
                     : 'Libro ofertado para intercambio'
                 );
-            }
+            } 
         } catch (error) {
             console.error('Error al cambiar el estado de oferta:', error);
             alert(error.response?.data?.message || 'Error al cambiar el estado de oferta del libro');

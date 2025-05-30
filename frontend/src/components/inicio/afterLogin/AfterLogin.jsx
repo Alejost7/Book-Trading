@@ -114,12 +114,12 @@ const AfterLogin = () => {
 
     const handleExchange = async (requestedBookId, offeredBookId) => {
         try {
-            const response = await axios.post(`${API_URL}/exchanges/exchange`, {
+            const response = await axios.post(`${API_URL}/exchanges/createExchange`, {
                 requester: userId,
                 requestedBookId,
                 offeredBookId
             });
-
+            console.log(response.data);
             if (response.data.newExchange) {
                 // Actualizar la lista de libros disponibles
                 setBooks(prevBooks => 

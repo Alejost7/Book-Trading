@@ -1,165 +1,150 @@
+const mongoose = require("mongoose");
 const Exchange = require("../models/Exchange");
 const Notification = require("../models/Notification");
 const Book = require("../models/Books");
 
-exports.createExchange = async (req, res) => { // Endpoint para crear un nuevo intercambio
+exports.createExchange = async (req, res) => {  // Crear un intercambio
     try {
         const { requester, requestedBookId, offeredBookId } = req.body;
-        
-        // Verificar que el libro solicitado existe y está disponible
+        console.log("→ Crear intercambio:", { requester, requestedBookId, offeredBookId });
+
+        // 1. Validar libros
         const requestedBook = await Book.findById(requestedBookId).populate('owner');
-        if (!requestedBook) {
-            return res.status(404).json({ message: "Libro solicitado no encontrado" });
-        }
-        if (requestedBook.status !== "Disponible") {
-            return res.status(400).json({ message: "El libro solicitado no está disponible para intercambio" });
-        }
+        if (!requestedBook) return res.status(404).json({ message: "Libro solicitado no encontrado" });
+        if (requestedBook.status !== "Disponible")
+        return res.status(400).json({ message: "El libro solicitado no está disponible para intercambio" });
 
-        // Verificar que el libro ofrecido existe y está disponible
         const offeredBook = await Book.findById(offeredBookId).populate('owner');
-        if (!offeredBook) {
-            return res.status(404).json({ message: "Libro ofrecido no encontrado" });
-        }
-        if (offeredBook.status !== "Disponible") {
-            return res.status(400).json({ message: "El libro ofrecido no está disponible para intercambio" });
-        }
+        if (!offeredBook) return res.status(404).json({ message: "Libro ofrecido no encontrado" });
+        if (offeredBook.status !== "Disponible")
+        return res.status(400).json({ message: "El libro ofrecido no está disponible para intercambio" });
 
-        // Verificar que el libro ofrecido pertenece al solicitante
-        if (offeredBook.owner._id.toString() !== requester) {
-            return res.status(403).json({ message: "No puedes ofrecer un libro que no te pertenece" });
-        }
+        if (offeredBook.owner._id.toString() !== requester)
+        return res.status(403).json({ message: "No puedes ofrecer un libro que no te pertenece" });
 
-        // Crear la solicitud de intercambio
+        // 2. Crear intercambio y marcar libros
         const newExchange = new Exchange({
-            requester,
-            requestedBook: requestedBookId,
-            offeredBook: offeredBookId,
-            status: "pendiente"
+        requester,
+        requestedBook: requestedBookId,
+        offeredBook: offeredBookId,
+        status: "pendiente"
         });
-
-        // Actualizar el estado de los libros a "En intercambio"
         requestedBook.status = "En intercambio";
-        offeredBook.status = "En intercambio";
+        offeredBook.status   = "En intercambio";
 
         await Promise.all([
-            requestedBook.save(),
-            offeredBook.save(),
-            newExchange.save()
+        requestedBook.save(),
+        offeredBook.save(),
+        newExchange.save()
         ]);
+        console.log("→ Intercambio y libros guardados");
 
-        // Crear notificación para el propietario del libro solicitado
-        const ownerNotification = new Notification({
+        // 3. Crear notificaciones
+        let ownerNotification, requesterNotification;
+        try {
+        ownerNotification = new Notification({
             recipient: requestedBook.owner._id,
             type: 'exchange_request',
             message: `Nueva solicitud de intercambio para el libro "${requestedBook.title}"`,
             relatedExchange: newExchange._id
         });
-
-        // Crear notificación para el solicitante
-        const requesterNotification = new Notification({
+        requesterNotification = new Notification({
             recipient: requester,
             type: 'exchange_request_sent',
             message: `Has solicitado intercambiar "${requestedBook.title}" con "${offeredBook.title}"`,
             relatedExchange: newExchange._id
         });
-
         await Promise.all([
             ownerNotification.save(),
             requesterNotification.save()
         ]);
+        console.log("→ Notificaciones creadas");
+        } catch (notifErr) {
+        console.error("Error creando notificaciones:", notifErr);
+        // ¡Ojo! Podemos decidir no abortar el flujo por una noti
+        }
 
-        // Obtener el intercambio con toda la información necesaria
-        const populatedExchange = await Exchange.findById(newExchange._id)
-            .populate({
-                path: 'requestedBook',
-                populate: { path: 'owner', select: 'email' }
-            })
-            .populate({
-                path: 'offeredBook',
-                populate: { path: 'owner', select: 'email' }
-            })
+        // 4. Populate y responder
+        let populatedExchange;
+        try {
+        populatedExchange = await Exchange.findById(newExchange._id)
+            .populate({ path: 'requestedBook', populate: { path: 'owner', select: 'email' } })
+            .populate({ path: 'offeredBook',   populate: { path: 'owner', select: 'email' } })
             .populate('requester', 'email');
-
-        res.status(201).json({ 
-            message: "Solicitud de intercambio creada exitosamente",
-            newExchange: populatedExchange
+        console.log("→ Exchange poblado:", populatedExchange);
+        } catch (popErr) {
+        console.error("Error al poblar intercambio:", popErr);
+        // Podemos responder igualmente el newExchange sin populate
+        return res.status(201).json({
+            message: "Intercambio creado, pero fallo al poblar datos adicionales",
+            newExchange
         });
+        }
+
+        // 5. Envío final
+        return res.status(201).json({
+        message: "Solicitud de intercambio creada exitosamente",
+        newExchange: populatedExchange
+        });
+
     } catch (error) {
-        console.error('Error al crear intercambio:', error);
-        res.status(500).json({ message: 'Error al crear la solicitud de intercambio' });
+        console.error("Error general al crear intercambio:", error);
+        return res.status(500).json({ message: "Error al crear la solicitud de intercambio", error: error.message });
     }
 };
 
 
+// Aceptar o rechazar una solicitud de intercambio
 exports.updateExchangeStatus = async (req, res) => {
     try {
-        const { status } = req.body;
-        const exchange = await Exchange.findById(req.params.id)
-            .populate({
-                path: 'requestedBook',
-                populate: { path: 'owner', select: 'email' }
-            })
-            .populate({
-                path: 'offeredBook',
-                populate: { path: 'owner', select: 'email' }
-            })
-            .populate('requester', 'email');
+        const { id } = req.params;
+        const { status, userId } = req.body; // 'aceptado' | 'rechazado' pasamos el userId desde el body para pruebas, en producción se debería obtener del token de usuario
+        // const userId = req.user._id.toString(); // Descomentar en producción para obtener del token, hay que asegurarse de que el middleware de autenticación esté configurado
 
-        if (!exchange) {
-            return res.status(404).json({ message: "Solicitud no encontrada" });
+        // Buscar intercambio con libros y propietarios
+        const exchange = await Exchange.findById(id)
+        .populate('requestedBook')
+        .populate('offeredBook');
+        console.log('Dueño del libro solicitado:', exchange.requestedBook.owner.toString());
+        console.log('UserId que viene en la solicitud:', userId);
+        if (!exchange) return res.status(404).json({ message: "Intercambio no encontrado" });
+
+        // Solo el owner del libro solicitado puede cambiar el estado
+        if (exchange.requestedBook.owner.toString() !== userId) {
+        return res.status(403).json({ message: "No autorizado" });
         }
 
         exchange.status = status;
-        
-        // Crear notificación según el estado
-        if (status === "rechazado") {
-            exchange.requestedBook.status = "Disponible";
-            exchange.offeredBook.status = "Disponible";
+
+        // Actualizar estado de libros y enviar notificaciones
+        if (status === 'rechazado') {
+            exchange.requestedBook.status = 'Disponible';
+            exchange.offeredBook.status   = 'Disponible';
             await Promise.all([
                 exchange.requestedBook.save(),
                 exchange.offeredBook.save()
             ]);
-
-            const notification = new Notification({
-                recipient: exchange.requester._id,
+            await Notification.create({
+                recipient: exchange.requester,
                 type: 'exchange_rejected',
-                message: `Tu solicitud de intercambio para "${exchange.requestedBook.title}" fue rechazada`,
-                relatedExchange: exchange._id
+                message: `Tu solicitud de intercambio para "${exchange.requestedBook.title}" fue rechazada.`,
+                relatedExchange: id
             });
-            await notification.save();
         }
-        
-        if (status === "aceptado") {
-            const notification = new Notification({
-                recipient: exchange.requester._id,
+        if (status === 'aceptado') {
+            await Notification.create({
+                recipient: exchange.requester,
                 type: 'exchange_accepted',
-                message: `Tu solicitud de intercambio para "${exchange.requestedBook.title}" fue aceptada`,
-                relatedExchange: exchange._id
+                message: `Tu solicitud de intercambio para "${exchange.requestedBook.title}" fue aceptada.`,
+                relatedExchange: id
             });
-            await notification.save();
         }
-
+        // Guardar intercambio y ejecutar tareas agrupadas
         await exchange.save();
-
-        // Devolver el intercambio actualizado y poblado
-        const updatedExchange = await Exchange.findById(exchange._id)
-            .populate({
-                path: 'requestedBook',
-                populate: { path: 'owner', select: 'email' }
-            })
-            .populate({
-                path: 'offeredBook',
-                populate: { path: 'owner', select: 'email' }
-            })
-            .populate('requester', 'email');
-
-        res.json({ 
-            message: "Estado de solicitud actualizado", 
-            exchange: updatedExchange 
-        });
-    } catch (error) {
-        console.error('Error al actualizar el intercambio:', error);
-        res.status(500).json({ message: "Error al actualizar la solicitud" });
+        return res.json({ message: `Intercambio ${status}`, exchange: exchange });
+    } catch (err) {
+        console.error('Error updateExchangeStatus:', err);
+        res.status(500).json({ message: 'Error al actualizar el intercambio', error: err.message });
     }
 };
 
@@ -197,101 +182,65 @@ exports.exchangeDonation = async (req, res) => {  // Intercambiar un libro con u
     }
 };
 
-// Endpoint para actualizar los detalles del intercambio
+
+// Actualizar detalles de meetup del intercambio
 exports.exchangeDetails = async (req, res) => {
     try {
-        const { 
-            requesterAddress, 
-            requesterPhone, 
-            requesterEmail,
-            ownerAddress, 
-            ownerPhone, 
-            ownerEmail,
-            meetingPoint,
-            meetingDate
-        } = req.body;
+        const { id } = req.params;
+        const {userId, ...details } = req.body;
 
-        const exchange = await Exchange.findById(req.params.id)
-            .populate({
-                path: 'requestedBook',
-                populate: { path: 'owner', select: 'email _id' }
-            })
-            .populate({
-                path: 'offeredBook',
-                populate: { path: 'owner', select: 'email _id' }
-            })
-            .populate('requester', 'email _id');
-
-        if (!exchange) {
-            return res.status(404).json({ message: "Intercambio no encontrado" });
+        // Buscar intercambio existente
+        const exchange = await Exchange.findById(id)
+        .populate('requestedBook')
+        .populate('offeredBook');
+        if (!exchange) return res.status(404).json({ message: "Intercambio no encontrado" });
+        if (exchange.status !== 'aceptado') {
+        return res.status(400).json({ message: 'Intercambio no está en estado aceptado' });
         }
 
-        // Actualizar los detalles del intercambio
+        // Solo requester u owner pueden actualizar detalles
+        const isRequester = exchange.requester.toString() === userId;
+        const isOwner = exchange.requestedBook.owner.toString() === userId;
+        if (!isRequester && !isOwner) {
+        return res.status(403).json({ message: 'No autorizado' });
+        }
+
+        // Extender detalles de intercambio sin sobrescribir campos internos
         exchange.exchangeDetails = {
-            requesterAddress,
-            requesterPhone,
-            requesterEmail,
-            ownerAddress,
-            ownerPhone,
-            ownerEmail,
-            meetingPoint,
-            meetingDate,
-            status: "meetup_scheduled"
+            ...(exchange.exchangeDetails?.toObject?.() || {}),
+            ...details,
+            status: 'meetup_scheduled'
         };
 
         await exchange.save();
 
-        // Crear notificaciones para ambos usuarios
-        const requesterNotification = new Notification({
-            recipient: exchange.requester._id,
-            type: 'exchange_details_updated',
-            message: `Los detalles del intercambio han sido actualizados. Punto de encuentro: ${meetingPoint}`,
-            relatedExchange: exchange._id
-        });
-
-        const ownerNotification = new Notification({
-            recipient: exchange.requestedBook.owner._id,
-            type: 'exchange_details_updated',
-            message: `Los detalles del intercambio han sido actualizados. Punto de encuentro: ${meetingPoint}`,
-            relatedExchange: exchange._id
-        });
-
+        // Crear notificaciones agrupadas para ambas partes
         await Promise.all([
-            requesterNotification.save(),
-            ownerNotification.save()
+        Notification.create({
+            recipient: exchange.requester,
+            type: 'meetup_scheduled',
+            message: `Encuentro agendado en ${details.meetingPoint} para ${details.meetingDate}`,
+            relatedExchange: id
+        }),
+        Notification.create({
+            recipient: exchange.requestedBook.owner,
+            type: 'meetup_scheduled',
+            message: `Encuentro agendado en ${details.meetingPoint} para ${details.meetingDate}`,
+            relatedExchange: id
+        })
         ]);
 
-        // Obtener el intercambio actualizado con toda la información
-        const updatedExchange = await Exchange.findById(exchange._id)
-            .populate({
-                path: 'requestedBook',
-                populate: { path: 'owner', select: 'email _id' }
-            })
-            .populate({
-                path: 'offeredBook',
-                populate: { path: 'owner', select: 'email _id' }
-            })
-            .populate('requester', 'email _id');
+        const result = exchange.toObject();
+        result.isRequester = isRequester;
+        result.isOwner = isOwner;
 
-        // Procesar el intercambio para incluir isOwner e isRequester
-        const processedExchange = updatedExchange.toObject();
-        const requesterId = updatedExchange.requester._id.toString();
-        const bookOwnerId = updatedExchange.requestedBook.owner._id.toString();
-        processedExchange.isRequester = requesterId === req.body.userId;
-        processedExchange.isOwner = bookOwnerId === req.body.userId;
-
-        res.json({ 
-            message: "Detalles del intercambio actualizados",
-            exchange: processedExchange
-        });
-    } catch (error) {
-        console.error('Error al actualizar detalles del intercambio:', error);
-        res.status(500).json({ 
-            message: "Error al actualizar los detalles del intercambio",
-            error: error.message 
-        });
+        res.json({ message: 'Detalles del intercambio actualizados', exchange: result });
+    } catch (err) {
+        console.error('Error exchangeDetails:', err);
+        res.status(500).json({ message: 'Error al actualizar detalles', error: err.message });
     }
 };
+
 
 // Obtener intercambios de un usuario
 exports.getExchanges = async (req, res) => {
@@ -333,14 +282,6 @@ exports.getExchanges = async (req, res) => {
             exchangeObj.isRequester = requesterId === userIdStr;
             exchangeObj.isOwner = bookOwnerId === userIdStr;
 
-            console.log('Exchange processed:', {
-                exchangeId: exchange._id,
-                requesterId,
-                bookOwnerId,
-                userIdStr,
-                isRequester: exchangeObj.isRequester,
-                isOwner: exchangeObj.isOwner
-            });
 
             return exchangeObj;
         });
@@ -351,3 +292,129 @@ exports.getExchanges = async (req, res) => {
         res.status(500).json({ message: 'Error al obtener los intercambios' });
     }
 };
+
+exports.confirmDeliveryBook = async (req, res) => {
+    try {
+        const { confirmedBy, bookId } = req.body;
+        const exchangeId = req.params.id;
+
+        // 1. Buscar el intercambio con todos los datos necesarios
+        const exchange = await Exchange.findById(exchangeId)
+            .populate({
+                path: "requestedBook",
+                populate: { path: "owner" }
+            })
+            .populate({
+                path: "offeredBook",
+                populate: { path: "owner" }
+            });
+
+        if (!exchange) {
+            return res.status(404).json({ message: "Intercambio no encontrado" });
+        }
+
+        // 2. Verificar autorización
+        const requesterId = exchange.requester.toString();
+        const requestedOwnerId = exchange.requestedBook.owner._id.toString();
+        const offeredOwnerId = exchange.offeredBook.owner._id.toString();
+
+        if (confirmedBy !== requesterId && confirmedBy !== requestedOwnerId) {
+            return res.status(403).json({ message: "No autorizado para confirmar la entrega" });
+        }
+
+        // 3. Identificar y actualizar el libro confirmado
+        let bookToUpdate;
+        if (bookId === exchange.requestedBook._id.toString()) {
+            bookToUpdate = exchange.requestedBook;
+        } else if (bookId === exchange.offeredBook._id.toString()) {
+            bookToUpdate = exchange.offeredBook;
+        } else {
+            return res.status(400).json({ message: "ID de libro no válido" });
+        }
+
+        if (bookToUpdate.status === "intercambiado") {
+            return res.status(400).json({ message: "Este libro ya fue confirmado como entregado" });
+        }
+
+        // 4. Marcar el libro como intercambiado
+        bookToUpdate.status = "intercambiado";
+        await bookToUpdate.save();
+
+        // 5. Verificar si ambos libros están confirmados
+        if (exchange.requestedBook.status === "intercambiado" && 
+            exchange.offeredBook.status === "intercambiado") {
+            
+            // 6. Guardar propietarios anteriores
+            exchange.requestedBook.previousOwners.push(exchange.requestedBook.owner._id);
+            exchange.offeredBook.previousOwners.push(exchange.offeredBook.owner._id);
+
+            // 7. Intercambiar propietarios
+            const oldRequestedOwner = exchange.requestedBook.owner._id;
+            const oldOfferedOwner = exchange.offeredBook.owner._id;
+
+            // Actualizar propietarios y establecer estado como "Disponible" y no ofertado
+            exchange.requestedBook.owner = oldOfferedOwner;
+            exchange.requestedBook.status = "Disponible";
+            exchange.requestedBook.isOffered = false; // Marcar como no ofertado
+
+            exchange.offeredBook.owner = oldRequestedOwner;
+            exchange.offeredBook.status = "Disponible";
+            exchange.offeredBook.isOffered = false; // Marcar como no ofertado
+
+            // 8. Actualizar estado del intercambio
+            exchange.status = "completado";
+
+            // 9. Guardar todos los cambios en una transacción
+            const session = await mongoose.startSession();
+            try {
+                await session.withTransaction(async () => {
+                    await exchange.requestedBook.save({ session });
+                    await exchange.offeredBook.save({ session });
+                    await exchange.save({ session });
+                });
+            } finally {
+                await session.endSession();
+            }
+
+            // 10. Crear notificaciones
+            await Notification.insertMany([
+                {
+                    recipient: requesterId,
+                    type: "exchange_completed",
+                    message: "El intercambio ha sido completado exitosamente",
+                    relatedExchange: exchange._id,
+                },
+                {
+                    recipient: oldOfferedOwner,
+                    type: "exchange_completed",
+                    message: "El intercambio ha sido completado exitosamente",
+                    relatedExchange: exchange._id,
+                },
+            ]);
+        }
+
+        // 11. Responder con el estado actualizado
+        const updatedExchange = await Exchange.findById(exchangeId)
+            .populate({
+                path: "requestedBook",
+                populate: { path: "owner" }
+            })
+            .populate({
+                path: "offeredBook",
+                populate: { path: "owner" }
+            });
+
+        res.json({
+            message: "Entrega confirmada",
+            exchange: updatedExchange
+        });
+
+    } catch (error) {
+        console.error("Error al confirmar la entrega:", error);
+        res.status(500).json({
+            message: "Error al confirmar la entrega",
+            error: error.message,
+        });
+    }
+};
+

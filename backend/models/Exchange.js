@@ -1,6 +1,6 @@
-//const mongoose = require("mongoose");
+const mongoose = require("mongoose");
 
-/*const exchangeSchema = new mongoose.Schema({
+const exchangeSchema = new mongoose.Schema({
     requester: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
     requestedBook: { type: mongoose.Schema.Types.ObjectId, ref: "Book", required: true },
     offeredBook: { type: mongoose.Schema.Types.ObjectId, ref: "Book", required: true },
@@ -27,8 +27,8 @@
     requestedAt: { type: Date, default: Date.now }
 });
 
-module.exports = mongoose.model("Exchange", exchangeSchema);*/
-const mongoose = require("mongoose");
+module.exports = mongoose.model("Exchange", exchangeSchema);
+/*const mongoose = require("mongoose");
 const responseSchema = new mongoose.Schema({
     userId:       { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     offeredBook:  {
@@ -63,4 +63,4 @@ const exchangeSchema = new mongoose.Schema({
 });
 
 exchangeSchema.index({ proposerId: 1, status: 1, createdAt: 1 }); 
-module.exports = mongoose.model('Exchange', exchangeSchema);
+module.exports = mongoose.model('Exchange', exchangeSchema);*/

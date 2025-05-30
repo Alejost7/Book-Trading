@@ -10,6 +10,9 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 import Navbar from '../inicio/beforeLogin/NavBar';
 import Footer from '../inicio/beforeLogin/Footer';
+import Upload from '../tradeLibros/SubirLibro';
+import { openModal } from '../../Redux/modalSlice';
+import { useDispatch } from 'react-redux';
 import "../../styles/miPerfil/MiPerfil.css";
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -17,7 +20,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 const MiPerfil = () => {
     const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
     const navigate = useNavigate();
-    const [activeTab, setActiveTab] = useState('acerca');
+    const [activeTab, setActiveTab] = useState('libros');
     const [user, setUser] = useState(null);
     const [books, setBooks] = useState([]);
     const [exchanges, setExchanges] = useState([]);
@@ -27,7 +30,8 @@ const MiPerfil = () => {
         booksAdded: 0,
         exchangesCompleted: 0,
     });
-    
+    const dispatch = useDispatch();
+
     // Función para extraer el username del email
     const getUsernameFromEmail = (email) => {
         return email ? email.split('@')[0] : 'Usuario';
@@ -124,19 +128,6 @@ const MiPerfil = () => {
         fetchUserData();
     },);
 
-    // Para modificar la descripción en formato Markdown
-    const formatBio = (text) => {
-        if (!text) return <p>No hay información biográfica disponible.</p>;
-        
-        // Esto es una versión muy simple, en un caso real usarías una librería de Markdown
-        const formatted = text
-            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-            .replace(/\*(.*?)\*/g, '<em>$1</em>')
-            .replace(/\n/g, '<br>');
-        
-        return <div dangerouslySetInnerHTML={{ __html: formatted }} />;
-    };
-    
     const handleLogout = () => {
         localStorage.removeItem('userId');
         localStorage.removeItem('userEmail');
@@ -149,7 +140,7 @@ const MiPerfil = () => {
     
     const handleAddBook = () => {
         // Redirigir a la página de subir libro o mostrar modal
-        navigate('/afterLogin/subirLibro');
+        dispatch(openModal("upload")); 
     };
     
     const handleGoToExchanges = () => {
@@ -157,9 +148,6 @@ const MiPerfil = () => {
         navigate('/afterLogin/exchanges');
     };
     
-    // Bio de ejemplo (se debería cargar desde el backend)
-    const userBio = user?.bio || "Soy un apasionado de la lectura y me encanta intercambiar libros para descubrir nuevas historias. ¡Bienvenido a mi perfil de BookSwap!";
-
     if (loading && !user) {
         return (
             <div className="user-loading-full-page">
@@ -262,13 +250,6 @@ const MiPerfil = () => {
                 
                 <div className="user-profile-tabs">
                     <button 
-                        className={`user-tab-btn ${activeTab === 'acerca' ? 'active' : ''}`}
-                        onClick={() => setActiveTab('acerca')}
-                    >
-                        <FiUser />
-                        <span>Acerca de</span>
-                    </button>
-                    <button 
                         className={`user-tab-btn ${activeTab === 'libros' ? 'active' : ''}`}
                         onClick={() => setActiveTab('libros')}
                     >
@@ -291,23 +272,7 @@ const MiPerfil = () => {
                             <p>Cargando información...</p>
                         </div>
                     ) : (
-                        <>
-                            {activeTab === 'acerca' && (
-                                <motion.div 
-                                    className="user-about-section"
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 0.5 }}
-                                >
-                                    <div className="user-about-bio">
-                                        <h3>Biografía</h3>
-                                        <div className="user-bio-content">
-                                            {formatBio(userBio)}
-                                        </div>
-                                    </div>
-                                </motion.div>
-                            )}
-                            
+                        <>                           
                             {activeTab === 'libros' && (
                                 <motion.div 
                                     className="user-books-section"
@@ -475,12 +440,12 @@ const MiPerfil = () => {
                                             
                                             {exchanges.length > 3 && (
                                                 <div className="user-more-exchanges">
-                                                    <button 
+                <button 
                                                         className="user-view-all-exchanges"
                                                         onClick={handleGoToExchanges}
                                                     >
                                                         Ver todos los intercambios ({exchanges.length})
-                                                    </button>
+                </button>
                                                 </div>
                                             )}
                                         </div>
@@ -492,7 +457,7 @@ const MiPerfil = () => {
                     )}
                 </div>
             </div>
-            
+            <Upload/>
             {!isAuthenticated && <Footer />}
         </div>
     );
