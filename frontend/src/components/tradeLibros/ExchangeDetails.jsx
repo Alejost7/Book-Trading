@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import '../../styles/tradeLibros/exchangeDetails.css';
+const API_URL = import.meta.env.VITE_API_URL;
+
 
 const ExchangeDetails = ({ exchange, onClose, userId }) => {
     const [details, setDetails] = useState({
@@ -20,7 +22,7 @@ const ExchangeDetails = ({ exchange, onClose, userId }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.patch(`http://localhost:5000/exchanges/${exchange._id}/details`, details);
+            await axios.patch(`${API_URL}/exchanges/exchanges/${exchange._id}/details`, details);
             setSuccess('Detalles del intercambio actualizados exitosamente');
             setError('');
             // Cerrar el modal después de 2 segundos
@@ -35,7 +37,7 @@ const ExchangeDetails = ({ exchange, onClose, userId }) => {
 
     const handleConfirmDelivery = async (bookId) => {
         try {
-            await axios.patch(`http://localhost:5000/exchanges/${exchange._id}/confirm-delivery`, {
+            await axios.patch(`${API_URL}/exchanges/exchanges/${exchange._id}/confirm-delivery`, {
                 confirmedBy: userId,
                 bookId: bookId
             });

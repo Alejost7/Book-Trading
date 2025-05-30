@@ -1,4 +1,4 @@
-import { FiPlus, FiBookOpen, FiUser, FiBookmark, FiArrowLeft, FiLogOut, FiHelpCircle, FiTrash2} from 'react-icons/fi';
+import { FiMenu, FiPlus, FiBookOpen, FiUser, FiBookmark, FiArrowLeft, FiLogOut, FiHelpCircle, FiTrash2} from 'react-icons/fi';
 import '../../../styles/afterLogin/afterLogin.css';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect, useCallback } from 'react';
@@ -13,6 +13,8 @@ import { useDispatch } from 'react-redux';
 import NotificationCenter from '../../NotificationCenter';
 import MisIntercambios from '../../intercambios/MisIntercambios';
 import axios from 'axios';
+const API_URL = import.meta.env.VITE_API_URL;
+
 
 const AfterLogin = () => {
     const navigate = useNavigate();
@@ -25,10 +27,11 @@ const AfterLogin = () => {
     const [showExchangeModal, setShowExchangeModal] = useState(false);
     const [selectedBook, setSelectedBook] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [sidebarOpen, setSidebarOpen] = useState(false);
 
     const fetchBooks = useCallback(async () => {
         try {
-            const response = await axios.get(`http://localhost:5000/books?excludeOwner=${userId}`);
+            const response = await axios.get(`${API_URL}/books/books?excludeOwner=${userId}`);
             setBooks(response.data);
         } catch (error) {
             console.error("Error fetching books:", error);
@@ -37,7 +40,7 @@ const AfterLogin = () => {
 
     const fetchMyBooks = useCallback(async () => {
         try {
-            const response = await axios.get(`http://localhost:5000/myBooks?owner=${userId}`);
+            const response = await axios.get(`${API_URL}/books/myBooks?owner=${userId}`);
             setMyBooks(response.data);
         } catch (error) {
             console.error("Error fetching my books:", error);
@@ -46,7 +49,7 @@ const AfterLogin = () => {
 
     const fetchUserRole = useCallback(async () => {
         try {
-            const response = await axios.get('http://localhost:5000/users');
+            const response = await axios.get(`${API_URL}/auth/users`);
             const currentUser = response.data.find(user => user._id === userId);
             if (currentUser) {
                 setUserRole(currentUser.role);
@@ -90,9 +93,9 @@ const AfterLogin = () => {
     };
 
     const handleDeleteAllBooks = async () => {
-        if (window.confirm('¿Estás seguro de que deseas eliminar todos los libros? Esta acción no se puede deshacer.')) {
+        if (window.confirm(' ENTENDEMOS QUE ERES UN ADMIN, PERO ¿Estás seguro de que deseas eliminar todos los libros? Esta acción no se puede deshacer.')) {
             try {
-                const response = await axios.delete('http://localhost:5000/booksDelete');
+                const response = await axios.delete(`${API_URL}/books/deleteBooks`);
                 setBooks([]);
                 setMyBooks([]);
                 const messagee = response.data.message;
@@ -111,7 +114,7 @@ const AfterLogin = () => {
 
     const handleExchange = async (requestedBookId, offeredBookId) => {
         try {
-            const response = await axios.post('http://localhost:5000/exchanges', {
+            const response = await axios.post(`${API_URL}/exchanges/exchange`, {
                 requester: userId,
                 requestedBookId,
                 offeredBookId
@@ -164,9 +167,16 @@ const AfterLogin = () => {
 
     return (
         <div className="afterLogin-container">
-            <aside className="slidebar">
+            {/* Botón Hamburguesa solo visible en móvil */}
+            <button
+                className="hamburger-button"
+                onClick={() => setSidebarOpen(!sidebarOpen)}
+            >
+                <FiMenu />
+            </button>
+            <aside className={`slidebar ${sidebarOpen ? "open" : ""}`}>
                 <h1 className="logo-title" onClick={() => navigate("/")}>BookSwap</h1>
-                <nav className="nav-links">
+                <nav className="nav-links2">
                     <a onClick= {() => setCurrentView("MyBooks")} className={`nav-item ${currentView === "MyBooks" ? "active" : ""}`}><FiBookOpen />Mis Libros</a>
                     <a onClick= {() => setCurrentView("Changes")} className={`nav-item ${currentView === "Changes" ? "active" : ""}`}><FiBookmark />Intercambios</a>
                     <a onClick= {() => setCurrentView("Donation")} className={`nav-item ${currentView === "Donation" ? "active" : ""}`}><FiBookOpen/>Donaciones</a>

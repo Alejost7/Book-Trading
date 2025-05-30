@@ -36,7 +36,7 @@ const Features = () => {
             </ul>
             {selectedFeature && (
                 <div className="features-img">
-                    {selectedFeature === "facil" && <img src={imageRef} alt="Característica fácil de usar" />}
+                    {selectedFeature === "facil" && <img src={imageSpy} alt="Característica fácil de usar" />}
                     {selectedFeature === "moderno" && <img src={imageSpy} alt="Diseño moderno" />}
                     {selectedFeature === "personalizable" && <img src={imagePersonalizable} alt="Personalizable" />}
                 </div>

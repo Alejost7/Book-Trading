@@ -39,8 +39,10 @@ const Poligonos = () => {
                 </Link>
             </div>
             <div className="poligono poligono3">
-                <img src={sobreNosotros} alt="Sobre Nosotros" />
-                <span className="tooltip">Sobre Nosotros</span>
+                <Link to="/aboutUs">
+                    <img src={sobreNosotros} alt="Sobre Nosotros" />
+                    <span className="tooltip">Sobre Nosotros</span>
+                </Link>
             </div>
             <div className="poligono poligono4">
                 {isAuthenticated ? (

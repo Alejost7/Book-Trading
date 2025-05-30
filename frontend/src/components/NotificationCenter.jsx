@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import '../styles/notifications/notifications.css';
+const API_URL = import.meta.env.VITE_API_URL;
+
 
 const NotificationCenter = ({ userId }) => {
     const [notifications, setNotifications] = useState([]);
@@ -8,7 +10,7 @@ const NotificationCenter = ({ userId }) => {
 
     const fetchNotifications = useCallback(async () => {
         try {
-            const response = await axios.get(`http://localhost:5000/notifications/${userId}`);
+            const response = await axios.get(`${API_URL}/notifications/notifications/${userId}`);
             setNotifications(response.data);
         } catch (error) {
             console.error('Error fetching notifications:', error);
@@ -23,7 +25,7 @@ const NotificationCenter = ({ userId }) => {
 
     const markAsRead = async (notificationId) => {
         try {
-            await axios.patch(`http://localhost:5000/notifications/${notificationId}/read`);
+            await axios.patch(`${API_URL}/notifications/notifications/${notificationId}/read`);
             setNotifications(notifications.map(notification => 
                 notification._id === notificationId 
                     ? { ...notification, read: true }

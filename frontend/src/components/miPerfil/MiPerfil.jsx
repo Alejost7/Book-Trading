@@ -11,6 +11,8 @@ import axios from 'axios';
 import Navbar from '../inicio/beforeLogin/NavBar';
 import Footer from '../inicio/beforeLogin/Footer';
 import "../../styles/miPerfil/MiPerfil.css";
+const API_URL = import.meta.env.VITE_API_URL;
+
 
 const MiPerfil = () => {
     const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
@@ -24,7 +26,6 @@ const MiPerfil = () => {
     const [stats, setStats] = useState({
         booksAdded: 0,
         exchangesCompleted: 0,
-        favoriteGenres: ['Cargando...']
     });
     
     // Función para extraer el username del email
@@ -41,7 +42,7 @@ const MiPerfil = () => {
             }
             
             // Obtener información del usuario
-            const userResponse = await axios.get(`http://localhost:5000/users?id=${userId}`);
+            const userResponse = await axios.get(`${API_URL}/auth/users?id=${userId}`);
             
             // Si el endpoint anterior no devuelve datos específicos del usuario
             // podríamos usar otro enfoque (usar lo que tengamos en localStorage)
@@ -80,40 +81,20 @@ const MiPerfil = () => {
             }
             
             // Obtener libros del usuario
-            const booksResponse = await axios.get(`http://localhost:5000/myBooks?owner=${userId}`);
+            const booksResponse = await axios.get(`${API_URL}/books/myBooks?owner=${userId}`);
             setBooks(booksResponse.data || []);
             
             // Obtener intercambios del usuario
-            const exchangesResponse = await axios.get(`http://localhost:5000/exchanges?userId=${userId}`);
+            const exchangesResponse = await axios.get(`${API_URL}/exchanges/exchangesUser?userId=${userId}`);
             setExchanges(exchangesResponse.data || []);
             
             // Actualizar estadísticas
             const completedExchanges = exchangesResponse.data ? 
                 exchangesResponse.data.filter(e => e.status === 'completado').length : 0;
             
-            // Extraer géneros favoritos (esto debería venir de una API real)
-            // Como no tenemos esta información, usaremos géneros ficticios basados en los libros
-            const genres = new Set();
-            if (booksResponse.data && booksResponse.data.length > 0) {
-                // Este es solo un ejemplo, en una app real extraeríamos los géneros de los libros
-                if (booksResponse.data.find(b => b.title.toLowerCase().includes('harry'))) 
-                    genres.add('Fantasía');
-                if (booksResponse.data.find(b => b.title.toLowerCase().includes('1984'))) 
-                    genres.add('Ciencia Ficción');
-                if (booksResponse.data.find(b => b.title.toLowerCase().includes('cien'))) 
-                    genres.add('Realismo Mágico');
-            }
-            
-            // Si no hay géneros, agregamos algunos predeterminados
-            if (genres.size === 0) {
-                genres.add('Literatura');
-                genres.add('Novela');
-            }
-            
             setStats({
                 booksAdded: booksResponse.data ? booksResponse.data.length : 0,
                 exchangesCompleted: completedExchanges,
-                favoriteGenres: Array.from(genres)
             });
             
             setLoading(false);

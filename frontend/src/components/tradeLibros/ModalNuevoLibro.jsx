@@ -2,6 +2,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { closeModal } from "../../Redux/modalSlice";
 import { useState } from "react";
 import "../../styles/tradeLibros/subirLibros.css";
+const API_URL = import.meta.env.VITE_API_URL;
 
 const ModalNuevoLibro = ({ onBookAdded }) => {
     const { isOpen, modalType } = useSelector((state) => state.modal);
@@ -34,7 +35,7 @@ const ModalNuevoLibro = ({ onBookAdded }) => {
         }
 
         try {
-        const response = await fetch("http://localhost:5000/addBooks", {
+        const response = await fetch(`${API_URL}/books/addBooks`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ ...form, owner: userId })

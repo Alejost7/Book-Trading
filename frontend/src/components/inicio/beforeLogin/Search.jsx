@@ -5,6 +5,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { openModal } from '../../../Redux/modalSlice';
 import '../../../styles/beforeLogin/search.css';
 import { FiSearch, FiX, FiBookOpen, FiRefreshCw } from 'react-icons/fi';
+const API_URL = import.meta.env.VITE_API_URL;
+
 
 const Search = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -23,11 +25,12 @@ const Search = () => {
     const searchContainerRef = useRef(null);
     const inputRef = useRef(null);
 
+
     // Cargar todos los libros y búsquedas recientes al montar el componente
     useEffect(() => {
         const fetchAllBooks = async () => {
             try {
-                const response = await fetch('http://localhost:5000/books');
+                const response = await fetch(`${API_URL}/books/books`);
                 const data = await response.json();
                 setAllBooks(data);
                 
@@ -71,7 +74,7 @@ const Search = () => {
         setShowSuggestions(false);
         
         try {
-            const response = await fetch(`http://localhost:5000/books/search?q=${encodeURIComponent(searchTerm)}`);
+            const response = await fetch(`${API_URL}/books/books/search?q=${encodeURIComponent(searchTerm)}`);
             const data = await response.json();
             
             if (data.length === 0) {

@@ -3,6 +3,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { FiTrash2 } from 'react-icons/fi';
 import { motion } from 'framer-motion';
+const API_URL = import.meta.env.VITE_API_URL;
 
 
 const MyBooks = () => {
@@ -12,7 +13,7 @@ const MyBooks = () => {
     const fetchMyBooks = useCallback(async () => {
         try {
             const userId = localStorage.getItem("userId");
-            const response = await axios.get(`http://localhost:5000/myBooks?owner=${userId}`);
+            const response = await axios.get(`${API_URL}/books/myBooks?owner=${userId}`);
             setMyBooks(response.data);
             setLoading(false);
         } catch (error) {
@@ -23,15 +24,15 @@ const MyBooks = () => {
 
     useEffect(() => {
         fetchMyBooks();
-        // Actualización automática cada 5 segundos
-        const interval = setInterval(fetchMyBooks, 5000);
+        // Actualización automática cada x segundos
+        const interval = setInterval(fetchMyBooks, 1000);
         return () => clearInterval(interval);
     }, [fetchMyBooks]);
 
     const handleDeleteBook = async (bookId) => {
         if (window.confirm('¿Estás seguro de que deseas eliminar este libro? Esta acción no se puede deshacer.')) {
             try {
-                await axios.delete(`http://localhost:5000/books/${bookId}`);
+                await axios.delete(`${API_URL}/books/books/${bookId}`);
                 setMyBooks(prevBooks => prevBooks.filter(book => book._id !== bookId));
                 alert('Libro eliminado exitosamente');
             } catch (error) {
@@ -44,7 +45,7 @@ const MyBooks = () => {
     const handleOfferToggle = async (bookId, isCurrentlyOffered) => {
         try {
             const endpoint = isCurrentlyOffered ? 'unoffer' : 'offer';
-            const response = await axios.patch(`http://localhost:5000/books/${bookId}/${endpoint}`);
+            const response = await axios.patch(`${API_URL}/books/books/${bookId}/${endpoint}`);
             
             if (response.status === 200) {
                 // Actualizar el estado local

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { login } from '../../Redux/authSlice';
 import '../../styles/registro/registro.css';
+const API_URL = import.meta.env.VITE_API_URL;
 
 const Registro = () => {
     const [form, setForm] = useState({email: '', password: ''});
@@ -32,7 +33,8 @@ const Registro = () => {
         setError("");
 
         try {
-            const response = await fetch(`http://localhost:5000/${action}`, {
+            console.log(API_URL);
+            const response = await fetch(`${API_URL}/auth/${action}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
