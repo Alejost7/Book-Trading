@@ -30,6 +30,15 @@ const MiPerfil = () => {
         booksAdded: 0,
         exchangesCompleted: 0,
     });
+    const [bookFilter, setBookFilter] = useState('todos'); // nuevo estado
+
+    // Filtrar libros según el filtro seleccionado
+    const filteredBooks = books.filter(book => {
+        if (bookFilter === 'todos') return true;
+        if (bookFilter === 'disponibles') return book.status.toLowerCase() === 'disponible';
+        if (bookFilter === 'intercambio') return book.status.toLowerCase() === 'en intercambio';
+        return true;
+    });
     const dispatch = useDispatch();
 
     // Función para extraer el username del email
@@ -39,6 +48,7 @@ const MiPerfil = () => {
     
     // Función para obtener los datos del usuario
     const fetchUserData = async () => {
+        setLoading(true);
         try {
             const userId = localStorage.getItem('userId');
             if (!userId) {
@@ -126,26 +136,11 @@ const MiPerfil = () => {
     
     useEffect(() => {
         fetchUserData();
-    },);
-
-    const handleLogout = () => {
-        localStorage.removeItem('userId');
-        localStorage.removeItem('userEmail');
-        localStorage.removeItem('userName');
-        localStorage.setItem('isAuthenticated', false);
-        // Redirigir a la página de inicio o login
-        navigate('/');
-        window.location.reload(); // Recargar para actualizar el estado de autenticación
-    };
+    }, []);
     
     const handleAddBook = () => {
         // Redirigir a la página de subir libro o mostrar modal
         dispatch(openModal("upload")); 
-    };
-    
-    const handleGoToExchanges = () => {
-        // Redirigir a la página de intercambios
-        navigate('/afterLogin/exchanges');
     };
     
     if (loading && !user) {
@@ -216,24 +211,6 @@ const MiPerfil = () => {
                                 <span>Miembro desde {user?.joinDate}</span>
                             </div>
                         </div>
-                        
-                        <div className="user-profile-actions">
-                            <button className="user-profile-btn edit-profile-btn">
-                                <FiEdit2 />
-                                <span>Editar perfil</span>
-                            </button>
-                            <button className="user-profile-btn settings-profile-btn">
-                                <FiSettings />
-                                <span>Configuración</span>
-                            </button>
-                            <button 
-                                className="user-profile-btn logout-profile-btn"
-                                onClick={handleLogout}
-                            >
-                                <FiLogOut />
-                                <span>Cerrar sesión</span>
-                            </button>
-                        </div>
                     </div>
                 </div>
                 
@@ -290,22 +267,31 @@ const MiPerfil = () => {
                                                 <FiPlus />
                                                 <span>Agregar Libro</span>
                                             </button>
-                                            <button 
-                                                className="user-view-all-btn"
-                                                onClick={() => navigate('/afterLogin/myBooks')}
-                                            >
-                                                <span>Ver todo</span>
-                                            </button>
                                         </div>
                                     </div>
                                     
                                     <div className="user-books-filters">
-                                        <button className="user-filter-btn active">Todos</button>
-                                        <button className="user-filter-btn">Disponibles</button>
-                                        <button className="user-filter-btn">En intercambio</button>
+                                        <button 
+                                            className={`user-filter-btn ${bookFilter === 'todos' ? 'active' : ''}`}
+                                            onClick={() => setBookFilter('todos')}
+                                        >
+                                            Todos
+                                        </button>
+                                        <button 
+                                            className={`user-filter-btn ${bookFilter === 'disponibles' ? 'active' : ''}`}
+                                            onClick={() => setBookFilter('disponibles')}
+                                        >
+                                            Disponibles
+                                        </button>
+                                        <button 
+                                            className={`user-filter-btn ${bookFilter === 'intercambio' ? 'active' : ''}`}
+                                            onClick={() => setBookFilter('intercambio')}
+                                        >
+                                            En intercambio
+                                        </button>
                                     </div>
                                     
-                                    {books.length === 0 ? (
+                                    {filteredBooks.length === 0 ? (
                                         <div className="user-empty-state">
                                             <FiBookOpen size={40} />
                                             <h4>No tienes libros registrados</h4>
@@ -320,7 +306,7 @@ const MiPerfil = () => {
                                         </div>
                                     ) : (
                                         <div className="user-books-grid">
-                                            {books.slice(0, 6).map((book) => (
+                                            {filteredBooks.slice(0, 6).map((book) => (
                                                 <motion.div 
                                                     key={book._id} 
                                                     className="user-book-item"
@@ -337,11 +323,6 @@ const MiPerfil = () => {
                                                     <div className="user-book-details">
                                                         <h4>{book.title}</h4>
                                                         <p>{book.author}</p>
-                                                    </div>
-                                                    <div className="user-book-actions">
-                                                        <button onClick={() => navigate(`/afterLogin/book/${book._id}`)}>
-                                                            Ver detalles
-                                                        </button>
                                                     </div>
                                                 </motion.div>
                                             ))}
@@ -368,15 +349,6 @@ const MiPerfil = () => {
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ duration: 0.5 }}
                                 >
-                                    <div className="user-section-header">
-                                        <h3>Historial de Intercambios</h3>
-                                        <button 
-                                            className="user-view-all-btn"
-                                            onClick={handleGoToExchanges}
-                                        >
-                                            <span>Ver todo</span>
-                                        </button>
-                                    </div>
                                     
                                     {exchanges.length === 0 ? (
                                         <div className="user-empty-state">
@@ -396,10 +368,6 @@ const MiPerfil = () => {
                                                 const isRequester = exchange.isRequester;
                                                 const givenBook = isRequester ? exchange.offeredBook : exchange.requestedBook;
                                                 const receivedBook = isRequester ? exchange.requestedBook : exchange.offeredBook;
-                                                const otherUser = isRequester 
-                                                    ? getUsernameFromEmail(exchange.requestedBook.owner.email)
-                                                    : getUsernameFromEmail(exchange.requester.email);
-                                                
                                                 return (
                                                     <div key={exchange._id} className="user-exchange-item">
                                                         <div className="user-exchange-header">
@@ -415,7 +383,6 @@ const MiPerfil = () => {
                                                             <div className="user-exchange-book">
                                                                 <img src={givenBook.image} alt={givenBook.title} />
                                                                 <h5>{givenBook.title}</h5>
-                                                                <span className="user-book-direction">Entregado</span>
                                                             </div>
                                                             
                                                             <div className="user-exchange-arrow">
@@ -425,14 +392,7 @@ const MiPerfil = () => {
                                                             <div className="user-exchange-book">
                                                                 <img src={receivedBook.image} alt={receivedBook.title} />
                                                                 <h5>{receivedBook.title}</h5>
-                                                                <span className="user-book-direction">Recibido</span>
                                                             </div>
-                                                        </div>
-                                                        
-                                                        <div className="user-exchange-details">
-                                                            <span className="user-exchange-with">
-                                                                Intercambio con @{otherUser}
-                                                            </span>
                                                         </div>
                                                     </div>
                                                 );

@@ -62,13 +62,17 @@ const AfterLogin = () => {
     useEffect(() => {
         const storeUserId = localStorage.getItem("userId");
         setUserId(storeUserId);
+
         if (storeUserId) {
-            fetchBooks();
-            fetchMyBooks();
-            fetchUserRole();
-            setLoading(false);
+            setLoading(true);
+            Promise.all([
+                fetchBooks(),
+                fetchMyBooks(),
+                fetchUserRole()
+            ]).finally(() => setLoading(false));
         } else {
             console.error("UserId no encontrado en local storage.");
+            setLoading(false);
         }
     }, [fetchBooks, fetchMyBooks, fetchUserRole]);
 
@@ -78,7 +82,7 @@ const AfterLogin = () => {
             const interval = setInterval(() => {
                 fetchBooks();
                 fetchMyBooks();
-            }, 3000); // 3000 ms = 3 segundos
+            }, 1000); // 3000 ms = 3 segundos
 
             return () => clearInterval(interval);
         }

@@ -8,8 +8,10 @@ const MisIntercambios = ({ userId }) => {
     const [exchanges, setExchanges] = useState([]);
     const [selectedExchange, setSelectedExchange] = useState(null);
     const [showExchangeDetails, setShowExchangeDetails] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     const fetchExchanges = useCallback(async () => {
+        setLoading(true);
         try {
             const response = await axios.get(`${API_URL}/exchanges/exchangesUser?userId=${userId}`);
             // Ordenar los intercambios por fecha, los más recientes primero
@@ -20,6 +22,7 @@ const MisIntercambios = ({ userId }) => {
         } catch (error) {
             console.error("Error fetching exchanges:", error);
         }
+        setLoading(false);
     }, [userId]);
 
     useEffect(() => {
@@ -57,7 +60,9 @@ const MisIntercambios = ({ userId }) => {
     return (
         <div className="mis-intercambios-container">
             <div className="mis-intercambios-grid">
-                {exchanges.length > 0 ? (
+                {loading ? (
+                    <div className="mis-intercambio-loading">Cargando intercambios...</div>
+                ) : exchanges.length > 0 ? (
                     exchanges.map((exchange) => (
                         <div key={exchange._id} className="mis-intercambio-card">
                             <div className="mis-intercambio-books">
@@ -134,4 +139,4 @@ const MisIntercambios = ({ userId }) => {
     );
 };
 
-export default MisIntercambios; 
+export default MisIntercambios;

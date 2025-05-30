@@ -69,3 +69,48 @@ exports.getUsers = async (req, res) => {
         res.status(500).json({ message: "Error en el servidor" });
     }
 };
+
+// Actualizar nombre de usuario
+exports.updateUserName = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { name } = req.body;
+        if (!name) return res.status(400).json({ message: "Nombre requerido" });
+
+        const user = await User.findByIdAndUpdate(id, { name }, { new: true, select: '-password' });
+        if (!user) return res.status(404).json({ message: "Usuario no encontrado" });
+
+        res.json({ message: "Nombre actualizado", user });
+    } catch (error) {
+        console.log("Error al actualizar nombre:", error);
+        res.status(500).json({ message: "Error en el servidor" });
+    }
+};
+
+// Actualizar correo y/o contraseña
+exports.updateUserConfig = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { email, password } = req.body;
+
+        const updateFields = {};
+        if (email) updateFields.email = email;
+        if (password) {
+            if (password.length < 6) return res.status(400).json({ message: "Contraseña muy corta" });
+            updateFields.password = password;
+        }
+
+        if (Object.keys(updateFields).length === 0) {
+            return res.status(400).json({ message: "Nada para actualizar" });
+        }
+
+        const user = await User.findByIdAndUpdate(id, updateFields, { new: true, select: '-password' });
+        if (!user) return res.status(404).json({ message: "Usuario no encontrado" });
+
+        res.json({ message: "Configuración actualizada", user });
+    } catch (error) {
+        console.log("Error al actualizar configuración:", error);
+        res.status(500).json({ message: "Error en el servidor" });
+    }
+};
+
