@@ -130,7 +130,11 @@
 }
 
 .suggestion-item.recent .suggestion-icon {
-    color: #64748b;
+    color: #000000;
+}
+
+.suggestion-item.recent {
+    color: black;
 }
 
 .no-suggestions {

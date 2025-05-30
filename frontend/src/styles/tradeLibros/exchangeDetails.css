@@ -35,7 +35,6 @@
 }
 
 .exchange-books {
-    display: flex;
     justify-content: space-between;
     margin: 2rem 0;
     gap: 2rem;
@@ -51,10 +50,9 @@
 
 .book-info img {
     width: 150px;
-    height: 200px;
+    height: auto;
     object-fit: cover;
     border-radius: 4px;
-    margin: 1rem 0;
 }
 
 .form-group {
@@ -176,27 +174,43 @@ h4 {
 }
 
 .confirm-delivery-btn:disabled {
-    background-color: #e5e7eb;
-    color: #9ca3af;
+    background-color: #d66f1a;
+    color: #ffffff;
     cursor: not-allowed;
     opacity: 0.7;
 }
 
 .confirm-delivery-btn:disabled:hover {
-    background-color: #e5e7eb;
-    color: #9ca3af;
+    background-color: #ff0000;
+    color: #ffffff;
 }
 
+.submit-btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    background-color: #6887f0;
+    color: white;
+    transition: all 0.3s ease;
+}
+.submit-btn:hover {
+    background-color: #4f6ce5;
+    color: white;
+    cursor: pointer;
+}
 .submit-btn:disabled {
-    background-color: #e5e7eb;
-    color: #9ca3af;
+    background-color: #6887f0;
+    color: #ffffff;
     cursor: not-allowed;
     opacity: 0.7;
 }
 
 .submit-btn:disabled:hover {
-    background-color: #e5e7eb;
-    color: #9ca3af;
+    background-color: #ee0404;
+    color: #ffffff;
 }
 
 .form-group input:invalid {

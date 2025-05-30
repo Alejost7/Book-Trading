@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import ExchangeDetails from '../tradeLibros/ExchangeDetails';
-import '../../styles/afterLogin/afterLogin.css';
+import '../../styles/afterLogin/MisIntercambios.css';
 const API_URL = import.meta.env.VITE_API_URL;
 
 const MisIntercambios = ({ userId }) => {
@@ -55,34 +55,34 @@ const MisIntercambios = ({ userId }) => {
     };
 
     return (
-        <div className="exchanges-container">
-            <div className="exchanges-grid">
+        <div className="mis-intercambios-container">
+            <div className="mis-intercambios-grid">
                 {exchanges.length > 0 ? (
                     exchanges.map((exchange) => (
-                        <div key={exchange._id} className="exchange-card">
-                            <div className="exchange-books">
-                                <div className="book-info">
+                        <div key={exchange._id} className="mis-intercambio-card">
+                            <div className="mis-intercambio-books">
+                                <div className="mis-intercambio-book-info">
                                     <h4>Libro Solicitado</h4>
                                     <img src={exchange.requestedBook.image} alt={exchange.requestedBook.title} />
                                     <p>{exchange.requestedBook.title}</p>
                                 </div>
-                                <div className="book-info">
+                                <div className="mis-intercambio-book-info">
                                     <h4>Libro Ofrecido</h4>
                                     <img src={exchange.offeredBook.image} alt={exchange.offeredBook.title} />
                                     <p>{exchange.offeredBook.title}</p>
                                 </div>
                             </div>
-                            <div className="exchange-status">
+                            <div className="mis-intercambio-status">
                                 <p>Estado: {exchange.status}</p>
                                 {exchange.status === "pendiente" && exchange.isRequester && (
-                                    <div className="exchange-actions">
+                                    <div className="mis-intercambio-actions">
                                         <button onClick={() => handleViewExchangeDetails(exchange)}>
                                             Ver Detalles
                                         </button>
                                     </div>
                                 )}
                                 {exchange.status === "pendiente" && exchange.isOwner && (
-                                    <div className="exchange-actions">
+                                    <div className="mis-intercambio-actions">
                                         <button onClick={() => handleExchangeResponse(exchange._id, "aceptado")}>
                                             Aceptar
                                         </button>
@@ -93,7 +93,7 @@ const MisIntercambios = ({ userId }) => {
                                 )}
                                 {exchange.status === "aceptado" && exchange.isRequester && 
                                 (!exchange.exchangeDetails || exchange.exchangeDetails.status !== "meetup_scheduled") && (
-                                    <div className="exchange-actions">
+                                    <div className="mis-intercambio-actions">
                                         <button onClick={() => handleViewExchangeDetails(exchange)}>
                                             Coordinar Entrega
                                         </button>
@@ -103,7 +103,7 @@ const MisIntercambios = ({ userId }) => {
                                     exchange.isOwner || 
                                     (exchange.isRequester && exchange.exchangeDetails?.status === "meetup_scheduled")
                                 ) && (
-                                    <div className="exchange-actions">
+                                    <div className="mis-intercambio-actions">
                                         <button onClick={() => handleViewExchangeDetails(exchange)}>
                                             Ver Detalles de Entrega
                                         </button>
@@ -113,7 +113,7 @@ const MisIntercambios = ({ userId }) => {
                         </div>
                     ))
                 ) : (
-                    <div className="no-content-message">
+                    <div className="mis-intercambio-empty">
                         <p>En este momento no hay nada para mostrar</p>
                     </div>
                 )}
@@ -125,7 +125,7 @@ const MisIntercambios = ({ userId }) => {
                     onClose={() => {
                         setShowExchangeDetails(false);
                         setSelectedExchange(null);
-                        fetchExchanges(); // Actualizar los intercambios al cerrar el modal
+                        fetchExchanges();
                     }}
                     userId={userId}
                 />

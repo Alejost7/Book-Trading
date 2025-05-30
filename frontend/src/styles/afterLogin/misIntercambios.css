@@ -1,0 +1,263 @@
+
+
+/* Contenedor principal */
+.mis-intercambios-container {
+    padding: 2rem;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Grid de intercambios */
+.mis-intercambios-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+    gap: 1.5rem;
+    margin-right: 1rem;
+    margin-left: -2rem;
+}
+
+/* Tarjeta de intercambio */
+.mis-intercambio-card {
+    background-color: #2d3748;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.mis-intercambio-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Sección de libros en intercambio */
+.mis-intercambio-books {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.mis-intercambio-book-info {
+    flex: 1;
+    text-align: center;
+    padding: 1rem;
+    background-color: #1a202c;
+    border-radius: 8px;
+}
+
+.mis-intercambio-book-info h4 {
+    color: #60a5fa;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+}
+
+.mis-intercambio-book-info img {
+    width: 120px;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin: 0.5rem 0;
+}
+
+.mis-intercambio-book-info p {
+    color: #e2e8f0;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+}
+
+/* Estado del intercambio */
+.mis-intercambio-status {
+    text-align: center;
+    padding: 1rem;
+    border-top: 1px solid #4a5568;
+    margin-top: 1rem;
+}
+
+.mis-intercambio-status p {
+    color: #e2e8f0;
+    margin-bottom: 1rem;
+}
+
+/* Botones de acción */
+.mis-intercambio-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+.mis-intercambio-actions button {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    background-color: #3b82f6;
+    color: white;
+}
+
+.mis-intercambio-actions button:hover {
+    background-color: #2563eb;
+}
+
+.mis-intercambio-actions button:last-child {
+    background-color: #ef4444;
+}
+
+.mis-intercambio-actions button:last-child:hover {
+    background-color: #dc2626;
+}
+
+/* Mensaje cuando no hay intercambios */
+.mis-intercambio-empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 3rem;
+    background-color: #2d3748;
+    border-radius: 12px;
+    color: #a0aec0;
+}
+
+.mis-intercambio-empty p {
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+/* Media Queries */
+@media screen and (max-width: 1200px) {
+    .mis-intercambios-container {
+        padding: 1.5rem;
+    }
+
+    .mis-intercambios-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1.5rem;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .mis-intercambios-container {
+        padding: 1rem;
+    }
+
+    .mis-intercambios-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1rem;
+    }
+
+    .mis-intercambio-books {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .mis-intercambio-book-info img {
+        width: 100px;
+        height: 140px;
+    }
+
+    .mis-intercambio-actions {
+        flex-direction: column;
+    }
+
+    .mis-intercambio-actions button {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .mis-intercambios-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .mis-intercambio-card {
+        padding: 1rem;
+    }
+
+    .mis-intercambio-book-info {
+        padding: 0.75rem;
+    }
+
+    .mis-intercambio-book-info img {
+        width: 90px;
+        height: 120px;
+    }
+
+    .mis-intercambio-status {
+        padding: 0.75rem;
+    }
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.mis-intercambio-card {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* Estilos para el estado de carga */
+.loading-state {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3b82f6;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Estilos para mensajes de error */
+.error-message {
+    background-color: #fee2e2;
+    color: #dc2626;
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+    text-align: center;
+}
+
+/* Mejoras para dispositivos táctiles */
+@media (hover: none) {
+    .mis-intercambio-card:hover {
+        transform: none;
+    }
+
+    .mis-intercambio-actions button {
+        padding: 1rem 1.5rem;
+    }
+}
+
+/* Mejoras para pantallas de alta densidad */
+@media (-webkit-min-device-pixel-ratio: 2),
+(min-resolution: 192dpi) {
+    .mis-intercambio-book-info img {
+        image-rendering: -webkit-optimize-contrast;
+    }
+}

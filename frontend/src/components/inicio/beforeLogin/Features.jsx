@@ -1,5 +1,5 @@
 import '../../../styles/beforeLogin/features.css';
-import imageRef from '../../../assets/images/imageLibraryRef.jpg';
+import imageRef from '../../../assets/images/OIP.jpeg';
 import imageSpy from '../../../assets/images/spideyPFP.jpg';
 import imagePersonalizable from '../../../assets/images/fondoHero.jpg';
 import { useState } from 'react';
@@ -36,7 +36,7 @@ const Features = () => {
             </ul>
             {selectedFeature && (
                 <div className="features-img">
-                    {selectedFeature === "facil" && <img src={imageSpy} alt="Característica fácil de usar" />}
+                    {selectedFeature === "facil" && <img src={imageRef} alt="Característica fácil de usar" />}
                     {selectedFeature === "moderno" && <img src={imageSpy} alt="Diseño moderno" />}
                     {selectedFeature === "personalizable" && <img src={imagePersonalizable} alt="Personalizable" />}
                 </div>

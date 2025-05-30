@@ -35,6 +35,11 @@
         width: 100%;
         margin-top: 0.5rem;
     }
+    .exchange-books {
+        flex-direction: column;
+        align-items: center;
+        padding: 0rem 2rem;
+    }
 }
 
 @media screen and (min-width: 769px) {
@@ -613,7 +618,6 @@
 .book-info {
     padding: 1.25rem;
     flex-grow: 1;
-    display: flex;
     flex-direction: column;
 }
 
@@ -710,5 +714,37 @@
     .offer-button {
         font-size: 0.8rem;
         padding: 0.5rem;
+    }
+    .exchange-card {
+        padding: 0.2rem 0;
+    }
+    .exchange-books {
+        flex-direction: column;
+        align-items: center;
+        padding: 0rem 2rem;
+    }
+    .book-info {
+        padding: 0.75rem;
+    }
+}
+
+
+
+@media screen and (max-width: 360px) {
+    .books-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .header-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .notification-center {
+        width: 100%;
+    }
+    .exchange-books {
+        flex-direction: column;
+        align-items: center;
     }
 }
