@@ -4,7 +4,6 @@
 - Jorge Luis Osorio Quiroga
 - Samuel Alberto Bonilla Franco
   
-#### Instalar todas las dependencias con el comando "npm run install-all"
 #### Renombrar el archivo .env.example a .env y actualizar usuario y contraseña por la que se compartió en el grupo
 
 ## Implementación del Flujo de Intercambio
@@ -21,8 +20,6 @@
 ## Acciones clave:
 
 - Un usuario puede ver el historial de sus solicitudes (pendientes, aceptadas, rechazadas).
-- Puede cancelar una solicitud antes de que el dueño responda.
-- Se pueden agregar calificaciones o comentarios después del intercambio.
 - Se pueden donar libros, las donaciones son permanentes
 
 ## Lógica:
@@ -30,7 +27,6 @@
 ### Interfaz
 
 - En la BookZone, cada libro debe tener un botón "Solicitar intercambio".
-- En el perfil de usuario, una pestaña "solicitudes de Intercambio" para gestionar las solicitudes recibidas y enviadas.
 
 ### Backend
 
@@ -39,6 +35,7 @@
 - Endpoint para aceptar/rechazar solicitudes.
 - Enpoint para actualizar el estado de un libro tras un intercambio.
 - Endpoint para donar un libro.
+- Otros Endpoints importantes...
 
 
 ### Definición del Flujo de Donaciones e Intercambio
@@ -53,8 +50,3 @@
     - El sistema realiza automáticamente el intercambio.
     - El libro donado desaparece de la lista de donaciones y aparece en la biblioteca del nuevo dueño.
     - El usuario especial (Admin/Biblioteca) recibe el libro intercambiado.
-
-3. Manejo de intercambios temporales (si aplican)
-    - Si el intercambio es temporal, el libro debe marcarse como "No disponible".
-    - Se puede establecer una fecha de devolución.
-    - Una vez devuelto, el libro vuelve a la lista de donaciones.
