@@ -700,6 +700,10 @@
         width: 100%;
         justify-content: center;
     }
+    .user-filter-btn {
+        padding: 0.1rem 0.5rem;
+        font-size: 0.8rem;
+    }
 }
 
 /* Agregar al archivo CSS existente */

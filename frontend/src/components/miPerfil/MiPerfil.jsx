@@ -188,9 +188,6 @@ const MiPerfil = () => {
                             >
                                 {user?.name?.charAt(0).toUpperCase() || 'U'}
                             </motion.div>
-                            <button className="edit-avatar-btn">
-                                <FiEdit2 />
-                            </button>
                         </div>
                     </motion.div>
                     
