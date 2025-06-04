@@ -6,7 +6,7 @@ import AfterLogin from './components/inicio/afterLogin/AfterLogin';
 import MiPerfil from './components/miPerfil/MiPerfil';
 import Ayuda from './components/ayuda/Ayuda';
 import MyBooks from './components/tradeLibros/MyBooks';
-import Donacion from './components/donaciones/Donaciones';
+import Donaciones from './components/donaciones/Donaciones';
 import AboutUs from './components/AboutUs';
 import FrecuentQuestions from './components/FrecuentQuestions';
 
@@ -31,7 +31,7 @@ function App() {
           />
           <Route
             path="/Donaciones"
-            element={<Donacion/>}
+            element={<Donaciones/>}
           />
           <Route
             path="/afterLogin/myBooks"
