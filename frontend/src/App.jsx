@@ -1,14 +1,14 @@
 import './styles/App.css'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import BeforeLogin from './components/inicio/beforeLogin/BeforeLogin';
-import AfterLogin from './components/inicio/afterLogin/AfterLogin';
-import MiPerfil from './components/miPerfil/MiPerfil';
-import Ayuda from './components/ayuda/Ayuda';
-import MyBooks from './components/tradeLibros/MyBooks';
-import Donaciones from './components/donaciones/Donaciones';
-import AboutUs from './components/AboutUs';
-import FrecuentQuestions from './components/FrecuentQuestions';
+import BeforeLogin from './components/inicio/beforeLogin/BeforeLogin.jsx';
+import AfterLogin from './components/inicio/afterLogin/AfterLogin.jsx';
+import MiPerfil from './components/miPerfil/MiPerfil.jsx';
+import Ayuda from './components/ayuda/Ayuda.jsx';
+import MyBooks from './components/tradeLibros/MyBooks.jsx';
+import Donaciones from './components/donaciones/Donaciones.jsx';
+import AboutUs from './components/AboutUs.jsx';
+import FrecuentQuestions from './components/FrecuentQuestions.jsx';
 
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
