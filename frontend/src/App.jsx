@@ -6,7 +6,7 @@ import AfterLogin from './components/inicio/afterLogin/AfterLogin.jsx';
 import MiPerfil from './components/miPerfil/MiPerfil.jsx';
 import Ayuda from './components/ayuda/Ayuda.jsx';
 import MyBooks from './components/tradeLibros/MyBooks.jsx';
-import Donaciones from './components/donaciones/Donaciones.jsx';
+import Donaciones from "./components/donaciones/Donaciones.jsx";
 import AboutUs from './components/AboutUs.jsx';
 import FrecuentQuestions from './components/FrecuentQuestions.jsx';
 
