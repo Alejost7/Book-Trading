@@ -8,7 +8,7 @@ import DonarLibro from './DonarLibro';
 import ModalNuevoLibro from '../tradeLibros/ModalNuevoLibro';
 const API_URL = import.meta.env.VITE_API_URL;
 
-const Donacion = () => {
+const Donaciones = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [selectedBook, setSelectedBook] = useState(null);
@@ -100,4 +100,4 @@ const Donacion = () => {
     );
 };
 
-export default Donacion
+export default Donaciones
